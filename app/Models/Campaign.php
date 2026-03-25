@@ -43,6 +43,12 @@ class Campaign extends Model
                 $campaign->slug = Str::slug($campaign->title);
             }
         });
+
+        static::deleting(function ($campaign) {
+            if ($campaign->image) {
+                \Storage::disk('public')->delete($campaign->image);
+            }
+        });
     }
 
     public function donations(): HasMany
@@ -82,7 +88,7 @@ class Campaign extends Model
 
     public function isActive()
     {
-        return $this->status === 'active' 
+        return $this->status === 'active'
             && (!$this->end_date || $this->end_date->isFuture());
     }
 }

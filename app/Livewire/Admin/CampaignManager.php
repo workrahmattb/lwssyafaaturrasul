@@ -144,12 +144,6 @@ class CampaignManager extends Component
     public function deleteCampaign($id)
     {
         $campaign = Campaign::findOrFail($id);
-
-        // Delete image if exists
-        if ($campaign->image) {
-            \Storage::disk('public')->delete($campaign->image);
-        }
-
         $campaign->delete();
 
         // Reset pagination and refresh

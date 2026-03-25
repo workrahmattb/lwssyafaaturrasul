@@ -63,7 +63,7 @@ class CampaignDonationManager extends Component
     public function delete($id)
     {
         $donation = CampaignDonation::findOrFail($id);
-        
+
         // If was approved, subtract from campaign
         if ($donation->status === 'approved') {
             $campaign = $donation->campaign;
@@ -72,11 +72,7 @@ class CampaignDonationManager extends Component
                 $campaign->decrement('donor_count');
             }
         }
-        
-        if ($donation->proof_of_transfer) {
-            \Storage::disk('public')->delete($donation->proof_of_transfer);
-        }
-        
+
         $donation->delete();
 
         session()->flash('success', 'Donasi berhasil dihapus!');

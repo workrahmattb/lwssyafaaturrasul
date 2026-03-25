@@ -27,6 +27,17 @@ class Donation extends Model
         'amount' => 'decimal:2',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($donation) {
+            if ($donation->proof_of_transfer) {
+                \Storage::disk('public')->delete($donation->proof_of_transfer);
+            }
+        });
+    }
+
     public function paymentMethod(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);
