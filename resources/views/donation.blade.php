@@ -369,7 +369,7 @@
     <script>
         // Scroll to riwayat section when pagination changes
         document.addEventListener('livewire:init', () => {
-            Livewire.on('page', () => {
+            Livewire.on('scrollToRiwayat', () => {
                 setTimeout(() => {
                     const element = document.getElementById('riwayat-donasi');
                     if (element) {
