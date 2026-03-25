@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donasi Baru Masuk - {{ $donation->trx_id }}</title>
+    <title>Donasi Kampanye Baru - {{ $donation->trx_id }}</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -99,6 +99,10 @@
             font-weight: bold;
             text-transform: uppercase;
         }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
         .button {
             display: inline-block;
             background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
@@ -107,7 +111,13 @@
             padding: 14px 32px;
             border-radius: 8px;
             font-weight: bold;
-            margin-top: 20px;
+            margin: 5px;
+        }
+        .button-approve {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .button-reject {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
         }
         .footer {
             background-color: #f3f4f6;
@@ -126,51 +136,75 @@
         .badge-wakaf_pembangunan { background-color: #fef3c7; color: #92400e; }
         .badge-wakaf_produktif { background-color: #ccfbf1; color: #115e59; }
         .badge-donasi_pendidikan { background-color: #dbeafe; color: #1e40af; }
+        .campaign-info {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            border: 2px solid #86efac;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .campaign-info-title {
+            color: #166534;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .campaign-info-link {
+            color: #15803d;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .campaign-info-link:hover {
+            text-decoration: underline;
+        }
+        .proof-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 1px solid #e5e7eb;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         {{-- Header --}}
         <div class="header">
-            <h1>🔔 Donasi Baru Masuk!</h1>
-            <p>Ada transaksi donasi baru yang menunggu verifikasi</p>
+            <h1>🔔 Donasi Kampanye Baru Masuk!</h1>
+            <p>Ada donasi untuk kampanye yang menunggu verifikasi</p>
         </div>
 
         {{-- Content --}}
         <div class="content">
             <div class="greeting">Assalamu'alaikum Warahmatullahi Wabarakatuh,</div>
-            
+
             <div class="message">
-                Alhamdulillah, ada donasi baru yang masuk melalui website <strong>{{ config('app.name') }}</strong>. 
+                Alhamdulillah, ada donasi baru untuk kampanye di website <strong>{{ config('app.name') }}</strong>.
                 Donasi ini masih dalam status <span class="status-badge">Pending</span> dan menunggu verifikasi dari admin.
+            </div>
+
+            {{-- Campaign Info --}}
+            <div class="campaign-info">
+                <div class="campaign-info-title">📢 Kampanye: {{ $donation->campaign->title ?? 'N/A' }}</div>
+                <a href="{{ route('campaigns.detail', $donation->campaign->slug ?? '#') }}" class="campaign-info-link">
+                    Lihat Detail Kampanye →
+                </a>
             </div>
 
             {{-- Donation Details Card --}}
             <div class="donation-card">
                 <div class="donation-row">
-                    <span class="donation-label">Kode Transaksi </span>
-                    <span class="donation-value" style="font-family: monospace;"> : {{ $donation->trx_id }}</span>
+                    <span class="donation-label">Kode Transaksi</span>
+                    <span class="donation-value" style="font-family: monospace;">{{ $donation->trx_id }}</span>
                 </div>
 
                 <div class="donation-row">
-                    <span class="donation-label">Nama Donatur </span>
-                    <span class="donation-value"> : {{ $donation->donatur_name }}</span>
-                </div>
-
-                <div class="donation-row">
-                    <span class="donation-label">Jenis Wakaf </span>
-                    <span class="donation-value"> :
-                        <span class="badge
-                            @if($donation->type === 'wakaf_pembangunan') badge-wakaf_pembangunan
-                            @elseif($donation->type === 'wakaf_produktif') badge-wakaf_produktif
-                            @else badge-donasi_pendidikan
-                            @endif
-                        ">
-                            @if($donation->type === 'wakaf_pembangunan') Wakaf Pembangunan
-                            @elseif($donation->type === 'wakaf_produktif') Wakaf Produktif
-                            @else Donasi Pendidikan
-                            @endif
-                        </span>
+                    <span class="donation-label">Nama Donatur</span>
+                    <span class="donation-value"> : 
+                        {{ $donation->donatur_name }}
+                        @if($donation->is_anonymous)
+                            <span class="badge" style="background-color: #e5e7eb; color: #374151; margin-left: 8px;">Anonim</span>
+                        @endif
                     </span>
                 </div>
 
@@ -180,7 +214,7 @@
                 </div>
 
                 <div class="donation-row">
-                    <span class="donation-label">Bank Tujuan</span>
+                    <span class="donation-label">Bank Pembayaran</span>
                     <span class="donation-value"> : {{ $donation->paymentMethod->bank_name ?? '-' }}</span>
                 </div>
 
@@ -192,15 +226,23 @@
                     <span class="donation-label">Tanggal</span>
                     <span class="donation-value">{{ $donation->created_at->format('d F Y, H:i') }} WIB</span>
                 </div>
+
+                @if($donation->proof_of_transfer)
+                <div style="margin-top: 20px;">
+                    <span class="donation-label" style="display: block; margin-bottom: 10px;">Bukti Transfer:</span>
+                    <img src="{{ asset('storage/' . $donation->proof_of_transfer) }}" alt="Bukti Transfer" class="proof-image">
+                </div>
+                @endif
             </div>
 
             <p style="color: #4b5563; line-height: 1.6; margin-bottom: 25px;">
                 Silahkan segera verifikasi donasi ini dengan memeriksa bukti transfer yang telah diupload oleh donatur.
+                Anda dapat menyetujui atau menolak donasi ini.
             </p>
 
-            {{-- Action Button --}}
-            <div style="text-align: center;">
-                <a href="{{ route('admin.donations') }}" class="button">
+            {{-- Action Buttons --}}
+            <div class="button-container">
+                <a href="{{ route('admin.campaign-donation') }}" class="button button-approve">
                     ✓ Verifikasi Donasi
                 </a>
             </div>

@@ -2,9 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Mail\CampaignDonationMail;
 use App\Models\Campaign;
 use App\Models\CampaignDonation;
 use App\Models\PaymentMethod;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
@@ -187,7 +189,7 @@ class CampaignDonate extends Component
             throw $e;
         }
 
-        CampaignDonation::create([
+        $donation = CampaignDonation::create([
             'trx_id' => $this->trx_id,
             'campaign_id' => $this->campaignId,
             'donatur_name' => $this->is_anonymous ? 'Hamba Allah' : $this->donatur_name,
@@ -200,6 +202,14 @@ class CampaignDonate extends Component
         ]);
 
         \Log::info('Donation created successfully with pending status');
+
+        // Send email notification to admin
+        try {
+            Mail::to('workrahmattb@gmail.com')->send(new CampaignDonationMail($donation));
+        } catch (\Exception $e) {
+            // Log error but don't fail the donation
+            \Log::error('Failed to send campaign donation notification email: ' . $e->getMessage());
+        }
 
         $this->step = 3;
     }
