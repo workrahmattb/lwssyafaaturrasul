@@ -33,10 +33,10 @@
     <section class="py-16 px-6">
         <div class="max-w-4xl mx-auto text-center">
             <h1 class="text-5xl md:text-6xl font-black text-emerald-800 mb-6 leading-tight">
-                Salurkan <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-600">Zakat & Wakaf</span> Terbaik Anda
+                Salurkan <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-600">Wakaf</span> Terbaik Anda
             </h1>
             <p class="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-                Bantu sesama melalui wakaf zakat, wakaf, dan sedekah. Setiap kontribusi Anda membawa harapan bagi mereka yang membutuhkan.
+                Bantu sesama melalui wakaf, zakat, infaq dan sedekah. Setiap kontribusi Anda membawa harapan bagi mereka yang membutuhkan.
             </p>
             <div class="flex flex-wrap justify-center gap-4">
                 <a href="#donasi" class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200">
