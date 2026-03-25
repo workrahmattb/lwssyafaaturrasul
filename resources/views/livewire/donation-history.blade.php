@@ -1,6 +1,6 @@
 <div>
     {{-- Table Container with Horizontal Scroll --}}
-    <div class="overflow-x-auto rounded-2xl border border-emerald-100 shadow-lg bg-white">
+    <div id="riwayat-donasi" class="overflow-x-auto rounded-2xl border border-emerald-100 shadow-lg bg-white">
         <table class="w-full text-sm">
             <thead class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-xs font-bold uppercase">
                 <tr>

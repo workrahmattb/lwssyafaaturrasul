@@ -366,5 +366,16 @@
         </div>
     </footer>
     @livewireScripts
+    <script>
+        // Scroll to riwayat section when pagination changes
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('scroll-to-riwayat', () => {
+                const element = document.getElementById('riwayat-donasi');
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
