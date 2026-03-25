@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Lembaga Wakaf Sedekah - Salurkan Kebaikan</title>
+    <title>Lembaga Wakaf Syafa'aturrasul - Salurkan Kebaikan</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -23,7 +23,7 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <img src="{{ asset('images/lws.png') }}" alt="LWS Logo" class="w-12 h-12 object-contain">
-                    <span class="text-xl font-black text-emerald-700">Lembaga Wakaf Sedekah</span>
+                    <span class="text-xl font-black text-emerald-700">Lembaga Wakaf Syafa'aturrasul</span>
                 </div>
             </div>
         </div>
@@ -337,7 +337,7 @@
                 <div>
                     <div class="flex items-center space-x-3 mb-4">
                         <img src="{{ asset('images/lws.png') }}" alt="LWS Logo" class="w-10 h-10 object-contain bg-white rounded-full p-1">
-                        <span class="text-lg font-bold">Lembaga Wakaf Sedekah</span>
+                        <span class="text-lg font-bold">Lembaga Wakaf Syafa'aturrasul</span>
                     </div>
                     <p class="text-slate-400 text-sm">
                         Menyalurkan kebaikan dari para donatur untuk mereka yang membutuhkan.
@@ -361,7 +361,7 @@
                 </div>
             </div>
             <div class="border-t border-slate-800 mt-8 pt-8 text-center text-slate-500 text-sm">
-                <p>&copy; {{ date('Y') }} Lembaga Wakaf Sedekah. All rights reserved.</p>
+                <p>&copy; {{ date('Y') }} Lembaga Wakaf Syafa'aturrasul. All rights reserved.</p>
             </div>
         </div>
     </footer>
