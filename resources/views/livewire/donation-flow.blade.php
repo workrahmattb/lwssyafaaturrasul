@@ -4,7 +4,7 @@
     <div class="p-4 sm:p-8 space-y-4 sm:space-y-6">
         {{-- Type Selection --}}
         <div>
-            <label class="block text-sm font-semibold text-slate-600 mb-3">Jenis Donasi</label>
+            <label class="block text-sm font-semibold text-slate-600 mb-3">Jenis Wakaf</label>
             <div class="grid grid-cols-3 gap-2">
                 <button
                     type="button"
