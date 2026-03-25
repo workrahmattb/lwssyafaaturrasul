@@ -14,7 +14,7 @@
             <tbody class="divide-y divide-emerald-50">
                 @forelse($history as $index => $h)
                 <tr class="hover:bg-emerald-50 transition">
-                    <td class="p-3 text-center font-bold text-slate-600">{{ $index + 1 }}</td>
+                    <td class="p-3 text-center font-bold text-slate-600">{{ $history->firstItem() + $index }}</td>
                     <td class="p-3 font-semibold text-slate-700">
                         <span>{{ $h->donatur_name }}</span>
                     </td>
