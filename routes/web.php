@@ -5,6 +5,7 @@ use App\Livewire\Admin\CampaignManager;
 use App\Livewire\Admin\CampaignDonationManager;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ExportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,3 +37,7 @@ Route::get('/admin/campaign-donation', CampaignDonationManager::class)->name('ad
 
 // Admin campaigns
 Route::get('/admin/campaigns', CampaignManager::class)->name('admin.campaigns')->middleware('admin');
+
+// Export routes
+Route::get('/admin/export/donations', [ExportController::class, 'exportDonations'])->name('admin.export.donations')->middleware('admin');
+Route::get('/admin/export/campaign-donations', [ExportController::class, 'exportCampaignDonations'])->name('admin.export.campaign-donations')->middleware('admin');

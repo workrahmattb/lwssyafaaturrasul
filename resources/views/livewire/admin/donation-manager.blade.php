@@ -15,6 +15,15 @@
                     </div>
                 </div>
 
+                <div class="flex items-center gap-2">
+                    <a href="{{ route('admin.export.donations', $filter ? ['status' => $filter] : []) }}" class="flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition whitespace-nowrap bg-white/90 text-emerald-700 hover:bg-white cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        <span class="ml-1 hidden sm:inline">Export CSV</span>
+                    </a>
+                </div>
+
                 {{-- Filter Tabs - Scrollable on mobile --}}
                 <div class="flex overflow-x-auto gap-2 pb-2 sm:pb-0 -mx-4 sm:mx-0 px-4 sm:px-0 scrollbar-hide">
                     @foreach(['pending', 'approved', 'rejected', ''] as $status)
