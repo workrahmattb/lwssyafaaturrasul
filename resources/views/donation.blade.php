@@ -7,7 +7,7 @@
     <meta name="description" content="Platform donasi dan wakaf terpercaya untuk pembangunan masjid dan pendidikan Islam. Ayo berkontribusi sekarang.">
     <meta name="keywords" content="Wakaf Pembangunan, donasi masjid, sedekah, Wakaf Produktif, Syafa'aturrasul, Donasi Pendidikan">
     <meta name="author" content="LWS Lembaga Wakaf Syafa'aturrasul">
-    <meta property="og:title" content="Lembaga Wakaf Syafaatur Rasul">
+    <meta property="og:title" content="Lembaga Wakaf Syafa'aturrasul">
     <meta property="og:description" content="Ayo ikut berwakaf dan berdonasi untuk pembangunan Pondok Pesantren Syafa'aturrasul.">
     <meta property="og:image" content="{{ asset('images/lws.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
