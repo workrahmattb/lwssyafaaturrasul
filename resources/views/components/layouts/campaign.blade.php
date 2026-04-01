@@ -22,11 +22,11 @@
 <body class="font-sans antialiased bg-gradient-to-br from-emerald-50 via-white to-teal-50">
     {{-- Navbar --}}
     <nav class="bg-white/80 backdrop-blur-md border-b border-emerald-100 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-6 py-4">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
             <div class="flex items-center justify-between">
-                <a href="{{ route('donation') }}" class="flex items-center space-x-3">
-                    <img src="{{ asset('images/lws.png') }}" alt="LWS Logo" class="w-12 h-12 object-contain">
-                    <span class="text-xl font-black text-emerald-700">Lembaga Wakaf Sedekah</span>
+                <a href="{{ route('donation') }}" class="flex items-center space-x-2 sm:space-x-3">
+                    <img src="{{ asset('images/lws.png') }}" alt="LWS Logo" class="w-10 h-10 sm:w-12 sm:h-12 object-contain">
+                    <span class="text-base sm:text-xl font-black text-emerald-700 leading-tight">Lembaga Wakaf Sedekah</span>
                 </a>
             </div>
         </div>
