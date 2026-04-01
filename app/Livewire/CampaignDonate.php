@@ -32,7 +32,7 @@ class CampaignDonate extends Component
         'amount' => 'required|min:1000',
         'phone' => 'required|min:10|max:15',
         'payment_method_id' => 'required|exists:payment_methods,id',
-        'proof_of_transfer' => 'required|image|max:2048',
+        'proof_of_transfer' => 'required|mimes:jpeg,jpg,png,pdf|max:2048',
     ];
 
     public function mount()
@@ -84,10 +84,10 @@ class CampaignDonate extends Component
 
         try {
             $this->validate([
-                'proof_of_transfer' => 'image|max:2048',
+                'proof_of_transfer' => 'mimes:jpeg,jpg,png,pdf|max:2048',
             ], [
-                'proof_of_transfer.image' => 'File harus berupa gambar',
-                'proof_of_transfer.max' => 'Ukuran gambar maksimal 2MB',
+                'proof_of_transfer.mimes' => 'File harus berupa gambar (JPG, PNG) atau PDF',
+                'proof_of_transfer.max' => 'Ukuran file maksimal 2MB',
             ]);
             \Log::info('proof_of_transfer validation passed');
         } catch (\Exception $e) {
@@ -157,7 +157,7 @@ class CampaignDonate extends Component
             'amount' => 'required|numeric|min:1000',
             'phone' => 'required|min:10|max:15',
             'payment_method_id' => 'required|exists:payment_methods,id',
-            'proof_of_transfer' => 'required|image|max:2048',
+            'proof_of_transfer' => 'required|mimes:jpeg,jpg,png,pdf|max:2048',
         ];
 
         // Only require donatur_name if not anonymous
@@ -173,8 +173,8 @@ class CampaignDonate extends Component
             'payment_method_id.required' => 'Pilih bank tujuan',
             'payment_method_id.exists' => 'Bank tujuan tidak valid',
             'proof_of_transfer.required' => 'Upload bukti transfer',
-            'proof_of_transfer.image' => 'File harus berupa gambar',
-            'proof_of_transfer.max' => 'Ukuran gambar maksimal 2MB',
+            'proof_of_transfer.mimes' => 'File harus berupa gambar (JPG, PNG) atau PDF',
+            'proof_of_transfer.max' => 'Ukuran file maksimal 2MB',
             'donatur_name.required' => 'Nama donatur harus diisi',
             'donatur_name.min' => 'Nama minimal 3 karakter',
         ]);

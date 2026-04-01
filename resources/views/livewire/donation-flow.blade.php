@@ -292,7 +292,7 @@
                 <input
                     type="file"
                     wire:model.live="proof_of_transfer"
-                    accept="image/*"
+                    accept="image/*,.pdf"
                     class="hidden"
                     id="proof-upload"
                 >
@@ -300,8 +300,8 @@
                     <svg class="w-10 h-10 sm:w-12 sm:h-12 text-slate-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                     </svg>
-                    <p class="text-sm text-slate-600 font-semibold">Klik untuk upload gambar</p>
-                    <p class="text-xs text-slate-400 mt-1">PNG, JPG max 2MB</p>
+                    <p class="text-sm text-slate-600 font-semibold">Klik untuk upload gambar atau PDF</p>
+                    <p class="text-xs text-slate-400 mt-1">PNG, JPG, PDF max 2MB</p>
                 </label>
                 @error('proof_of_transfer') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
 

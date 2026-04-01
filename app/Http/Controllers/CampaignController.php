@@ -66,7 +66,7 @@ class CampaignController extends Controller
             'payment_method_id' => 'required|exists:payment_methods,id',
             'donatur_name' => 'required_if:is_anonymous,false',
             'is_anonymous' => 'boolean',
-            'proof_of_transfer' => 'required|image|max:2048',
+            'proof_of_transfer' => 'required|mimes:jpeg,jpg,png,pdf|max:2048',
         ], [
             'amount.required' => 'Nominal donasi harus diisi',
             'amount.min' => 'Nominal minimal Rp 1.000',
@@ -74,8 +74,8 @@ class CampaignController extends Controller
             'phone.min' => 'Nomor WhatsApp minimal 10 digit',
             'payment_method_id.required' => 'Pilih bank tujuan',
             'proof_of_transfer.required' => 'Upload bukti transfer',
-            'proof_of_transfer.image' => 'File harus berupa gambar',
-            'proof_of_transfer.max' => 'Ukuran gambar maksimal 2MB',
+            'proof_of_transfer.mimes' => 'File harus berupa gambar (JPG, PNG) atau PDF',
+            'proof_of_transfer.max' => 'Ukuran file maksimal 2MB',
         ]);
 
         $proofPath = $request->file('proof_of_transfer')->store('campaign-proof', 'public');

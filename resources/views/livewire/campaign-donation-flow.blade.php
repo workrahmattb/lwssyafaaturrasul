@@ -270,7 +270,7 @@
                                 <input
                                     type="file"
                                     wire:model="proof_of_transfer"
-                                    accept="image/*"
+                                    accept="image/*,.pdf"
                                     id="proof-upload"
                                     class="hidden"
                                 >
@@ -282,10 +282,10 @@
                                         @if($proof_of_transfer)
                                             <span class="text-emerald-600 font-semibold">{{ $proof_of_transfer->getClientOriginalName() }}</span>
                                         @else
-                                            Klik untuk upload bukti transfer
+                                            Klik untuk upload gambar atau PDF
                                         @endif
                                     </p>
-                                    <p class="text-xs text-slate-400 mt-1">Max. 2MB (JPG, PNG)</p>
+                                    <p class="text-xs text-slate-400 mt-1">Max. 2MB (JPG, PNG, PDF)</p>
                                 </label>
                             </div>
                             @error('proof_of_transfer') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror

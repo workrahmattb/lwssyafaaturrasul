@@ -31,7 +31,7 @@ class CampaignDonationForm extends Component
         'amount' => 'required|min:1000',
         'phone' => 'required|min:10|max:15',
         'payment_method_id' => 'required|exists:payment_methods,id',
-        'proof_of_transfer' => 'required|image|max:2048',
+        'proof_of_transfer' => 'required|mimes:jpeg,jpg,png,pdf|max:2048',
     ];
 
     public function mount($slug)
@@ -79,7 +79,7 @@ class CampaignDonationForm extends Component
             'amount' => 'required|numeric|min:1000',
             'phone' => 'required|min:10|max:15',
             'payment_method_id' => 'required|exists:payment_methods,id',
-            'proof_of_transfer' => 'required|image|max:2048',
+            'proof_of_transfer' => 'required|mimes:jpeg,jpg,png,pdf|max:2048',
         ], [
             'amount.required' => 'Nominal donasi harus diisi',
             'amount.min' => 'Nominal minimal Rp 1.000',
@@ -87,8 +87,8 @@ class CampaignDonationForm extends Component
             'phone.min' => 'Nomor WhatsApp minimal 10 digit',
             'payment_method_id.required' => 'Pilih bank tujuan',
             'proof_of_transfer.required' => 'Upload bukti transfer',
-            'proof_of_transfer.image' => 'File harus berupa gambar',
-            'proof_of_transfer.max' => 'Ukuran gambar maksimal 2MB',
+            'proof_of_transfer.mimes' => 'File harus berupa gambar (JPG, PNG) atau PDF',
+            'proof_of_transfer.max' => 'Ukuran file maksimal 2MB',
         ]);
 
         $proofPath = $this->proof_of_transfer->store('campaign-proof', 'public');

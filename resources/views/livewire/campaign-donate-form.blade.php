@@ -307,7 +307,7 @@
         <div>
             <label class="block text-sm font-semibold text-slate-700 mb-3">
                 Upload Bukti Transfer
-                <span class="text-xs text-slate-500 font-normal ml-1">(JPG/PNG, max 2MB)</span>
+                <span class="text-xs text-slate-500 font-normal ml-1">(JPG/PNG/PDF, max 2MB)</span>
             </label>
 
             {{-- Upload Area --}}
@@ -315,7 +315,7 @@
                 <input
                     type="file"
                     wire:model.live="proof_of_transfer"
-                    accept="image/*"
+                    accept="image/*,.pdf"
                     id="proof-upload-step2"
                     class="hidden"
                 >
@@ -352,7 +352,7 @@
                         </div>
                         <div class="text-center">
                             <p class="text-sm font-medium text-slate-600 group-hover:text-slate-800 transition-colors">Klik untuk upload bukti</p>
-                            <p class="text-xs text-slate-500 mt-0.5">JPG/PNG, max 2MB</p>
+                            <p class="text-xs text-slate-500 mt-0.5">JPG/PNG/PDF, max 2MB</p>
                         </div>
                     @endif
                 </label>

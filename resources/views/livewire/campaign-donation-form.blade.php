@@ -138,13 +138,13 @@
             <div>
                 <label class="block text-sm font-semibold text-slate-600 mb-3">Upload Bukti Transfer <span class="text-red-500">*</span></label>
                 <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center">
-                    <input type="file" wire:model.live="proof_of_transfer" accept="image/*" class="hidden" id="proof-upload">
+                    <input type="file" wire:model.live="proof_of_transfer" accept="image/*,.pdf" class="hidden" id="proof-upload">
                     <label for="proof-upload" class="cursor-pointer">
                         <svg class="w-12 h-12 text-slate-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                         </svg>
-                        <p class="text-sm text-slate-600 font-semibold">Klik untuk upload gambar</p>
-                        <p class="text-xs text-slate-400 mt-1">PNG, JPG max 2MB</p>
+                        <p class="text-sm text-slate-600 font-semibold">Klik untuk upload gambar atau PDF</p>
+                        <p class="text-xs text-slate-400 mt-1">PNG, JPG, PDF max 2MB</p>
                     </label>
                     @error('proof_of_transfer') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                     @if($proof_of_transfer)
