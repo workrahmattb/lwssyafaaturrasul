@@ -24,6 +24,7 @@
         {{ $slot }}
     </div>
 
+    <x-whatsapp-float />
     @livewireScripts
 </body>
 </html>
