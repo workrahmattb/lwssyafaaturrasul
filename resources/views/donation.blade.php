@@ -60,95 +60,106 @@
         </div>
     </section>
 
-    {{-- Main Content --}}
+    {{-- Donation Form Section --}}
     <section id="donasi" class="py-12 px-6">
+        <div class="max-w-2xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-black text-emerald-800 mb-3">Form Wakaf</h2>
+                <p class="text-lg text-slate-600">Pilih jenis wakaf dan lengkapi form di bawah ini</p>
+            </div>
+            <div class="bg-white rounded-3xl shadow-2xl border border-emerald-50 overflow-hidden">
+                <div class="bg-gradient-to-r from-emerald-500 to-teal-600 px-8 py-6">
+                    <h3 class="text-xl font-bold text-white text-center">Salurkan Wakaf Anda</h3>
+                    <p class="text-emerald-100 text-sm text-center mt-1">Setiap kontribusi membawa kebaikan</p>
+                </div>
+                <livewire:donation-flow />
+            </div>
+        </div>
+    </section>
+
+    {{-- Info Section --}}
+    <section class="py-12 px-6 bg-white">
         <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {{-- Donation Form --}}
-                <div class="bg-white rounded-3xl shadow-2xl border border-emerald-50 overflow-hidden">
-                    <div class="bg-gradient-to-r from-emerald-500 to-teal-600 px-8 py-6">
-                        <h2 class="text-2xl font-bold text-white text-center">Form Wakaf</h2>
-                        <p class="text-emerald-100 text-sm text-center mt-1">Pilih jenis wakaf dan lengkapi form</p>
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-black text-emerald-800 mb-3">Jenis Wakaf & Donasi</h2>
+                <p class="text-lg text-slate-600">Kenali berbagai jenis wakaf yang bisa Anda salurkan</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {{-- Wakaf Pembangunan --}}
+                <div class="bg-white rounded-3xl shadow-xl p-8 border border-emerald-50 hover:shadow-2xl transition">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-emerald-800">Wakaf Pembangunan</h3>
                     </div>
-                    <livewire:donation-flow />
+                    <p class="text-slate-600 leading-relaxed">
+                        Wakaf pembangunan digunakan untuk membangun fasilitas Pondok Pesantren Syafa'aturrasul yang bermanfaat bagi umat seperti masjid, sekolah, dan infrastruktur lainnya.
+                    </p>
                 </div>
 
-                {{-- Info Section --}}
-                <div class="space-y-6">
-                    {{-- Tentang Wakaf Pembangunan --}}
-                    <div class="bg-white rounded-3xl shadow-xl p-8 border border-emerald-50">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-emerald-800">Wakaf Pembangunan</h3>
+                {{-- Wakaf Produktif --}}
+                <div class="bg-white rounded-3xl shadow-xl p-8 border border-teal-50 hover:shadow-2xl transition">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-teal-100 rounded-2xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
                         </div>
-                        <p class="text-slate-600 leading-relaxed">
-                            Wakaf pembangunan digunakan untuk membangun fasilitas Pondok Pesantren Syafa'aturrasul yang bermanfaat bagi umat seperti masjid, sekolah, dan infrastruktur lainnya.
-                        </p>
+                        <h3 class="text-xl font-bold text-teal-800">Wakaf Produktif</h3>
                     </div>
+                    <p class="text-slate-600 leading-relaxed">
+                        Wakaf produktif adalah wakaf yang digunakan untuk usaha produktif yang hasilnya disalurkan untuk kepentingan umat. Pahalanya terus mengalir meskipun pemberi wakaf telah meninggal dunia.
+                    </p>
+                </div>
 
-                    {{-- Tentang Wakaf Produktif --}}
-                    <div class="bg-white rounded-3xl shadow-xl p-8 border border-teal-50">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <div class="w-12 h-12 bg-teal-100 rounded-2xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-teal-800">Wakaf Produktif</h3>
+                {{-- Donasi Pendidikan --}}
+                <div class="bg-white rounded-3xl shadow-xl p-8 border border-cyan-50 hover:shadow-2xl transition">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-cyan-100 rounded-2xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
                         </div>
-                        <p class="text-slate-600 leading-relaxed">
-                            Wakaf produktif adalah wakaf yang digunakan untuk usaha produktif yang hasilnya disalurkan untuk kepentingan umat. Pahalanya terus mengalir meskipun pemberi wakaf telah meninggal dunia.
-                        </p>
+                        <h3 class="text-xl font-bold text-cyan-800">Donasi Pendidikan</h3>
                     </div>
+                    <p class="text-slate-600 leading-relaxed">
+                        Donasi pendidikan membantu menyediakan akses pendidikan bagi mereka yang kurang mampu. Setiap kontribusi Anda membuka kesempatan bagi generasi muda untuk meraih masa depan lebih baik.
+                    </p>
+                </div>
 
-                    {{-- Tentang Donasi Pendidikan --}}
-                    <div class="bg-white rounded-3xl shadow-xl p-8 border border-cyan-50">
-                        <div class="flex items-center space-x-4 mb-4">
-                            <div class="w-12 h-12 bg-cyan-100 rounded-2xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-cyan-800">Donasi Pendidikan</h3>
-                        </div>
-                        <p class="text-slate-600 leading-relaxed">
-                            Donasi pendidikan membantu menyediakan akses pendidikan bagi mereka yang kurang mampu. Setiap kontribusi Anda membuka kesempatan bagi generasi muda untuk meraih masa depan lebih baik.
-                        </p>
-                    </div>
-
-                    {{-- Keunggulan --}}
+                {{-- Keunggulan --}}
+                <div class="md:col-span-2 lg:col-span-3">
                     <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl shadow-xl p-8 text-white">
                         <h3 class="text-xl font-bold mb-4">Mengapa Wakaf di Sini?</h3>
-                        <ul class="space-y-3">
-                            <li class="flex items-center space-x-3">
-                                <svg class="w-5 h-5 text-emerald-200" fill="currentColor" viewBox="0 0 20 20">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5 text-emerald-200 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                                 </svg>
                                 <span>Transparan dan terpercaya</span>
-                            </li>
-                            <li class="flex items-center space-x-3">
-                                <svg class="w-5 h-5 text-emerald-200" fill="currentColor" viewBox="0 0 20 20">
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5 text-emerald-200 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                                 </svg>
                                 <span>Saluran pembayaran mudah</span>
-                            </li>
-                            <li class="flex items-center space-x-3">
-                                <svg class="w-5 h-5 text-emerald-200" fill="currentColor" viewBox="0 0 20 20">
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5 text-emerald-200 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                                 </svg>
                                 <span>Laporan wakaf berkala</span>
-                            </li>
-                            <li class="flex items-center space-x-3">
-                                <svg class="w-5 h-5 text-emerald-200" fill="currentColor" viewBox="0 0 20 20">
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-5 h-5 text-emerald-200 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                                 </svg>
                                 <span>Bisa wakaf anonim</span>
-                            </li>
-                        </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
