@@ -1,4 +1,4 @@
-<a href="https://wa.me/+6285259875754" target="_blank" rel="noopener noreferrer"
+<a href="https://wa.me/+6285259875754?text={{ urlencode('Assalamualaikum saya mau berwakaf') }}" target="_blank" rel="noopener noreferrer"
     class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] rounded-full shadow-lg hover:bg-[#128C7E] hover:scale-110 transition-all duration-300 group"
     title="Hubungi kami via WhatsApp">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-7 h-7">

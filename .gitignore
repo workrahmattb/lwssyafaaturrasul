@@ -24,7 +24,9 @@
 /.zed
 /auth.json
 /.claude
-/.qwen  
+/.qwen 
+/.cursor
+/.kilo
 /.env
 /.env.backup
 /.env.production
