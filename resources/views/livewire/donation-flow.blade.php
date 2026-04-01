@@ -37,6 +37,8 @@
                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">Rp</span>
                 <input
                     type="text"
+                    inputmode="numeric"
+                    pattern="[0-9.]*"
                     id="amount-input"
                     wire:model.blur="amount"
                     @input="
