@@ -10,6 +10,7 @@
 /storage/oauth-private.key
 /storage/oauth-public.key
 /vendor
+/screenshot
 /Homestead.json
 /Homestead.yaml
 /.phpunit.result.cache
@@ -22,6 +23,7 @@
 /.vscode
 /.zed
 /auth.json
+/.claude
 /.env
 /.env.backup
 /.env.production
