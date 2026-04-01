@@ -60,7 +60,7 @@
                         <span class="text-2xl">💰</span>
                     </div>
                     <p class="text-teal-100 text-sm font-medium">Total Terkumpul</p>
-                    <p class="text-2xl font-black mt-1">Rp {{ number_format($totalAmount, 0, ',', '.') }}</p>
+                    <p class="text-2xl font-black mt-1">{{ formatRupiah($totalAmount) }}</p>
                     <p class="text-teal-100 text-xs mt-2">Dari semua donasi</p>
                 </div>
 
@@ -137,7 +137,7 @@
                                     <span class="text-sm font-medium text-slate-700">Wakaf Pembangunan</span>
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-sm font-bold text-emerald-600">Rp {{ number_format($wakafPembangunanAmount, 0, ',', '.') }}</p>
+                                    <p class="text-sm font-bold text-emerald-600">{{ formatRupiah($wakafPembangunanAmount) }}</p>
                                     <p class="text-xs text-slate-400">{{ $wakafPembangunanCount }} donasi</p>
                                 </div>
                             </div>
@@ -155,7 +155,7 @@
                                     <span class="text-sm font-medium text-slate-700">Wakaf Produktif</span>
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-sm font-bold text-teal-600">Rp {{ number_format($wakafProduktifAmount, 0, ',', '.') }}</p>
+                                    <p class="text-sm font-bold text-teal-600">{{ formatRupiah($wakafProduktifAmount) }}</p>
                                     <p class="text-xs text-slate-400">{{ $wakafProduktifCount }} donasi</p>
                                 </div>
                             </div>
@@ -173,7 +173,7 @@
                                     <span class="text-sm font-medium text-slate-700">Donasi Pendidikan</span>
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-sm font-bold text-cyan-600">Rp {{ number_format($donasiPendidikanAmount, 0, ',', '.') }}</p>
+                                    <p class="text-sm font-bold text-cyan-600">{{ formatRupiah($donasiPendidikanAmount) }}</p>
                                     <p class="text-xs text-slate-400">{{ $donasiPendidikanCount }} donasi</p>
                                 </div>
                             </div>
@@ -247,7 +247,7 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <span class="font-bold text-emerald-600">Rp {{ number_format($donation->amount, 0, ',', '.') }}</span>
+                                    <span class="font-bold text-emerald-600">{{ formatRupiah($donation->amount) }}</span>
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <span class="px-3 py-1 rounded-full text-xs font-bold capitalize

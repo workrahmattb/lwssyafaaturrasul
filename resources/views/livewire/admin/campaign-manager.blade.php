@@ -116,8 +116,8 @@
 
                         {{-- Amount --}}
                         <div class="flex justify-between items-center text-xs sm:text-sm mb-3">
-                            <span class="text-slate-500 font-medium">Rp {{ number_format($campaign->raised_amount, 0, ',', '.') }}</span>
-                            <span class="text-slate-400">/ Rp {{ number_format($campaign->target_amount, 0, ',', '.') }}</span>
+                            <span class="text-slate-500 font-medium">{{ formatRupiah($campaign->raised_amount) }}</span>
+                            <span class="text-slate-400">/ {{ formatRupiah($campaign->target_amount) }}</span>
                         </div>
 
                         {{-- Donors --}}

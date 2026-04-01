@@ -209,7 +209,7 @@
             <div class="flex justify-between items-center">
                 <span class="text-sm text-slate-500 font-medium">Nominal:</span>
                 <div class="flex items-center space-x-1 sm:space-x-2">
-                    <span class="font-bold text-emerald-600 text-base">Rp {{ number_format($amount, 0, ',', '.') }}</span>
+                    <span class="font-bold text-emerald-600 text-base">{{ formatRupiah($amount) }}</span>
                     <button
                         @click="
                             navigator.clipboard.writeText('{{ $amount }}');
@@ -416,7 +416,7 @@
 
                 <div class="flex justify-between items-center">
                     <span class="text-xs sm:text-sm text-slate-500">Nominal:</span>
-                    <span class="text-lg sm:text-xl font-black text-emerald-600">Rp {{ number_format($amount, 0, ',', '.') }}</span>
+                    <span class="text-lg sm:text-xl font-black text-emerald-600">{{ formatRupiah($amount) }}</span>
                 </div>
 
                 <div class="flex justify-between items-center">
@@ -512,7 +512,7 @@
                                     @endif
                                 </span>
                             </td>
-                            <td class="p-3 text-right font-bold text-emerald-600">Rp {{ number_format($h->amount, 0, ',', '.') }}</td>
+                            <td class="p-3 text-right font-bold text-emerald-600">{{ formatRupiah($h->amount) }}</td>
                             <td class="p-3 text-right text-slate-500 text-xs">{{ $h->created_at->format('d M Y') }}</td>
                         </tr>
                         @empty

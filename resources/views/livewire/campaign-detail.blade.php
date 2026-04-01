@@ -65,8 +65,8 @@
                 {{-- Amount --}}
                 <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-4 mb-4 border border-emerald-100">
                     <div class="text-center">
-                        <p class="text-3xl font-bold text-emerald-600 mb-1">Rp {{ number_format($campaign->total_approved_amount, 0, ',', '.') }}</p>
-                        <p class="text-xs text-slate-500 font-medium">dari target Rp {{ number_format($campaign->target_amount, 0, ',', '.') }}</p>
+                        <p class="text-3xl font-bold text-emerald-600 mb-1">{{ formatRupiah($campaign->total_approved_amount) }}</p>
+                        <p class="text-xs text-slate-500 font-medium">dari target {{ formatRupiah($campaign->target_amount) }}</p>
                     </div>
                 </div>
 
@@ -126,7 +126,7 @@
                             <p class="text-xs text-slate-500">{{ $donation->created_at->diffForHumans() }}</p>
                         </div>
                     </div>
-                    <p class="font-bold text-emerald-600 text-sm">Rp {{ number_format($donation->amount, 0, ',', '.') }}</p>
+                    <p class="font-bold text-emerald-600 text-sm">{{ formatRupiah($donation->amount) }}</p>
                 </div>
                 @endforeach
             </div>

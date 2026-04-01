@@ -42,11 +42,11 @@
                 <div class="flex justify-between items-center mb-4">
                     <div>
                         <p class="text-xs text-slate-500 font-medium">Terkumpul</p>
-                        <p class="font-bold text-emerald-600">Rp {{ number_format($campaign->total_approved_amount, 0, ',', '.') }}</p>
+                        <p class="font-bold text-emerald-600">{{ formatRupiah($campaign->total_approved_amount) }}</p>
                     </div>
                     <div class="text-right">
                         <p class="text-xs text-slate-500 font-medium">Target</p>
-                        <p class="font-semibold text-slate-600">Rp {{ number_format($campaign->target_amount, 0, ',', '.') }}</p>
+                        <p class="font-semibold text-slate-600">{{ formatRupiah($campaign->target_amount) }}</p>
                     </div>
                 </div>
 

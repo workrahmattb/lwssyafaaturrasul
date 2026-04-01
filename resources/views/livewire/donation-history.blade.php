@@ -32,7 +32,7 @@
                         </span>
                     </td>
                     <td class="p-3 text-right font-bold text-emerald-600">
-                        Rp {{ number_format($h->amount, 0, ',', '.') }}
+                        {{ formatRupiah($h->amount) }}
                     </td>
                     <td class="p-3 text-right text-slate-500 text-xs hidden sm:table-cell">
                         {{ $h->created_at->format('d M Y') }}

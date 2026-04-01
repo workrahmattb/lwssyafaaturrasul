@@ -21,8 +21,7 @@
                             <td class="p-3">
                                 <p class="font-semibold text-slate-800 text-sm line-clamp-1">{{ $camp->title }}</p>
                                 <p class="text-xs text-slate-500 mt-1">
-                                    Rp {{ number_format($camp->total_approved_amount, 0, ',', '.') }} / 
-                                    Rp {{ number_format($camp->target_amount, 0, ',', '.') }}
+                                    {{ formatRupiah($camp->total_approved_amount) }} / {{ formatRupiah($camp->target_amount) }}
                                 </p>
                             </td>
                             <td class="p-3 text-right">
@@ -219,7 +218,7 @@
                     {{-- Amount --}}
                     <tr>
                         <td class="p-4 font-semibold text-slate-700">Nominal Donasi</td>
-                        <td class="p-4 font-bold text-emerald-600">Rp {{ number_format($amount, 0, ',', '.') }}</td>
+                        <td class="p-4 font-bold text-emerald-600">{{ formatRupiah($amount) }}</td>
                     </tr>
 
                     {{-- Donor Name --}}

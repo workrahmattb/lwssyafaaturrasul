@@ -92,7 +92,7 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <span class="font-bold text-emerald-600">Rp {{number_format($donation->amount, 0, ',', '.')}}</span>
+                            <span class="font-bold text-emerald-600">{{ formatRupiah($donation->amount) }}</span>
                         </td>
                         <td class="px-6 py-4 text-center">
                             @if($donation->proof_of_transfer)
@@ -255,7 +255,7 @@
                 {{-- Amount --}}
                 <div class="flex items-center justify-between bg-emerald-50 rounded-lg px-3 py-2">
                     <span class="text-xs text-slate-500">Jumlah Donasi</span>
-                    <span class="font-bold text-emerald-600 text-sm">Rp {{number_format($donation->amount, 0, ',', '.')}}</span>
+                    <span class="font-bold text-emerald-600 text-sm">{{ formatRupiah($donation->amount) }}</span>
                 </div>
 
                 {{-- Proof & Delete Actions --}}

@@ -122,7 +122,7 @@
                 </div>
                 <div class="flex justify-between">
                     <span class="text-slate-500">Nominal</span>
-                    <span class="font-bold text-emerald-600">Rp {{ number_format($amount, 0, ',', '.') }}</span>
+                    <span class="font-bold text-emerald-600">{{ formatRupiah($amount) }}</span>
                 </div>
                 <div class="flex justify-between">
                     <span class="text-slate-500">Nama Donatur</span>
