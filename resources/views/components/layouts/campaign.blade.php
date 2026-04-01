@@ -73,6 +73,7 @@
         </div>
     </footer>
 
+    <x-whatsapp-float />
     @livewireScripts
 </body>
 </html>
