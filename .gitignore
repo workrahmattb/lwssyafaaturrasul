@@ -10,7 +10,7 @@
 /storage/oauth-private.key
 /storage/oauth-public.key
 /vendor
-/screenshot
+/screenshoot
 /Homestead.json
 /Homestead.yaml
 /.phpunit.result.cache
