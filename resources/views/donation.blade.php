@@ -129,39 +129,6 @@
                         Donasi pendidikan membantu menyediakan akses pendidikan bagi mereka yang kurang mampu. Setiap kontribusi Anda membuka kesempatan bagi generasi muda untuk meraih masa depan lebih baik.
                     </p>
                 </div>
-
-                {{-- Keunggulan --}}
-                <div class="md:col-span-2 lg:col-span-3">
-                    <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl shadow-xl p-8 text-white">
-                        <h3 class="text-xl font-bold mb-4">Mengapa Wakaf di Sini?</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div class="flex items-center space-x-3">
-                                <svg class="w-5 h-5 text-emerald-200 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                </svg>
-                                <span>Transparan dan terpercaya</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <svg class="w-5 h-5 text-emerald-200 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                </svg>
-                                <span>Saluran pembayaran mudah</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <svg class="w-5 h-5 text-emerald-200 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                </svg>
-                                <span>Laporan wakaf berkala</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <svg class="w-5 h-5 text-emerald-200 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                </svg>
-                                <span>Bisa wakaf anonim</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -377,8 +344,7 @@
                 <div>
                     <h4 class="font-bold mb-4">Kontak</h4>
                     <ul class="space-y-2 text-slate-400 text-sm">
-                        <li>info@lembagawakaf.sedekah</li>
-                        <li>+62 812-3456-7890</li>
+                        <li>+62 852-6429-6227</li>
                     </ul>
                 </div>
             </div>
