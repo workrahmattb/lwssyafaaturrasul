@@ -87,6 +87,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {{-- Wakaf Pembangunan --}}
                 <div class="bg-white rounded-3xl shadow-xl p-8 border border-emerald-50 hover:shadow-2xl transition">
+                    <img src="{{ asset('lws/wakafpembangunan.webp') }}" alt="Wakaf Pembangunan" class="w-full h-64 object-cover rounded-2xl mb-5">
                     <div class="flex items-center space-x-4 mb-4">
                         <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center">
                             <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,6 +103,7 @@
 
                 {{-- Wakaf Produktif --}}
                 <div class="bg-white rounded-3xl shadow-xl p-8 border border-teal-50 hover:shadow-2xl transition">
+                    <img src="{{ asset('lws/wakafproduktif.webp') }}" alt="Wakaf Produktif" class="w-full h-64 object-cover rounded-2xl mb-5">
                     <div class="flex items-center space-x-4 mb-4">
                         <div class="w-12 h-12 bg-teal-100 rounded-2xl flex items-center justify-center">
                             <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -117,6 +119,7 @@
 
                 {{-- Donasi Pendidikan --}}
                 <div class="bg-white rounded-3xl shadow-xl p-8 border border-cyan-50 hover:shadow-2xl transition">
+                    <img src="{{ asset('lws/donasipendidikan.webp') }}" alt="Donasi Pendidikan" class="w-full h-64 object-cover rounded-2xl mb-5">
                     <div class="flex items-center space-x-4 mb-4">
                         <div class="w-12 h-12 bg-cyan-100 rounded-2xl flex items-center justify-center">
                             <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
