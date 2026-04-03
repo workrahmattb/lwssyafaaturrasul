@@ -178,7 +178,7 @@
                             <p class="text-2xl font-bold tracking-tight">{{ formatRupiah($wakafProduktifTotal) }}</p>
                         </div>
                     </div>
-                    <p class="text-teal-100 text-xs">{{ $wakafProduktifCount }} wakaf terkumpul</p>
+                    <p class="text-tear-100 text-xs">{{ $wakafProduktifCount }} wakaf terkumpul</p>
                 </div>
 
                 {{-- Donasi Pendidikan Card --}}
@@ -197,6 +197,17 @@
                     <p class="text-cyan-100 text-xs">{{ $donasiPendidikanCount }} wakaf terkumpul</p>
                 </div>
             </div>
+        </div>
+    </section>
+
+    {{-- Laporan LWS Syafa'aturrasul Button --}}
+    <section class="py-8 px-6">
+        <div class="max-w-2xl mx-auto text-center">
+            <a href="https://drive.google.com/file/d/12B8Cp6PiZ7TEkq9TuvLeZCRkUPzT6ZOJ/view?usp=sharing"
+               target="_blank"
+               class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 inline-block mt-4">
+                Laporan LWS Syafa'aturrasul
+            </a>
         </div>
     </section>
 
