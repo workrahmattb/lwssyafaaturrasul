@@ -15,6 +15,7 @@ class CampaignDonationManager extends Component
     use WithPagination, WithFileUploads;
 
     public $filter = 'pending';
+    public $search = '';
     public $selectedProof = null;
 
     protected $rules = [
@@ -24,6 +25,11 @@ class CampaignDonationManager extends Component
     public function setFilter($filter)
     {
         $this->filter = $filter;
+        $this->resetPage();
+    }
+
+    public function updatedSearch()
+    {
         $this->resetPage();
     }
 
@@ -84,6 +90,9 @@ class CampaignDonationManager extends Component
             if ($this->filter !== '') {
                 return $query->where('status', $this->filter);
             }
+        })
+        ->when($this->search, function ($query) {
+            return $query->where('donatur_name', 'like', '%' . $this->search . '%');
         })
         ->with(['campaign', 'paymentMethod'])
         ->latest()

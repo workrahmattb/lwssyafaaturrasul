@@ -14,6 +14,7 @@ class DonationManager extends Component
     use WithPagination;
 
     public $filter = 'pending';
+    public $search = '';
     public $selectedProof = null;
 
     public function approve($id)
@@ -42,10 +43,18 @@ class DonationManager extends Component
         $this->resetPage();
     }
 
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
         $donations = Donation::when($this->filter, function ($query) {
             return $query->where('status', $this->filter);
+        })
+        ->when($this->search, function ($query) {
+            return $query->where('donatur_name', 'like', '%' . $this->search . '%');
         })
         ->with('paymentMethod')
         ->latest()
