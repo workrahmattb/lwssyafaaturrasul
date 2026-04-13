@@ -66,6 +66,7 @@
                         <th class="px-6 py-3">Tipe</th>
                         <th class="px-6 py-3">Bank</th>
                         <th class="px-6 py-3 text-right">Jumlah</th>
+                        <th class="px-6 py-3">Tanggal</th>
                         <th class="px-6 py-3 text-center">Bukti</th>
                         <th class="px-6 py-3 text-center">Status</th>
                         <th class="px-6 py-3 text-center">Aksi</th>
@@ -110,6 +111,9 @@
                         </td>
                         <td class="px-6 py-4 text-right">
                             <span class="font-bold text-emerald-600">{{ formatRupiah($donation->amount) }}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-xs text-slate-500">{{ $donation->created_at->format('d/m/Y H:i') }}</span>
                         </td>
                         <td class="px-6 py-4 text-center">
                             @if($donation->proof_of_transfer)
@@ -169,7 +173,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="9" class="px-6 py-12 text-center text-slate-400">
+                        <td colspan="10" class="px-6 py-12 text-center text-slate-400">
                             <svg class="w-16 h-16 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                             </svg>
@@ -273,6 +277,14 @@
                 <div class="flex items-center justify-between bg-emerald-50 rounded-lg px-3 py-2">
                     <span class="text-xs text-slate-500">Jumlah Donasi</span>
                     <span class="font-bold text-emerald-600 text-sm">{{ formatRupiah($donation->amount) }}</span>
+                </div>
+
+                {{-- Created At --}}
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span>{{ $donation->created_at->format('d M Y, H:i') }}</span>
                 </div>
 
                 {{-- Proof & Delete Actions --}}
