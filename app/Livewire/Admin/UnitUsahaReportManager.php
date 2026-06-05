@@ -53,6 +53,7 @@ class UnitUsahaReportManager extends Component
         ]);
 
         $this->closeCreateForm();
+        $this->resetPage();
         session()->flash('success', 'Laporan Unit Usaha berhasil dibuat!');
     }
 

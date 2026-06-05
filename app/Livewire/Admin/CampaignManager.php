@@ -75,6 +75,7 @@ class CampaignManager extends Component
         ]);
 
         $this->closeCreateForm();
+        $this->resetPage();
         session()->flash('success', 'Kampanye berhasil dibuat!');
     }
 

@@ -81,7 +81,7 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @forelse($reports as $index => $report)
-                        <tr class="hover:bg-emerald-50 transition">
+                        <tr wire:key="report-{{ $report->id }}" class="hover:bg-emerald-50 transition">
                             <td class="px-6 py-4 text-center">
                                 <span class="font-bold text-slate-600">{{ $reports->firstItem() + $index }}</span>
                             </td>
@@ -139,7 +139,7 @@
             {{-- Mobile Card View --}}
             <div class="md:hidden divide-y divide-slate-100">
                 @forelse($reports as $index => $report)
-                <div class="p-4 space-y-3">
+                <div wire:key="report-mobile-{{ $report->id }}" class="p-4 space-y-3">
                     <div class="flex justify-between items-start">
                         <div>
                             <p class="font-semibold text-slate-800">{{ $report->nama }}</p>
