@@ -3,6 +3,7 @@
 use App\Livewire\DonationFlow;
 use App\Livewire\Admin\CampaignManager;
 use App\Livewire\Admin\CampaignDonationManager;
+use App\Livewire\Admin\UnitUsahaReportManager;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ExportController;
@@ -37,6 +38,9 @@ Route::get('/admin/campaign-donation', CampaignDonationManager::class)->name('ad
 
 // Admin campaigns
 Route::get('/admin/campaigns', CampaignManager::class)->name('admin.campaigns')->middleware('admin');
+
+// Admin unit usaha reports
+Route::get('/admin/unit-usaha', UnitUsahaReportManager::class)->name('admin.unit-usaha')->middleware('admin');
 
 // Export routes
 Route::get('/admin/export/donations', [ExportController::class, 'exportDonations'])->name('admin.export.donations')->middleware('admin');

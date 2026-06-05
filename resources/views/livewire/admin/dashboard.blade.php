@@ -275,15 +275,95 @@
                 </div>
             </div>
 
+            {{-- Unit Usaha Report Section --}}
+            <div class="bg-white rounded-2xl border border-emerald-50 shadow-sm overflow-hidden">
+                <div class="px-6 py-4 bg-gradient-to-r from-purple-500 to-violet-600">
+                    <h3 class="text-lg font-bold text-white flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Laporan Unit Usaha
+                    </h3>
+                </div>
+                <div class="p-6">
+                    {{-- Stats Row --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-4 border border-purple-100">
+                            <p class="text-xs text-purple-600 font-medium uppercase tracking-wider">Total Laporan</p>
+                            <p class="text-2xl font-bold text-slate-800 mt-1">{{ number_format($unitUsahaTotalReports) }}</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-4 border border-purple-100">
+                            <p class="text-xs text-purple-600 font-medium uppercase tracking-wider">Total Uang</p>
+                            <p class="text-2xl font-bold text-emerald-600 mt-1">{{ formatRupiah($unitUsahaTotalAmount) }}</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-4 border border-purple-100">
+                            <p class="text-xs text-purple-600 font-medium uppercase tracking-wider">Rata-rata / Laporan</p>
+                            <p class="text-2xl font-bold text-slate-800 mt-1">{{ $unitUsahaTotalReports > 0 ? formatRupiah($unitUsahaTotalAmount / $unitUsahaTotalReports) : 'Rp 0' }}</p>
+                        </div>
+                    </div>
+
+                    {{-- Recent Reports Table --}}
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-bold">
+                                <tr>
+                                    <th class="px-4 py-3">No</th>
+                                    <th class="px-4 py-3">Nama</th>
+                                    <th class="px-4 py-3">Tanggal</th>
+                                    <th class="px-4 py-3 text-right">Jumlah</th>
+                                    <th class="px-4 py-3">Catatan</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                @forelse($unitUsahaRecent as $index => $report)
+                                <tr class="hover:bg-purple-50 transition">
+                                    <td class="px-4 py-3 font-bold text-slate-600">{{ $index + 1 }}</td>
+                                    <td class="px-4 py-3 font-medium text-slate-800">{{ $report->nama }}</td>
+                                    <td class="px-4 py-3 text-slate-600">{{ $report->tanggal->format('d/m/Y') }}</td>
+                                    <td class="px-4 py-3 text-right font-bold text-emerald-600">{{ formatRupiah($report->jumlah_uang) }}</td>
+                                    <td class="px-4 py-3 text-slate-500 text-xs line-clamp-1 max-w-xs">{{ $report->catatan ?? '-' }}</td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="px-4 py-8 text-center text-slate-400">
+                                        <svg class="w-12 h-12 mx-auto mb-2 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                        </svg>
+                                        <p class="text-sm">Belum ada laporan unit usaha</p>
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {{-- View All Link --}}
+                    <div class="mt-4 text-right">
+                        <a href="{{ route('admin.unit-usaha') }}" wire:navigate class="inline-flex items-center text-sm font-semibold text-purple-600 hover:text-purple-700 transition">
+                            Lihat Semua Laporan
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             {{-- Quick Actions --}}
             <div class="flex flex-wrap gap-4">
-                <a href="{{ route('admin.campaigns') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition">
+                <a href="{{ route('admin.campaigns') }}" wire:navigate class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
                     Kelola Kampanye
                 </a>
-                <a href="{{ route('admin.manage') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition">
+                <a href="{{ route('admin.unit-usaha') }}" wire:navigate class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-violet-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Laporan Unit Usaha
+                </a>
+                <a href="{{ route('admin.manage') }}" wire:navigate class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                     </svg>

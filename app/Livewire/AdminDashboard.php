@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Donation;
+use App\Models\UnitUsahaReport;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
@@ -32,6 +33,11 @@ class AdminDashboard extends Component
         $donasiPendidikanAmount = Donation::where('type', 'donasi_pendidikan')->sum('amount');
         $donasiPendidikanCount = Donation::where('type', 'donasi_pendidikan')->count();
         
+        // Unit Usaha Report Stats
+        $unitUsahaTotalReports = UnitUsahaReport::count();
+        $unitUsahaTotalAmount = UnitUsahaReport::sum('jumlah_uang');
+        $unitUsahaRecent = UnitUsahaReport::latest()->take(5)->get();
+
         // Recent Donations
         $recentDonations = Donation::with('paymentMethod')
             ->latest()
@@ -65,6 +71,9 @@ class AdminDashboard extends Component
             'donasiPendidikanCount' => $donasiPendidikanCount,
             'recentDonations' => $recentDonations,
             'monthlyData' => $monthlyData,
+            'unitUsahaTotalReports' => $unitUsahaTotalReports,
+            'unitUsahaTotalAmount' => $unitUsahaTotalAmount,
+            'unitUsahaRecent' => $unitUsahaRecent,
         ]);
     }
 }
