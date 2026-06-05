@@ -24,6 +24,16 @@
                     </svg>
                     Tambah Laporan
                 </button>
+
+                <a href="{{ route('admin.export.unit-usaha') }}"
+                   class="inline-flex items-center px-3 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition shadow-lg bg-emerald-500/50 text-white hover:bg-emerald-400 whitespace-nowrap"
+                >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    <span class="hidden sm:inline">Export Excel</span>
+                    <span class="sm:hidden">Export</span>
+                </a>
             </div>
         </div>
 

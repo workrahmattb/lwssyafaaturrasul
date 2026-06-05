@@ -36,7 +36,7 @@ class AdminDashboard extends Component
         // Unit Usaha Report Stats
         $unitUsahaTotalReports = UnitUsahaReport::count();
         $unitUsahaTotalAmount = UnitUsahaReport::sum('jumlah_uang');
-        $unitUsahaRecent = UnitUsahaReport::latest()->take(5)->get();
+        $unitUsahaRecent = UnitUsahaReport::orderBy('tanggal', 'desc')->orderBy('id', 'desc')->take(5)->get();
 
         // Recent Donations
         $recentDonations = Donation::with('paymentMethod')

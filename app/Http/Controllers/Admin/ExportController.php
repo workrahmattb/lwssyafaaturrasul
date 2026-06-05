@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\CampaignDonation;
 use App\Models\Donation;
+use App\Models\UnitUsahaReport;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -41,6 +42,52 @@ class ExportController extends Controller
         $spreadsheet = $this->buildCampaignDonationSpreadsheet($donations);
 
         return $this->download($spreadsheet, 'donasi-kampanye-' . now()->format('Y-m-d-His'));
+    }
+
+    public function exportUnitUsaha()
+    {
+        $reports = UnitUsahaReport::orderBy('tanggal', 'desc')->orderBy('id', 'desc')->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Header style
+        $headerStyle = [
+            'font' => ['bold' => true, 'color' => ['argb' => Color::COLOR_WHITE]],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['argb' => 'FF10B981'],
+            ],
+        ];
+
+        $headers = ['No', 'Nama', 'Tanggal', 'Jumlah Uang', 'Catatan'];
+        $col = 'A';
+        foreach ($headers as $header) {
+            $sheet->setCellValue($col . '1', $header);
+            $col++;
+        }
+
+        $sheet->getStyle('A1:' . $this->colLetter(count($headers)) . '1')->applyFromArray($headerStyle);
+
+        foreach ($reports as $index => $report) {
+            $row = $index + 2;
+
+            $sheet->setCellValue('A' . $row, $index + 1);
+            $sheet->setCellValue('B' . $row, $report->nama);
+            $sheet->setCellValue('C' . $row, $report->tanggal->format('d/m/Y'));
+            $sheet->setCellValue('D' . $row, (int) $report->jumlah_uang);
+            $sheet->setCellValue('E' . $row, $report->catatan ?? '-');
+
+            $sheet->getStyle('D' . $row)->getNumberFormat()->setFormatCode('#,##0');
+        }
+
+        foreach (range('A', $this->colLetter(count($headers))) as $letter) {
+            $sheet->getColumnDimension($letter)->setAutoSize(true);
+        }
+
+        $sheet->getRowDimension(1)->setRowHeight(20);
+
+        return $this->download($spreadsheet, 'laporan-unit-usaha-' . now()->format('Y-m-d-His'));
     }
 
     protected function buildDonationSpreadsheet($donations)

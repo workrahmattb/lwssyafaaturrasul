@@ -45,3 +45,4 @@ Route::get('/admin/unit-usaha', UnitUsahaReportManager::class)->name('admin.unit
 // Export routes
 Route::get('/admin/export/donations', [ExportController::class, 'exportDonations'])->name('admin.export.donations')->middleware('admin');
 Route::get('/admin/export/campaign-donations', [ExportController::class, 'exportCampaignDonations'])->name('admin.export.campaign-donations')->middleware('admin');
+Route::get('/admin/export/unit-usaha', [ExportController::class, 'exportUnitUsaha'])->name('admin.export.unit-usaha')->middleware('admin');
