@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create Admin User
+        $this->call(AdminUserSeeder::class);
+
         // Create Payment Methods
         $banks = [
             ['bank_name' => 'BSI', 'account_number' => '7123456789', 'account_name' => 'Lembaga Wakaf Sedekah'],

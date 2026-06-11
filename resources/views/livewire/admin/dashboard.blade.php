@@ -46,7 +46,22 @@
                     </div>
                     <p class="text-emerald-100 text-sm font-medium">Total Donasi</p>
                     <p class="text-3xl font-black mt-1">{{ number_format($totalDonations) }}</p>
-                    <p class="text-emerald-100 text-xs mt-2">Semua waktu</p>
+                    <p class="text-emerald-100 text-xs mt-2">Donasi umum</p>
+                </div>
+
+                {{-- Total Campaign Donations --}}
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </div>
+                        <span class="text-2xl">📋</span>
+                    </div>
+                    <p class="text-blue-100 text-sm font-medium">Donasi Kampanye</p>
+                    <p class="text-3xl font-black mt-1">{{ number_format($totalCampaignDonations) }}</p>
+                    <p class="text-blue-100 text-xs mt-2">{{ formatRupiah($totalCampaignAmount) }}</p>
                 </div>
 
                 {{-- Total Amount --}}
@@ -61,22 +76,7 @@
                     </div>
                     <p class="text-teal-100 text-sm font-medium">Total Terkumpul</p>
                     <p class="text-2xl font-black mt-1">{{ formatRupiah($totalAmount) }}</p>
-                    <p class="text-teal-100 text-xs mt-2">Dari semua donasi</p>
-                </div>
-
-                {{-- Pending --}}
-                <div class="bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl p-6 text-white shadow-lg">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                        </div>
-                        <span class="text-2xl">⏳</span>
-                    </div>
-                    <p class="text-amber-100 text-sm font-medium">Menunggu Verifikasi</p>
-                    <p class="text-3xl font-black mt-1">{{ number_format($pendingCount) }}</p>
-                    <p class="text-amber-100 text-xs mt-2">Perlu ditinjau</p>
+                    <p class="text-teal-100 text-xs mt-2">Donasi umum + kampanye</p>
                 </div>
 
                 {{-- Approved --}}
@@ -91,44 +91,78 @@
                     </div>
                     <p class="text-cyan-100 text-sm font-medium">Disetujui</p>
                     <p class="text-3xl font-black mt-1">{{ number_format($approvedCount) }}</p>
-                    <p class="text-cyan-100 text-xs mt-2">Donasi diverifikasi</p>
+                    <p class="text-cyan-100 text-xs mt-2">{{ number_format($pendingCount) }} menunggu verifikasi</p>
                 </div>
             </div>
 
-            {{-- Charts Section --}}
+            {{-- Charts Section - Row 1: Monthly & Yearly --}}
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {{-- Monthly Trend Chart --}}
+                {{-- Monthly Trend Chart (Chart.js) --}}
                 <div class="bg-white rounded-2xl p-6 border border-emerald-50 shadow-sm">
-                    <h3 class="text-lg font-bold text-emerald-800 mb-4 flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-                        </svg>
-                        Tren Donasi (6 Bulan)
-                    </h3>
-                    <div class="h-64 flex items-end justify-between space-x-2">
-                        @foreach($monthlyData as $data)
-                        @php
-                            $maxAmount = collect($monthlyData)->max('amount');
-                            $height = $maxAmount > 0 ? ($data['amount'] / $maxAmount) * 100 : 0;
-                        @endphp
-                        <div class="flex-1 flex flex-col items-center">
-                            <div class="w-full bg-gradient-to-t from-emerald-500 to-teal-400 rounded-t-lg transition-all duration-500" style="height: {{ max($height, 5) }}%"></div>
-                            <p class="text-xs text-slate-500 font-medium mt-2">{{ $data['month'] }}</p>
-                            <p class="text-[10px] text-slate-400">Rp {{ number_format($data['amount']/1000, 0) }}k</p>
-                        </div>
-                        @endforeach
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-emerald-800 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                            Tren Donasi Perbulan
+                        </h3>
+                        <span class="text-xs text-slate-400 font-medium">12 bulan terakhir</span>
+                    </div>
+                    <div class="h-72 relative">
+                        <canvas
+                            x-init='initMonthlyChart($el, @json($monthlyLabels), @json($monthlyAmounts), @json($monthlyCampaignAmounts))'
+                            class="w-full h-full">
+                        </canvas>
                     </div>
                 </div>
 
-                {{-- Donation by Type --}}
+                {{-- Yearly Trend Chart (Chart.js) --}}
+                <div class="bg-white rounded-2xl p-6 border border-emerald-50 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-emerald-800 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            Tren Donasi Pertahun
+                        </h3>
+                        <span class="text-xs text-slate-400 font-medium">5 tahun terakhir</span>
+                    </div>
+                    <div class="h-72 relative">
+                        <canvas
+                            x-init='initYearlyChart($el, @json($yearlyLabels), @json($yearlyAmounts), @json($yearlyCampaignAmounts))'
+                            class="w-full h-full">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Charts Section - Row 2: Category Pie + Stats --}}
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {{-- Category Doughnut Chart --}}
                 <div class="bg-white rounded-2xl p-6 border border-emerald-50 shadow-sm">
                     <h3 class="text-lg font-bold text-emerald-800 mb-4 flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
                         </svg>
-                        Donasi per Kategori
+                        Komposisi per Kategori
                     </h3>
-                    <div class="space-y-4">
+                    <div class="h-64 relative">
+                        <canvas
+                            x-init='initCategoryChart($el, @json($categoryLabels), @json($categoryAmounts), @json($categoryColors))'
+                            class="w-full h-full">
+                        </canvas>
+                    </div>
+                </div>
+
+                {{-- Category Breakdown (Progress Bars) - spans 2 cols --}}
+                <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-emerald-50 shadow-sm">
+                    <h3 class="text-lg font-bold text-emerald-800 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
+                        </svg>
+                        Rincian per Kategori
+                    </h3>
+                    <div class="space-y-6">
                         {{-- Wakaf Pembangunan --}}
                         <div>
                             <div class="flex justify-between items-center mb-2">
@@ -141,10 +175,11 @@
                                     <p class="text-xs text-slate-400">{{ $wakafPembangunanCount }} donasi</p>
                                 </div>
                             </div>
-                            <div class="w-full bg-slate-100 rounded-full h-2">
+                            <div class="w-full bg-slate-100 rounded-full h-2.5">
                                 @php $wakafPembangunanPercent = $totalAmount > 0 ? ($wakafPembangunanAmount / $totalAmount) * 100 : 0; @endphp
-                                <div class="bg-emerald-500 h-2 rounded-full transition-all duration-500" style="width: {{ $wakafPembangunanPercent }}%"></div>
+                                <div class="bg-emerald-500 h-2.5 rounded-full transition-all duration-700" style="width: {{ $wakafPembangunanPercent }}%"></div>
                             </div>
+                            <p class="text-xs text-slate-400 mt-1">{{ number_format($wakafPembangunanPercent, 1) }}% dari total</p>
                         </div>
 
                         {{-- Wakaf Produktif --}}
@@ -159,10 +194,11 @@
                                     <p class="text-xs text-slate-400">{{ $wakafProduktifCount }} donasi</p>
                                 </div>
                             </div>
-                            <div class="w-full bg-slate-100 rounded-full h-2">
+                            <div class="w-full bg-slate-100 rounded-full h-2.5">
                                 @php $wakafProduktifPercent = $totalAmount > 0 ? ($wakafProduktifAmount / $totalAmount) * 100 : 0; @endphp
-                                <div class="bg-teal-500 h-2 rounded-full transition-all duration-500" style="width: {{ $wakafProduktifPercent }}%"></div>
+                                <div class="bg-teal-500 h-2.5 rounded-full transition-all duration-700" style="width: {{ $wakafProduktifPercent }}%"></div>
                             </div>
+                            <p class="text-xs text-slate-400 mt-1">{{ number_format($wakafProduktifPercent, 1) }}% dari total</p>
                         </div>
 
                         {{-- Donasi Pendidikan --}}
@@ -177,9 +213,18 @@
                                     <p class="text-xs text-slate-400">{{ $donasiPendidikanCount }} donasi</p>
                                 </div>
                             </div>
-                            <div class="w-full bg-slate-100 rounded-full h-2">
+                            <div class="w-full bg-slate-100 rounded-full h-2.5">
                                 @php $donasiPendidikanPercent = $totalAmount > 0 ? ($donasiPendidikanAmount / $totalAmount) * 100 : 0; @endphp
-                                <div class="bg-cyan-500 h-2 rounded-full transition-all duration-500" style="width: {{ $donasiPendidikanPercent }}%"></div>
+                                <div class="bg-cyan-500 h-2.5 rounded-full transition-all duration-700" style="width: {{ $donasiPendidikanPercent }}%"></div>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">{{ number_format($donasiPendidikanPercent, 1) }}% dari total</p>
+                        </div>
+
+                        {{-- Total Keseluruhan --}}
+                        <div class="pt-4 border-t border-slate-100">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-bold text-slate-800">Total Keseluruhan</span>
+                                <span class="text-sm font-bold text-emerald-600">{{ formatRupiah($totalAmount) }}</span>
                             </div>
                         </div>
                     </div>

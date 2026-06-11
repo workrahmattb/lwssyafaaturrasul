@@ -3,7 +3,6 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Donation;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\WithPagination;
@@ -20,15 +19,13 @@ class DonationManager extends Component
     public function approve($id)
     {
         Donation::findOrFail($id)->update(['status' => 'approved']);
-
-        return redirect()->to('/admin/manage');
+        session()->flash('success', 'Donasi berhasil di-approve!');
     }
 
     public function reject($id)
     {
         Donation::findOrFail($id)->update(['status' => 'rejected']);
-
-        return redirect()->to('/admin/manage');
+        session()->flash('success', 'Donasi berhasil di-reject!');
     }
 
     public function delete($id)

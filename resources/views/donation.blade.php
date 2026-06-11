@@ -139,15 +139,6 @@
     {{-- Stats Cards --}}
     <section class="py-8 px-6">
         <div class="max-w-5xl mx-auto">
-            @php
-                $approvedDonations = \App\Models\Donation::where('status', 'approved');
-                $wakafPembangunanTotal = $approvedDonations->clone()->where('type', 'wakaf_pembangunan')->sum('amount');
-                $wakafPembangunanCount = $approvedDonations->clone()->where('type', 'wakaf_pembangunan')->count();
-                $wakafProduktifTotal = $approvedDonations->clone()->where('type', 'wakaf_produktif')->sum('amount');
-                $wakafProduktifCount = $approvedDonations->clone()->where('type', 'wakaf_produktif')->count();
-                $donasiPendidikanTotal = $approvedDonations->clone()->where('type', 'donasi_pendidikan')->sum('amount');
-                $donasiPendidikanCount = $approvedDonations->clone()->where('type', 'donasi_pendidikan')->count();
-            @endphp
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {{-- Wakaf Pembangunan Card --}}
                 <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-3xl p-6 text-white shadow-xl">
@@ -178,7 +169,7 @@
                             <p class="text-2xl font-bold tracking-tight">{{ formatRupiah($wakafProduktifTotal) }}</p>
                         </div>
                     </div>
-                    <p class="text-tear-100 text-xs">{{ $wakafProduktifCount }} wakaf terkumpul</p>
+                    <p class="text-teal-100 text-xs">{{ $wakafProduktifCount }} wakaf terkumpul</p>
                 </div>
 
                 {{-- Donasi Pendidikan Card --}}
@@ -227,17 +218,6 @@
             </div>
 
             {{-- Campaigns Grid --}}
-            @php
-                $featuredCampaigns = \App\Models\Campaign::where('status', 'active')
-                    ->where(function($q) {
-                        $q->whereNull('end_date')
-                          ->orWhere('end_date', '>=', now());
-                    })
-                    ->orderBy('is_featured', 'desc')
-                    ->orderBy('created_at', 'desc')
-                    ->take(3)
-                    ->get();
-            @endphp
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse($featuredCampaigns as $campaign)
