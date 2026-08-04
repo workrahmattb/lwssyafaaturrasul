@@ -243,9 +243,15 @@
                         <div class="relative">
                             <span class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold text-sm">Rp</span>
                             <input
-                                type="number"
-                                wire:model="jumlah_uang"
-                                min="0"
+                                type="text"
+                                inputmode="numeric"
+                                wire:model.blur="jumlah_uang"
+                                @input="
+                                    let value = $event.target.value.replace(/[^0-9]/g, '');
+                                    $event.target.value = value ? new Intl.NumberFormat('id-ID').format(value) : '';
+                                "
+                                @focus="$event.target.value = $event.target.value.replace(/\./g, '')"
+                                @blur="$event.target.value = $event.target.value ? new Intl.NumberFormat('id-ID').format($event.target.value.replace(/\./g, '')) : ''"
                                 placeholder="0"
                                 class="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-0 text-sm sm:text-base"
                             >
@@ -324,9 +330,15 @@
                         <div class="relative">
                             <span class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold text-sm">Rp</span>
                             <input
-                                type="number"
-                                wire:model="jumlah_uang"
-                                min="0"
+                                type="text"
+                                inputmode="numeric"
+                                wire:model.blur="jumlah_uang"
+                                @input="
+                                    let value = $event.target.value.replace(/[^0-9]/g, '');
+                                    $event.target.value = value ? new Intl.NumberFormat('id-ID').format(value) : '';
+                                "
+                                @focus="$event.target.value = $event.target.value.replace(/\./g, '')"
+                                @blur="$event.target.value = $event.target.value ? new Intl.NumberFormat('id-ID').format($event.target.value.replace(/\./g, '')) : ''"
                                 placeholder="0"
                                 class="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-0 text-sm sm:text-base"
                             >
@@ -363,7 +375,8 @@
 
     {{-- Success Toast --}}
     @if(session()->has('success'))
-    <div class="fixed bottom-4 right-4 bg-emerald-600 text-white px-4 sm:px-6 py-3 rounded-xl shadow-lg flex items-center space-x-2 animate-bounce max-w-[calc(100vw-2rem)] z-50">
+    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)"
+         class="fixed bottom-4 right-4 bg-emerald-600 text-white px-4 sm:px-6 py-3 rounded-xl shadow-lg flex items-center space-x-2 max-w-[calc(100vw-2rem)] z-50">
         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
         </svg>

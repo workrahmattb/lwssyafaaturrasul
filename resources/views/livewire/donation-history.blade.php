@@ -8,7 +8,7 @@
                     <th class="p-3 text-left whitespace-nowrap">Donatur</th>
                     <th class="p-3 text-left whitespace-nowrap">Tipe</th>
                     <th class="p-3 text-right whitespace-nowrap">Jumlah</th>
-                    <th class="p-3 text-right whitespace-nowrap hidden sm:table-cell">Tanggal</th>
+                    <th class="p-3 text-right whitespace-nowrap">Tanggal</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-emerald-50">
@@ -34,7 +34,7 @@
                     <td class="p-3 text-right font-bold text-emerald-600">
                         {{ formatRupiah($h->amount) }}
                     </td>
-                    <td class="p-3 text-right text-slate-500 text-xs hidden sm:table-cell">
+                    <td class="p-3 text-right text-slate-500 text-xs">
                         {{ $h->created_at->format('d M Y') }}
                     </td>
                 </tr>

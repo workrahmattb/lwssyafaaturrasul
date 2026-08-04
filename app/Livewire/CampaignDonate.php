@@ -66,46 +66,29 @@ class CampaignDonate extends Component
         if ($value) {
             $this->donatur_name = '';
         }
-        \Log::info('is_anonymous updated to: ' . ($value ? 'true' : 'false'));
     }
 
     public function updatedPaymentMethodId($value)
     {
-        \Log::info('payment_method_id updated to: ' . $value);
+        // No action needed
     }
 
     public function updatedProofOfTransfer($value)
     {
-        \Log::info('updatedProofOfTransfer called', ['value' => $value, 'type' => gettype($value)]);
-
         if (!$value) {
             return;
         }
 
-        try {
-            $this->validate([
-                'proof_of_transfer' => 'mimes:jpeg,jpg,png,pdf|max:2048',
-            ], [
-                'proof_of_transfer.mimes' => 'File harus berupa gambar (JPG, PNG) atau PDF',
-                'proof_of_transfer.max' => 'Ukuran file maksimal 2MB',
-            ]);
-            \Log::info('proof_of_transfer validation passed');
-        } catch (\Exception $e) {
-            \Log::error('proof_of_transfer validation failed: ' . $e->getMessage());
-            throw $e;
-        }
+        $this->validate([
+            'proof_of_transfer' => 'mimes:jpeg,jpg,png,pdf|max:2048',
+        ], [
+            'proof_of_transfer.mimes' => 'File harus berupa gambar (JPG, PNG) atau PDF',
+            'proof_of_transfer.max' => 'Ukuran file maksimal 2MB',
+        ]);
     }
 
     public function goToStep2()
     {
-        \Log::info('goToStep2 called', [
-            'amount' => $this->amount,
-            'phone' => $this->phone,
-            'payment_method_id' => $this->payment_method_id,
-            'is_anonymous' => $this->is_anonymous,
-            'donatur_name' => $this->donatur_name,
-        ]);
-
         $this->amount = preg_replace('/[^0-9]/', '', $this->amount);
         $this->amount = ltrim($this->amount, '0');
 
@@ -133,8 +116,6 @@ class CampaignDonate extends Component
 
         $this->step = 2;
         $this->trx_id = 'TRX-' . strtoupper(Str::random(8));
-
-        \Log::info('goToStep2 success, step changed to 2');
     }
 
     public function backToStep1()
@@ -144,12 +125,6 @@ class CampaignDonate extends Component
 
     public function submitDonation()
     {
-        \Log::info('submitDonation called', [
-            'proof_of_transfer' => $this->proof_of_transfer,
-            'type' => gettype($this->proof_of_transfer),
-            'campaignId' => $this->campaignId,
-        ]);
-
         $this->amount = preg_replace('/[^0-9]/', '', $this->amount);
         $this->amount = ltrim($this->amount, '0');
 
@@ -179,15 +154,7 @@ class CampaignDonate extends Component
             'donatur_name.min' => 'Nama minimal 3 karakter',
         ]);
 
-        \Log::info('submitDonation validation passed');
-
-        try {
-            $proofPath = $this->proof_of_transfer->store('campaign-proof', 'public');
-            \Log::info('File stored at: ' . $proofPath);
-        } catch (\Exception $e) {
-            \Log::error('File upload failed: ' . $e->getMessage());
-            throw $e;
-        }
+        $proofPath = $this->proof_of_transfer->store('campaign-proof', 'public');
 
         $donation = CampaignDonation::create([
             'trx_id' => $this->trx_id,
@@ -200,8 +167,6 @@ class CampaignDonate extends Component
             'is_anonymous' => $this->is_anonymous,
             'phone' => $this->phone,
         ]);
-
-        \Log::info('Donation created successfully with pending status');
 
         // Send email notification to admin
         try {

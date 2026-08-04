@@ -110,7 +110,7 @@
                     </div>
                     <div class="h-72 relative">
                         <canvas
-                            x-init='initMonthlyChart($el, @json($monthlyLabels), @json($monthlyAmounts), @json($monthlyCampaignAmounts))'
+                            x-init='initMonthlyChart($el, @json($monthlyLabels), @json($monthlyWakafPembangunanAmounts), @json($monthlyWakafProduktifAmounts), @json($monthlyDonasiPendidikanAmounts))'
                             class="w-full h-full">
                         </canvas>
                     </div>
@@ -129,7 +129,7 @@
                     </div>
                     <div class="h-72 relative">
                         <canvas
-                            x-init='initYearlyChart($el, @json($yearlyLabels), @json($yearlyAmounts), @json($yearlyCampaignAmounts))'
+                            x-init='initYearlyChart($el, @json($yearlyLabels), @json($yearlyWakafPembangunanAmounts), @json($yearlyWakafProduktifAmounts), @json($yearlyDonasiPendidikanAmounts))'
                             class="w-full h-full">
                         </canvas>
                     </div>
@@ -344,6 +344,47 @@
                         <div class="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-4 border border-purple-100">
                             <p class="text-xs text-purple-600 font-medium uppercase tracking-wider">Rata-rata / Laporan</p>
                             <p class="text-2xl font-bold text-slate-800 mt-1">{{ $unitUsahaTotalReports > 0 ? formatRupiah($unitUsahaTotalAmount / $unitUsahaTotalReports) : 'Rp 0' }}</p>
+                        </div>
+                    </div>
+
+                    {{-- Unit Usaha Charts --}}
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        {{-- Monthly Trend Chart --}}
+                        <div class="bg-white rounded-2xl p-5 border border-purple-100 shadow-sm">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-sm font-bold text-purple-800 flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                    </svg>
+                                    Tren Pemasukan Perbulan
+                                </h4>
+                                <span class="text-xs text-slate-400 font-medium">12 bulan terakhir</span>
+                            </div>
+                            <div class="h-64 relative">
+                                <canvas
+                                    x-init='initUnitUsahaMonthlyChart($el, @json($unitUsahaMonthlyLabels), @json($unitUsahaMonthlyAmounts))'
+                                    class="w-full h-full">
+                                </canvas>
+                            </div>
+                        </div>
+
+                        {{-- Per Unit Doughnut Chart --}}
+                        <div class="bg-white rounded-2xl p-5 border border-purple-100 shadow-sm">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-sm font-bold text-purple-800 flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
+                                    </svg>
+                                    Komposisi per Unit Usaha
+                                </h4>
+                                <span class="text-xs text-slate-400 font-medium">Berdasarkan total</span>
+                            </div>
+                            <div class="h-64 relative">
+                                <canvas
+                                    x-init='initUnitUsahaUnitChart($el, @json($unitUsahaUnitLabels), @json($unitUsahaUnitAmounts), @json($unitUsahaUnitColors))'
+                                    class="w-full h-full">
+                                </canvas>
+                            </div>
                         </div>
                     </div>
 

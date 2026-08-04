@@ -192,7 +192,7 @@
 - View form: `resources/views/livewire/campaign-donate-form.blade.php` (3-step content)
 - Fitur: `WithFileUploads`, validasi, notifikasi email
 
-> **Catatan**: Ada 3 komponen serupa yang dibuat. `CampaignDonate` adalah yang aktif dipakai di routes. `CampaignDonationForm` sudah dihapus karena tidak dipakai. `CampaignDonationFlow` masih ada tapi tidak dipakai di route manapun.
+> **Catatan**: `CampaignDonate` adalah satu-satunya komponen aktif untuk donasi kampanye. Komponen duplikat (`CampaignDonationForm`, `CampaignDonationFlow`) sudah dihapus.
 
 ---
 
@@ -211,10 +211,15 @@
 
 ### Dashboard (`/admin/donations`)
 - **4 Kartu Statistik**: Total Donasi, Total Terkumpul, Menunggu Verifikasi, Disetujui
-- **Grafik Tren Donasi** (6 bulan, bar chart CSS)
-- **Donasi per Kategori** (progress bar: Wakaf Pembangunan, Produktif, Pendidikan)
+- **Grafik Tren Donasi Perbulan** (12 bulan, bar chart Chart.js) — dipecah per **tipe donasi**: Wakaf Pembangunan, Wakaf Produktif, Donasi Pendidikan
+- **Grafik Tren Donasi Pertahun** (5 tahun, bar chart Chart.js) — dipecah per tipe donasi
+- **Donasi per Kategori** (progress bar: Wakaf Pembangunan, Produktif, Pendidikan + doughnut komposisi)
 - **Donasi Terbaru** (tabel 5 data terakhir)
-- **Laporan Unit Usaha** (total laporan, total uang, rata-rata, 5 terbaru)
+- **Laporan Unit Usaha**:
+  - 4 kartu statistik (total laporan, total uang, rata-rata, jumlah unit)
+  - **Grafik Tren Pemasukan Perbulan** (bar chart, Chart.js) — sum `jumlah_uang` per bulan dari semua laporan
+  - **Grafik Komposisi per Unit Usaha** (doughnut chart, Chart.js) — sum per `nama` unit usaha
+  - 5 laporan terbaru
 - **Quick Actions**: Kelola Kampanye, Laporan Unit Usaha, Kelola Donasi, Lihat Halaman Donasi
 
 ### Kelola Donasi Umum (`/admin/manage`)
@@ -243,6 +248,7 @@
 - **3 Kartu Statistik**: Total Laporan, Total Uang, Rata-rata
 - Tabel desktop + card mobile
 - **Tambah Laporan** (modal): Nama, Tanggal, Jumlah Uang, Catatan
+- **Input Jumlah Uang** berformat ribuan otomatis (`1.500.000`) — pola sama dengan form donasi, di-cleanup via `updatedJumlahUang()` + `preg_replace` sebelum simpan
 - **Edit** + **Delete** dengan konfirmasi
 - Pagination (15 per page)
 - SPA navigation dengan `wire:navigate`
@@ -269,7 +275,7 @@
 | `CampaignDetail.php` | Detail kampanye + donatur terbaru |
 | `CampaignDonate.php` | Form donasi kampanye 3-step |
 | `DonationHistory.php` | Riwayat donasi (pagination) dengan scroll event |
-| `AdminLogin.php` | Login admin (Livewire version) |
+| ~~`AdminLogin.php`~~ | **SUDAH DIHAPUS** — login admin via AuthController |
 | `AdminDashboard.php` | Dashboard admin + statistik |
 | `Admin/CampaignManager.php` | CRUD kampanye |
 | `Admin/DonationManager.php` | CRUD donasi umum |
@@ -281,7 +287,7 @@
 |---|---|
 | `AuthController.php` | Login/logout admin (non-Livewire) |
 | `DashboardController.php` | Dashboard wrapper views |
-| `ExportController.php` | Export Excel donasi + campaign donasi |
+| `ExportController.php` | Export Excel donasi + campaign donasi + unit usaha |
 
 ### Views (`resources/views/`)
 | Folder | Keterangan |
@@ -307,6 +313,7 @@
 - `@focus` → hapus titik untuk editing
 - `@blur` → format ulang
 - Di backend: `preg_replace('/[^0-9]/', '', $value)` untuk cleanup
+- Dipakai di: form donasi umum, form donasi kampanye, form laporan unit usaha (create + edit)
 
 ### Validasi Per-Step
 - Step 1: type, amount, phone, payment_method_id, donatur_name (jika tidak anonim)
@@ -337,7 +344,7 @@
   - `total_approved_amount` → sum amount dari donations approved
   - `total_approved_donors` → count donations approved
   - `progress` → (total_approved_amount / target_amount) * 100, max 100%
-- **PENTING**: Perhitungan progress menggunakan approved donations, bukan raised_amount (yang bisa ganda jika `CampaignDonationFlow.submitDonation()` dipanggil langsung di admin).
+- **FIXED**: Perhitungan progress 100% menggunakan `total_approved_amount` (computed accessor dari database). Kolom `raised_amount` dan `donor_count` sudah **tidak digunakan lagi** untuk menghindari double counting.
 
 ### Soft Delete / Hard Delete
 - Semua delete adalah hard delete (force delete)
@@ -374,14 +381,27 @@
 
 ## 🧪 Catatan & Edge Cases
 
-### Duplikasi Komponen
-- ~~`CampaignDonationForm`~~ — **SUDAH DIHAPUS** (tidak dipakai)
-- `CampaignDonationFlow` — Masih ada tapi tidak dipakai di route manapun. View `admin/campaign-donation.blade.php` juga tidak dipakai.
-- `CampaignDonate` — Satu-satunya yang aktif untuk donasi kampanye via publik.
+### 🧹 Cleanup — Dead Code Dihapus
+- ~~`CampaignDonationForm`~~ — **SUDAH DIHAPUS**
+- ~~`CampaignDonationFlow`~~ — **SUDAH DIHAPUS**
+- ~~`AdminLogin`~~ — **SUDAH DIHAPUS** (login via AuthController)
+- ~~`CampaignController`~~ — **SUDAH DIHAPUS** (semua route pakai Livewire)
+- ~~`campaign-success.blade.php`~~ — **SUDAH DIHAPUS** (hanya dipanggil CampaignController)
+- ~~`admin-login.blade.php`~~ — **SUDAH DIHAPUS** (Livewire login tidak dipakai)
+- ~~`admin/donations.blade.php`~~ — **SUDAH DIHAPUS** (digantikan dashboard-wrapper)
 
-### Bug Potensial
-- `CampaignDonationFlow.submitDonation()` langsung `increment('raised_amount')` saat donasi dibuat (status pending) — padahal `CampaignDonationManager.approve()` juga increment. Bisa **double counting**.
-- `AdminLogin` Livewire component & `AuthController` — duplikasi logika login (keduanya berfungsi, admin login via controller biasa, bukan Livewire).
+### ✅ Bug — Fixed
+- ~~Double counting campaign~~ — **FIXED**: increment/decrement `raised_amount` dan `donor_count` di `CampaignDonationManager` dihapus. Perhitungan sepenuhnya via computed accessor.
+- ~~Debug logging~~ — **FIXED**: Semua `\Log::info()` di `CampaignDonate.php` dihapus.
+- ~~Halaman depan error~~ — **FIXED**: Variable statistik (`$wakafPembangunanTotal`, `$featuredCampaigns`, dll) dikirim dari `DonationFlow::render()` ke layout.
+- ~~Edit unit usaha "tidak bisa"~~ — **FIXED**: Penyebabnya file `public/hot` **stale** (artefak `npm run dev` yang masih menunjuk ke Vite dev server `:5173` yang mati) → semua CSS/JS gagal load → UI tampil rusak sehingga seolah tidak bisa diedit. Solusi: hapus `public/hot` + `npm run build`. Backend edit sebenarnya selalu benar (dibuktikan test + browser).
+- ~~Toast sukses unit usaha menutupi tombol~~ — **FIXED**: Toast `fixed bottom-4 right-4 z-50` di unit-usaha tidak punya auto-dismiss dan bisa menutupi tombol Edit/Hapus → tambah `x-data` + `x-init="setTimeout(() => show = false, 3000)"` (konsisten dengan campaign-manager).
+
+### 🧪 Testing
+- `tests/Feature/UnitUsahaReportManagerTest.php` — regression test alur **create → edit → update** laporan unit usaha, termasuk input format ribuan (`1.500.000` tersimpan benar sebagai `1500000`).
+  ```bash
+  php artisan test --filter=UnitUsahaReportManagerTest
+  ```
 
 ### Keamanan
 - Admin middleware hanya cek `is_admin` boolean
@@ -433,3 +453,8 @@ npm run dev
 # Build production
 npm run build
 ```
+
+> ⚠️ **PENTING — `public/hot` stale**: Jika Vite dev server dimatikan, pastikan file `public/hot` **tidak ada**. File stale ini membuat semua halaman load asset dari `http://[::1]:5173` yang mati → CSS/JS gagal → UI rusak (gejala: admin seolah "tidak bisa edit").
+> - File ada di `.gitignore` (aman, tidak ter-commit)
+> - Cek: `ls public/hot` — hapus jika ada saat dev server mati
+> - Setelah `npm run build`, halaman memakai asset statis dari `/build/assets/`

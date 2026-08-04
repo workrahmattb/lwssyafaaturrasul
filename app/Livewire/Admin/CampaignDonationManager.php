@@ -3,7 +3,6 @@
 namespace App\Livewire\Admin;
 
 use App\Models\CampaignDonation;
-use App\Models\Campaign;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\WithPagination;
@@ -38,29 +37,12 @@ class CampaignDonationManager extends Component
         $donation = CampaignDonation::findOrFail($id);
         $donation->update(['status' => 'approved']);
 
-        // Update campaign raised amount
-        $campaign = $donation->campaign;
-        if ($campaign) {
-            $campaign->increment('raised_amount', $donation->amount);
-            $campaign->increment('donor_count');
-        }
-
         session()->flash('success', 'Donasi berhasil di-approve!');
     }
 
     public function reject($id)
     {
         $donation = CampaignDonation::findOrFail($id);
-        
-        // If was approved, subtract from campaign
-        if ($donation->status === 'approved') {
-            $campaign = $donation->campaign;
-            if ($campaign) {
-                $campaign->decrement('raised_amount', $donation->amount);
-                $campaign->decrement('donor_count');
-            }
-        }
-        
         $donation->update(['status' => 'rejected']);
 
         session()->flash('success', 'Donasi berhasil di-reject!');
@@ -69,16 +51,6 @@ class CampaignDonationManager extends Component
     public function delete($id)
     {
         $donation = CampaignDonation::findOrFail($id);
-
-        // If was approved, subtract from campaign
-        if ($donation->status === 'approved') {
-            $campaign = $donation->campaign;
-            if ($campaign) {
-                $campaign->decrement('raised_amount', $donation->amount);
-                $campaign->decrement('donor_count');
-            }
-        }
-
         $donation->delete();
 
         session()->flash('success', 'Donasi berhasil dihapus!');

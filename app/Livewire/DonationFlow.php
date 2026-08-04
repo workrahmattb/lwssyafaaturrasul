@@ -3,15 +3,14 @@
 namespace App\Livewire;
 
 use App\Mail\NewDonationMail;
+use App\Models\Campaign;
 use App\Models\Donation;
 use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-#[Layout('donation')]
 class DonationFlow extends Component
 {
     use WithFileUploads;
@@ -157,12 +156,40 @@ class DonationFlow extends Component
 
     public function render()
     {
+        $wakafPembangunanTotal = Donation::where('type', 'wakaf_pembangunan')
+            ->where('status', 'approved')->sum('amount');
+        $wakafPembangunanCount = Donation::where('type', 'wakaf_pembangunan')
+            ->where('status', 'approved')->count();
+        $wakafProduktifTotal = Donation::where('type', 'wakaf_produktif')
+            ->where('status', 'approved')->sum('amount');
+        $wakafProduktifCount = Donation::where('type', 'wakaf_produktif')
+            ->where('status', 'approved')->count();
+        $donasiPendidikanTotal = Donation::where('type', 'donasi_pendidikan')
+            ->where('status', 'approved')->sum('amount');
+        $donasiPendidikanCount = Donation::where('type', 'donasi_pendidikan')
+            ->where('status', 'approved')->count();
+        $featuredCampaigns = Campaign::where('status', 'active')
+            ->where(function ($q) {
+                $q->whereNull('end_date')->orWhere('end_date', '>=', now());
+            })
+            ->orderBy('is_featured', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->take(6)
+            ->get();
+
         return view('livewire.donation-flow', [
             'banks' => PaymentMethod::all(),
-            'history' => \App\Models\Donation::where('status', 'approved')
+            'history' => Donation::where('status', 'approved')
                 ->latest()
                 ->take(10)
                 ->get(),
-        ]);
+            'wakafPembangunanTotal' => $wakafPembangunanTotal,
+            'wakafPembangunanCount' => $wakafPembangunanCount,
+            'wakafProduktifTotal' => $wakafProduktifTotal,
+            'wakafProduktifCount' => $wakafProduktifCount,
+            'donasiPendidikanTotal' => $donasiPendidikanTotal,
+            'donasiPendidikanCount' => $donasiPendidikanCount,
+            'featuredCampaigns' => $featuredCampaigns,
+        ])->layout('donation');
     }
 }

@@ -39,51 +39,87 @@ class AdminDashboard extends Component
         $unitUsahaTotalAmount = UnitUsahaReport::sum('jumlah_uang');
         $unitUsahaRecent = UnitUsahaReport::orderBy('tanggal', 'desc')->orderBy('id', 'desc')->take(5)->get();
 
+        // Unit Usaha monthly trend (last 12 months, based on report date)
+        $unitUsahaMonthlyLabels = [];
+        $unitUsahaMonthlyAmounts = [];
+        for ($i = 11; $i >= 0; $i--) {
+            $month = $today->clone()->subMonthsNoOverflow($i);
+            $unitUsahaMonthlyLabels[] = $month->isoFormat('MMM YYYY');
+            $amount = UnitUsahaReport::whereYear('tanggal', $month->year)
+                ->whereMonth('tanggal', $month->month)
+                ->sum('jumlah_uang');
+            $unitUsahaMonthlyAmounts[] = (float) $amount;
+        }
+
+        // Unit Usaha breakdown per unit (top 8 by total amount)
+        $unitUsahaUnits = UnitUsahaReport::select('nama')
+            ->selectRaw('SUM(jumlah_uang) as total')
+            ->groupBy('nama')
+            ->orderByDesc('total')
+            ->take(8)
+            ->get();
+        $unitUsahaUnitLabels = $unitUsahaUnits->pluck('nama')->map(fn ($name) => \Illuminate\Support\Str::limit($name, 20))->all();
+        $unitUsahaUnitAmounts = $unitUsahaUnits->pluck('total')->map(fn ($total) => (float) $total)->all();
+        $unitUsahaUnitColors = ['#8b5cf6', '#a855f7', '#d946ef', '#c084fc', '#9333ea', '#6d28d9', '#7c3aed', '#e879f9'];
+
         // Recent Donations
         $recentDonations = Donation::with('paymentMethod')
             ->latest()
             ->take(5)
             ->get();
         
-        // Monthly trend (full 12 months of current year)
+        // Monthly trend (last 12 months) broken down by donation type
         $monthlyLabels = [];
-        $monthlyAmounts = [];
-        $monthlyCampaignAmounts = [];
+        $monthlyWakafPembangunanAmounts = [];
+        $monthlyWakafProduktifAmounts = [];
+        $monthlyDonasiPendidikanAmounts = [];
         for ($i = 11; $i >= 0; $i--) {
             $month = $today->clone()->subMonthsNoOverflow($i);
             $monthName = $month->isoFormat('MMM YYYY');
             $monthlyLabels[] = $monthName;
             
-            $amount = Donation::whereYear('created_at', $month->year)
+            $monthlyWakafPembangunanAmounts[] = (float) Donation::whereYear('created_at', $month->year)
                 ->whereMonth('created_at', $month->month)
                 ->where('status', 'approved')
+                ->where('type', 'wakaf_pembangunan')
                 ->sum('amount');
-            $monthlyAmounts[] = (float) $amount;
             
-            $campaignAmount = CampaignDonation::whereYear('created_at', $month->year)
+            $monthlyWakafProduktifAmounts[] = (float) Donation::whereYear('created_at', $month->year)
                 ->whereMonth('created_at', $month->month)
                 ->where('status', 'approved')
+                ->where('type', 'wakaf_produktif')
                 ->sum('amount');
-            $monthlyCampaignAmounts[] = (float) $campaignAmount;
+            
+            $monthlyDonasiPendidikanAmounts[] = (float) Donation::whereYear('created_at', $month->year)
+                ->whereMonth('created_at', $month->month)
+                ->where('status', 'approved')
+                ->where('type', 'donasi_pendidikan')
+                ->sum('amount');
         }
         
-        // Yearly trend (last 5 years)
+        // Yearly trend (last 5 years) broken down by donation type
         $yearlyLabels = [];
-        $yearlyAmounts = [];
-        $yearlyCampaignAmounts = [];
+        $yearlyWakafPembangunanAmounts = [];
+        $yearlyWakafProduktifAmounts = [];
+        $yearlyDonasiPendidikanAmounts = [];
         for ($i = 4; $i >= 0; $i--) {
             $year = $today->clone()->subYearsNoOverflow($i)->year;
             $yearlyLabels[] = (string) $year;
             
-            $amount = Donation::whereYear('created_at', $year)
+            $yearlyWakafPembangunanAmounts[] = (float) Donation::whereYear('created_at', $year)
                 ->where('status', 'approved')
+                ->where('type', 'wakaf_pembangunan')
                 ->sum('amount');
-            $yearlyAmounts[] = (float) $amount;
             
-            $campaignAmount = CampaignDonation::whereYear('created_at', $year)
+            $yearlyWakafProduktifAmounts[] = (float) Donation::whereYear('created_at', $year)
                 ->where('status', 'approved')
+                ->where('type', 'wakaf_produktif')
                 ->sum('amount');
-            $yearlyCampaignAmounts[] = (float) $campaignAmount;
+            
+            $yearlyDonasiPendidikanAmounts[] = (float) Donation::whereYear('created_at', $year)
+                ->where('status', 'approved')
+                ->where('type', 'donasi_pendidikan')
+                ->sum('amount');
         }
 
         // Category breakdown for pie chart
@@ -116,13 +152,21 @@ class AdminDashboard extends Component
             'unitUsahaTotalReports' => $unitUsahaTotalReports,
             'unitUsahaTotalAmount' => $unitUsahaTotalAmount,
             'unitUsahaRecent' => $unitUsahaRecent,
+            // Unit Usaha chart data
+            'unitUsahaMonthlyLabels' => $unitUsahaMonthlyLabels,
+            'unitUsahaMonthlyAmounts' => $unitUsahaMonthlyAmounts,
+            'unitUsahaUnitLabels' => $unitUsahaUnitLabels,
+            'unitUsahaUnitAmounts' => $unitUsahaUnitAmounts,
+            'unitUsahaUnitColors' => $unitUsahaUnitColors,
             // Chart data
             'monthlyLabels' => $monthlyLabels,
-            'monthlyAmounts' => $monthlyAmounts,
-            'monthlyCampaignAmounts' => $monthlyCampaignAmounts,
+            'monthlyWakafPembangunanAmounts' => $monthlyWakafPembangunanAmounts,
+            'monthlyWakafProduktifAmounts' => $monthlyWakafProduktifAmounts,
+            'monthlyDonasiPendidikanAmounts' => $monthlyDonasiPendidikanAmounts,
             'yearlyLabels' => $yearlyLabels,
-            'yearlyAmounts' => $yearlyAmounts,
-            'yearlyCampaignAmounts' => $yearlyCampaignAmounts,
+            'yearlyWakafPembangunanAmounts' => $yearlyWakafPembangunanAmounts,
+            'yearlyWakafProduktifAmounts' => $yearlyWakafProduktifAmounts,
+            'yearlyDonasiPendidikanAmounts' => $yearlyDonasiPendidikanAmounts,
             'categoryLabels' => $categoryLabels,
             'categoryAmounts' => $categoryAmounts,
             'categoryColors' => $categoryColors,

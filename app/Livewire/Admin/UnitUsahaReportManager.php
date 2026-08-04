@@ -33,6 +33,14 @@ class UnitUsahaReportManager extends Component
         'catatan' => 'nullable|string',
     ];
 
+    public function updatedJumlahUang($value)
+    {
+        // Strip thousand separators (e.g. 1.500.000 -> 1500000)
+        if (is_string($value)) {
+            $this->jumlah_uang = preg_replace('/[^0-9]/', '', $value);
+        }
+    }
+
     public function openCreateForm()
     {
         $this->resetForm();
@@ -47,6 +55,8 @@ class UnitUsahaReportManager extends Component
 
     public function create()
     {
+        $this->jumlah_uang = preg_replace('/[^0-9]/', '', (string) $this->jumlah_uang);
+
         $this->validate();
 
         UnitUsahaReport::create([
@@ -69,7 +79,9 @@ class UnitUsahaReportManager extends Component
         $this->selectedReport = $report;
         $this->nama = $report->nama;
         $this->tanggal = $report->tanggal->format('Y-m-d');
-        $this->jumlah_uang = $report->jumlah_uang;
+        $this->jumlah_uang = $report->jumlah_uang
+            ? number_format((float) $report->jumlah_uang, 0, ',', '.')
+            : '';
         $this->catatan = $report->catatan;
         $this->showEditForm = true;
     }
@@ -80,6 +92,8 @@ class UnitUsahaReportManager extends Component
             session()->flash('error', 'Laporan tidak ditemukan!');
             return;
         }
+
+        $this->jumlah_uang = preg_replace('/[^0-9]/', '', (string) $this->jumlah_uang);
 
         $this->validate();
 
