@@ -5,16 +5,12 @@ namespace App\Livewire\Admin;
 use App\Models\UnitUsahaReport;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 
 #[Layout('components.layouts.admin')]
 class UnitUsahaReportManager extends Component
 {
     use WithPagination;
-
-    #[Url(as: 'page', history: true)]
-    public $page = 1;
 
     public $showCreateForm = false;
     public $showEditForm = false;

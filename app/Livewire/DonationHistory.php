@@ -8,25 +8,29 @@ use Livewire\WithPagination;
 
 class DonationHistory extends Component
 {
-    use WithPagination;
+    use WithPagination {
+        nextPage as protected parentNextPage;
+        previousPage as protected parentPreviousPage;
+        gotoPage as protected parentGotoPage;
+    }
 
     protected $paginationTheme = 'tailwind';
 
-    public function previous()
+    public function previousPage($pageName = 'page')
     {
-        $this->previousPage();
+        $this->parentPreviousPage($pageName);
         $this->dispatch('scrollToRiwayat');
     }
 
-    public function next()
+    public function nextPage($pageName = 'page')
     {
-        $this->nextPage();
+        $this->parentNextPage($pageName);
         $this->dispatch('scrollToRiwayat');
     }
 
-    public function goToPage($page)
+    public function gotoPage($page, $pageName = 'page')
     {
-        $this->gotoPage($page);
+        $this->parentGotoPage($page, $pageName);
         $this->dispatch('scrollToRiwayat');
     }
 

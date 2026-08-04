@@ -396,12 +396,17 @@
 - ~~Halaman depan error~~ — **FIXED**: Variable statistik (`$wakafPembangunanTotal`, `$featuredCampaigns`, dll) dikirim dari `DonationFlow::render()` ke layout.
 - ~~Edit unit usaha "tidak bisa"~~ — **FIXED**: Penyebabnya file `public/hot` **stale** (artefak `npm run dev` yang masih menunjuk ke Vite dev server `:5173` yang mati) → semua CSS/JS gagal load → UI tampil rusak sehingga seolah tidak bisa diedit. Solusi: hapus `public/hot` + `npm run build`. Backend edit sebenarnya selalu benar (dibuktikan test + browser).
 - ~~Toast sukses unit usaha menutupi tombol~~ — **FIXED**: Toast `fixed bottom-4 right-4 z-50` di unit-usaha tidak punya auto-dismiss dan bisa menutupi tombol Edit/Hapus → tambah `x-data` + `x-init="setTimeout(() => show = false, 3000)"` (konsisten dengan campaign-manager).
+- ~~Pagination admin error 500 "Public method [next] not found"~~ — **FIXED**: View pagination `resources/views/vendor/livewire/tailwind.blade.php` memakai `wire:click="next"/"previous"` (nama custom yang hanya ada di `DonationHistory`) → diganti ke **method standar trait** `WithPagination`: `nextPage`/`previousPage`. Semua komponen admin (unit usaha, kelola donasi, kampanye) langsung ter-fix. `DonationHistory` sekarang override `nextPage`/`previousPage`/`gotoPage` via **trait alias** (`parent*`) supaya event `scrollToRiwayat` tetap di-dispatch. Properti redundan `#[Url(as: 'page')] public $page` di `UnitUsahaReportManager` dihapus (WithPagination sudah handle URL `?page=`).
+  - **PENTING — konvensi**: Jangan pernah menambah method custom `next()`/`previous()` di komponen; selalu pakai nama standar trait (`nextPage`, `previousPage`, `gotoPage`). `CampaignList` aman karena tanpa `WithPagination` ia memakai pagination Laravel biasa (link href).
 
 ### 🧪 Testing
 - `tests/Feature/UnitUsahaReportManagerTest.php` — regression test alur **create → edit → update** laporan unit usaha, termasuk input format ribuan (`1.500.000` tersimpan benar sebagai `1500000`).
+- `tests/Feature/PaginationTest.php` — regression test pagination: view memakai nama method standar, nextPage/gotoPage unit usaha bekerja, dan DonationHistory tetap dispatch `scrollToRiwayat`.
   ```bash
   php artisan test --filter=UnitUsahaReportManagerTest
+  php artisan test --filter=PaginationTest
   ```
+- **Catatan**: `phpunit.xml` menyetel sqlite :memory:, tapi test praktis berjalan di **MySQL asli** (`lwsvidecode`). Karena itu test memakai `DatabaseTransactions` (rollback aman, jangan pernah pakai `RefreshDatabase` di sini!) dan data test dibuat agar selalu urut di atas (mis. tanggal `2030-01-01`).
 
 ### Keamanan
 - Admin middleware hanya cek `is_admin` boolean
