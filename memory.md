@@ -398,12 +398,14 @@
 - ~~Tambah Laporan unit usaha: submit pertama tidak tersimpan, baru tersimpan di submit kedua~~ — **FIXED**: Field `jumlah_uang` memakai `wire:model.blur` (sync via request terpisah) sementara field lain memakai `wire:model` deferred. Saat klik "Simpan Laporan", request blur sync dan request `create()` saling berebut (race condition Livewire yang dikenal — lihat github.com/livewire/livewire discussions #8571/#9858) → percobaan pertama `jumlah_uang` masih kosong saat validasi → gagal. **Solusi**: ganti `wire:model.blur="jumlah_uang"` → `wire:model="jumlah_uang"` (deferred) di form create & edit sehingga nilainya dibaca & dikirim **atomik bersama request submit**. Formatter Alpine (`@input`/`@blur`) tetap dipertahankan; cleanup tetap lewat `updatedJumlahUang()` + `preg_replace` di `create()`/`update()`. Regression test: `test_create_saves_report_on_first_submit_without_blur_sync`.
   - **⚠️ Pola serupa masih ada** di `donation-flow.blade.php` & `campaign-donate-form.blade.php` (field `amount` pakai `wire:model.blur` + tombol `wire:click="goToStep2"`). Berpotensi race yang sama — belum diubah karena di luar scope; pantau jika user lapor masalah donasi tidak tersimpan di submit pertama.
 - ~~Toast sukses unit usaha menutupi tombol~~ — **FIXED**: Toast `fixed bottom-4 right-4 z-50` di unit-usaha tidak punya auto-dismiss dan bisa menutupi tombol Edit/Hapus → tambah `x-data` + `x-init="setTimeout(() => show = false, 3000)"` (konsisten dengan campaign-manager).
+- ~~Tombol Batal di modal tidak bisa diklik~~ — **FIXED**: Akar masalahnya **layout, bukan logic** — konten modal (4 field + pesan error validasi) lebih tinggi dari `max-h-[95vh] sm:max-h-[90vh]`, sehingga baris tombol Batal/Simpan terdorong ke bawah **di luar area scroll modal** (`overflow-y-auto`). Terbukti di headless Chrome: di viewport pendek Batal di posisi y=560–608 padahal area modal hanya sampai y=487 → klik tidak mencapai tombol (terekam: campaign modal Batal di y=1041 vs viewport 900 → klik gagal). **Solusi**: baris tombol diubah jadi **sticky footer** — `sticky bottom-0 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 bg-white border-t border-slate-200 rounded-b-2xl` — sehingga selalu terlihat & bisa diklik di dasar modal, bahkan saat konten di-scroll atau pesan validasi muncul. Diterapkan di 4 modal: create & edit unit usaha + create & edit campaign. Verifikasi: Batal kini `visible: true` di viewport 513px & modal tertutup (posisi y≈447).
 - ~~Pagination admin error 500 "Public method [next] not found"~~ — **FIXED**: View pagination `resources/views/vendor/livewire/tailwind.blade.php` memakai `wire:click="next"/"previous"` (nama custom yang hanya ada di `DonationHistory`) → diganti ke **method standar trait** `WithPagination`: `nextPage`/`previousPage`. Semua komponen admin (unit usaha, kelola donasi, kampanye) langsung ter-fix. `DonationHistory` sekarang override `nextPage`/`previousPage`/`gotoPage` via **trait alias** (`parent*`) supaya event `scrollToRiwayat` tetap di-dispatch. Properti redundan `#[Url(as: 'page')] public $page` di `UnitUsahaReportManager` dihapus (WithPagination sudah handle URL `?page=`).
   - **PENTING — konvensi**: Jangan pernah menambah method custom `next()`/`previous()` di komponen; selalu pakai nama standar trait (`nextPage`, `previousPage`, `gotoPage`). `CampaignList` aman karena tanpa `WithPagination` ia memakai pagination Laravel biasa (link href).
 
 ### 🧪 Testing
 - `tests/Feature/UnitUsahaReportManagerTest.php` — regression test alur **create → edit → update** laporan unit usaha, termasuk input format ribuan (`1.500.000` tersimpan benar sebagai `1500000`).
 - `tests/Feature/PaginationTest.php` — regression test pagination: view memakai nama method standar, nextPage/gotoPage unit usaha bekerja, dan DonationHistory tetap dispatch `scrollToRiwayat`.
+- `tests/Feature/AdminSpaNavigationTest.php` — regression test: semua tombol "Kembali ke Dashboard" (kelola kampanye, kelola donasi umum, kelola donasi kampanye) harus memakai `wire:navigate` (SPA) — mencegah siapa pun menghapusnya di masa depan.
   ```bash
   php artisan test --filter=UnitUsahaReportManagerTest
   php artisan test --filter=PaginationTest
@@ -416,12 +418,14 @@
 - Tidak ada role-based access selain admin flag
 
 ### SPA Navigation
-- `wire:navigate` digunakan di:
-  - Dashboard → Kelola Kampanye
-  - Dashboard → Laporan Unit Usaha
-  - Dashboard → Kelola Donasi
-  - Halaman Unit Usaha → Kembali ke Dashboard
-- Link ke halaman publik (donasi) tetap pakai `target="_blank"`
+- `wire:navigate` digunakan di **semua navigasi internal admin** (tanpa full page reload):
+  - Dashboard → Kelola Kampanye / Laporan Unit Usaha / Kelola Donasi (quick actions)
+  - Dashboard → Lihat Semua Laporan (unit usaha)
+  - **Kembali ke Dashboard** di semua halaman kelola: unit usaha, kelola kampanye, kelola donasi umum, kelola donasi kampanye
+  - Link nav campaign-manager → Kelola Donasi Kampanye
+  - Link footer dashboard → Kembali ke Halaman Donasi
+- **Konvensi**: semua link navigasi internal (admin→admin, admin→publik) pakai `wire:navigate`. Hanya link yang memang harus buka tab baru yang pakai `target="_blank"` (quick action "Lihat Halaman Donasi") dan link download/export (tanpa wire:navigate).
+- Logout tetap form POST biasa (bukan SPA).
 
 ---
 

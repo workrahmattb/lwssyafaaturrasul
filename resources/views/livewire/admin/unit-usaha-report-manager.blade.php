@@ -272,7 +272,7 @@
                     </div>
 
                     {{-- Submit Buttons --}}
-                    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                    <div class="sticky bottom-0 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 bg-white border-t border-slate-200 rounded-b-2xl flex flex-col sm:flex-row gap-3">
                         <button type="button" wire:click="closeCreateForm" class="w-full sm:flex-1 px-4 py-3 bg-white text-slate-700 rounded-xl font-semibold border-2 border-slate-200 hover:border-emerald-300 transition text-sm">
                             Batal
                         </button>
@@ -359,7 +359,7 @@
                     </div>
 
                     {{-- Submit Buttons --}}
-                    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                    <div class="sticky bottom-0 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 bg-white border-t border-slate-200 rounded-b-2xl flex flex-col sm:flex-row gap-3">
                         <button type="button" wire:click="closeEditForm" class="w-full sm:flex-1 px-4 py-3 bg-white text-slate-700 rounded-xl font-semibold border-2 border-slate-200 hover:border-emerald-300 transition text-sm">
                             Batal
                         </button>

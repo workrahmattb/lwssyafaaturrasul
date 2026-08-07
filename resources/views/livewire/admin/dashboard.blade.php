@@ -472,7 +472,7 @@
                 <p class="text-xs text-slate-400">
                     &copy; {{ date('Y') }} Lembaga Wakaf Sedekah. All rights reserved.
                 </p>
-                <a href="{{ route('donation') }}" class="text-sm text-slate-500 hover:text-emerald-600 transition">
+                <a href="{{ route('donation') }}" wire:navigate class="text-sm text-slate-500 hover:text-emerald-600 transition">
                     ← Kembali ke Halaman Donasi
                 </a>
             </div>

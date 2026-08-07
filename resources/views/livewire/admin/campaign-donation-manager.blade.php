@@ -4,7 +4,7 @@
         <div class="px-4 sm:px-6 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white">
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                 <div class="flex items-center space-x-3 sm:space-x-4">
-                    <a href="{{ route('admin.donations') }}" class="p-2 rounded-lg bg-emerald-500/50 hover:bg-emerald-400 transition flex-shrink-0" title="Kembali ke Dashboard">
+                    <a href="{{ route('admin.donations') }}" wire:navigate class="p-2 rounded-lg bg-emerald-500/50 hover:bg-emerald-400 transition flex-shrink-0" title="Kembali ke Dashboard">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                         </svg>

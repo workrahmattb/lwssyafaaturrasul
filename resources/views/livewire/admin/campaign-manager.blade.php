@@ -39,7 +39,7 @@
         <div class="px-4 sm:px-6 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white">
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                 <div class="flex items-center space-x-3 sm:space-x-4">
-                    <a href="{{ route('admin.donations') }}" class="p-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 transition flex-shrink-0" title="Kembali ke Dashboard">
+                    <a href="{{ route('admin.donations') }}" wire:navigate class="p-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 transition flex-shrink-0" title="Kembali ke Dashboard">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                         </svg>
@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
-                    <a href="{{ route('admin.campaign-donation') }}" class="flex-1 sm:flex-none px-3 sm:px-4 py-2.5 bg-white text-emerald-700 rounded-lg text-xs sm:text-sm font-bold hover:bg-emerald-50 transition shadow-lg flex items-center justify-center space-x-2">
+                    <a href="{{ route('admin.campaign-donation') }}" wire:navigate class="flex-1 sm:flex-none px-3 sm:px-4 py-2.5 bg-white text-emerald-700 rounded-lg text-xs sm:text-sm font-bold hover:bg-emerald-50 transition shadow-lg flex items-center justify-center space-x-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                         </svg>
@@ -261,7 +261,7 @@
                     </label>
 
                     {{-- Submit Buttons --}}
-                    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                    <div class="sticky bottom-0 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 bg-white border-t border-slate-200 rounded-b-2xl flex flex-col sm:flex-row gap-3">
                         <button type="button" wire:click="closeCreateForm" class="w-full sm:flex-1 px-4 py-3 bg-white text-slate-700 rounded-xl font-semibold border-2 border-slate-200 hover:border-emerald-300 transition text-sm sm:text-base">
                             Batal
                         </button>
@@ -368,7 +368,7 @@
                     </label>
 
                     {{-- Submit Buttons --}}
-                    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+                    <div class="sticky bottom-0 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 bg-white border-t border-slate-200 rounded-b-2xl flex flex-col sm:flex-row gap-3">
                         <button type="button" wire:click="closeEditForm" class="w-full sm:flex-1 px-4 py-3 bg-white text-slate-700 rounded-xl font-semibold border-2 border-slate-200 hover:border-emerald-300 transition text-sm sm:text-base">
                             Batal
                         </button>
