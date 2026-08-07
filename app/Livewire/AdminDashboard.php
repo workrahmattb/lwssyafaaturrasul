@@ -39,13 +39,14 @@ class AdminDashboard extends Component
         $unitUsahaTotalAmount = UnitUsahaReport::sum('jumlah_uang');
         $unitUsahaRecent = UnitUsahaReport::orderBy('tanggal', 'desc')->orderBy('id', 'desc')->take(5)->get();
 
-        // Unit Usaha monthly trend (last 12 months, based on report date)
+        // Unit Usaha monthly trend — only "Hasil Keuntungan SR Bakery" (last 12 months)
         $unitUsahaMonthlyLabels = [];
         $unitUsahaMonthlyAmounts = [];
         for ($i = 11; $i >= 0; $i--) {
             $month = $today->clone()->subMonthsNoOverflow($i);
             $unitUsahaMonthlyLabels[] = $month->isoFormat('MMM YYYY');
-            $amount = UnitUsahaReport::whereYear('tanggal', $month->year)
+            $amount = UnitUsahaReport::where('nama', 'Hasil Keuntungan SR Bakery')
+                ->whereYear('tanggal', $month->year)
                 ->whereMonth('tanggal', $month->month)
                 ->sum('jumlah_uang');
             $unitUsahaMonthlyAmounts[] = (float) $amount;

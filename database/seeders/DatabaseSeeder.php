@@ -30,15 +30,16 @@ class DatabaseSeeder extends Seeder
         }
 
         // Create Sample Donations
+        // Types berikut sesuai enum saat ini: wakaf_pembangunan, wakaf_produktif, donasi_pendidikan
         $donations = [
-            ['name' => 'Ahmad Hidayat', 'type' => 'donasi', 'amount' => 500000, 'status' => 'approved', 'anonymous' => false],
-            ['name' => 'Fatimah Zahra', 'type' => 'zakat', 'amount' => 1500000, 'status' => 'approved', 'anonymous' => false],
-            ['name' => 'Hamba Allah', 'type' => 'wakaf', 'amount' => 2000000, 'status' => 'approved', 'anonymous' => true],
-            ['name' => 'Ibrahim Rahman', 'type' => 'donasi', 'amount' => 250000, 'status' => 'approved', 'anonymous' => false],
-            ['name' => 'Khadijah', 'type' => 'zakat', 'amount' => 3000000, 'status' => 'approved', 'anonymous' => false],
-            ['name' => 'Hamba Allah', 'type' => 'donasi', 'amount' => 100000, 'status' => 'pending', 'anonymous' => true],
-            ['name' => 'Musa Abdullah', 'type' => 'wakaf', 'amount' => 5000000, 'status' => 'pending', 'anonymous' => false],
-            ['name' => 'Aisyah Putri', 'type' => 'donasi', 'amount' => 150000, 'status' => 'rejected', 'anonymous' => false],
+            ['name' => 'Ahmad Hidayat', 'type' => 'donasi_pendidikan', 'amount' => 500000, 'status' => 'approved', 'anonymous' => false],
+            ['name' => 'Fatimah Zahra', 'type' => 'wakaf_pembangunan', 'amount' => 1500000, 'status' => 'approved', 'anonymous' => false],
+            ['name' => 'Hamba Allah', 'type' => 'wakaf_produktif', 'amount' => 2000000, 'status' => 'approved', 'anonymous' => true],
+            ['name' => 'Ibrahim Rahman', 'type' => 'donasi_pendidikan', 'amount' => 250000, 'status' => 'approved', 'anonymous' => false],
+            ['name' => 'Khadijah', 'type' => 'wakaf_pembangunan', 'amount' => 3000000, 'status' => 'approved', 'anonymous' => false],
+            ['name' => 'Hamba Allah', 'type' => 'donasi_pendidikan', 'amount' => 100000, 'status' => 'pending', 'anonymous' => true],
+            ['name' => 'Musa Abdullah', 'type' => 'wakaf_produktif', 'amount' => 5000000, 'status' => 'pending', 'anonymous' => false],
+            ['name' => 'Aisyah Putri', 'type' => 'donasi_pendidikan', 'amount' => 150000, 'status' => 'rejected', 'anonymous' => false],
         ];
 
         $paymentMethodIds = PaymentMethod::pluck('id')->toArray();

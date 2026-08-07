@@ -245,7 +245,7 @@
                             <input
                                 type="text"
                                 inputmode="numeric"
-                                wire:model.blur="jumlah_uang"
+                                wire:model="jumlah_uang"
                                 @input="
                                     let value = $event.target.value.replace(/[^0-9]/g, '');
                                     $event.target.value = value ? new Intl.NumberFormat('id-ID').format(value) : '';
@@ -332,7 +332,7 @@
                             <input
                                 type="text"
                                 inputmode="numeric"
-                                wire:model.blur="jumlah_uang"
+                                wire:model="jumlah_uang"
                                 @input="
                                     let value = $event.target.value.replace(/[^0-9]/g, '');
                                     $event.target.value = value ? new Intl.NumberFormat('id-ID').format(value) : '';

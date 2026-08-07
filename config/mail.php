@@ -115,4 +115,15 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Notification Address
+    |--------------------------------------------------------------------------
+    |
+    | Alamat email yang menerima notifikasi donasi baru (umum & kampanye).
+    |
+    */
+
+    'admin_address' => env('MAIL_TO_ADMIN', 'workrahmattb@gmail.com'),
+
 ];

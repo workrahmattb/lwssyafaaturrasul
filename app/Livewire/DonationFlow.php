@@ -142,7 +142,7 @@ class DonationFlow extends Component
 
         // Send email notification to admin
         try {
-            Mail::to('workrahmattb@gmail.com')->send(new NewDonationMail($donation));
+            Mail::to(config('mail.admin_address'))->send(new NewDonationMail($donation));
         } catch (\Exception $e) {
             // Log error but don't fail the donation
             \Log::error('Failed to send donation notification email: ' . $e->getMessage());

@@ -170,7 +170,7 @@ class CampaignDonate extends Component
 
         // Send email notification to admin
         try {
-            Mail::to('workrahmattb@gmail.com')->send(new CampaignDonationMail($donation));
+            Mail::to(config('mail.admin_address'))->send(new CampaignDonationMail($donation));
         } catch (\Exception $e) {
             // Log error but don't fail the donation
             \Log::error('Failed to send campaign donation notification email: ' . $e->getMessage());

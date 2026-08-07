@@ -48,6 +48,14 @@ class Campaign extends Model
             if ($campaign->image) {
                 \Storage::disk('public')->delete($campaign->image);
             }
+
+            // Cascade delete DB tidak memicu event `deleting` di CampaignDonation,
+            // jadi hapus file bukti transfer secara manual agar tidak jadi orphan.
+            foreach ($campaign->donations as $donation) {
+                if ($donation->proof_of_transfer) {
+                    \Storage::disk('public')->delete($donation->proof_of_transfer);
+                }
+            }
         });
     }
 

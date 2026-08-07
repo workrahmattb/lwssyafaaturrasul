@@ -18,8 +18,12 @@ class CampaignDetail extends Component
     {
         $campaign = Campaign::where('slug', $this->slug)->first();
 
-        if (!$campaign) {
-            abort(404, 'Kampanye tidak ditemukan');
+        if (!$campaign || $campaign->status !== 'active') {
+            abort(404, 'Kampanye tidak ditemukan atau tidak aktif');
+        }
+
+        if ($campaign->end_date && $campaign->end_date->isPast()) {
+            abort(404, 'Kampanye telah berakhir');
         }
 
         $recentDonations = $campaign->activeDonations()

@@ -328,8 +328,8 @@
 ### Notifikasi Email
 - Donasi umum → `NewDonationMail` → `emails/new-donation.blade.php`
 - Donasi kampanye → `CampaignDonationMail` → `emails/campaign-verification.blade.php`
-- Dikirim ke: `workrahmattb@gmail.com`
-- Menggunakan Queue (ShouldQueue interface)
+- Dikirim ke: `config('mail.admin_address')` (env `MAIL_TO_ADMIN`, default `workrahmattb@gmail.com`)
+- Menggunakan Queue (ShouldQueue interface) — `send()` otomatis di-queue karena Mailable implements ShouldQueue. **Pastikan queue worker jalan di production** (kalau tidak, email tidak terkirim senyap).
 - Try-catch agar tidak gagalkan donasi jika email error
 
 ### Export Excel (`ExportController`)
@@ -395,6 +395,8 @@
 - ~~Debug logging~~ — **FIXED**: Semua `\Log::info()` di `CampaignDonate.php` dihapus.
 - ~~Halaman depan error~~ — **FIXED**: Variable statistik (`$wakafPembangunanTotal`, `$featuredCampaigns`, dll) dikirim dari `DonationFlow::render()` ke layout.
 - ~~Edit unit usaha "tidak bisa"~~ — **FIXED**: Penyebabnya file `public/hot` **stale** (artefak `npm run dev` yang masih menunjuk ke Vite dev server `:5173` yang mati) → semua CSS/JS gagal load → UI tampil rusak sehingga seolah tidak bisa diedit. Solusi: hapus `public/hot` + `npm run build`. Backend edit sebenarnya selalu benar (dibuktikan test + browser).
+- ~~Tambah Laporan unit usaha: submit pertama tidak tersimpan, baru tersimpan di submit kedua~~ — **FIXED**: Field `jumlah_uang` memakai `wire:model.blur` (sync via request terpisah) sementara field lain memakai `wire:model` deferred. Saat klik "Simpan Laporan", request blur sync dan request `create()` saling berebut (race condition Livewire yang dikenal — lihat github.com/livewire/livewire discussions #8571/#9858) → percobaan pertama `jumlah_uang` masih kosong saat validasi → gagal. **Solusi**: ganti `wire:model.blur="jumlah_uang"` → `wire:model="jumlah_uang"` (deferred) di form create & edit sehingga nilainya dibaca & dikirim **atomik bersama request submit**. Formatter Alpine (`@input`/`@blur`) tetap dipertahankan; cleanup tetap lewat `updatedJumlahUang()` + `preg_replace` di `create()`/`update()`. Regression test: `test_create_saves_report_on_first_submit_without_blur_sync`.
+  - **⚠️ Pola serupa masih ada** di `donation-flow.blade.php` & `campaign-donate-form.blade.php` (field `amount` pakai `wire:model.blur` + tombol `wire:click="goToStep2"`). Berpotensi race yang sama — belum diubah karena di luar scope; pantau jika user lapor masalah donasi tidak tersimpan di submit pertama.
 - ~~Toast sukses unit usaha menutupi tombol~~ — **FIXED**: Toast `fixed bottom-4 right-4 z-50` di unit-usaha tidak punya auto-dismiss dan bisa menutupi tombol Edit/Hapus → tambah `x-data` + `x-init="setTimeout(() => show = false, 3000)"` (konsisten dengan campaign-manager).
 - ~~Pagination admin error 500 "Public method [next] not found"~~ — **FIXED**: View pagination `resources/views/vendor/livewire/tailwind.blade.php` memakai `wire:click="next"/"previous"` (nama custom yang hanya ada di `DonationHistory`) → diganti ke **method standar trait** `WithPagination`: `nextPage`/`previousPage`. Semua komponen admin (unit usaha, kelola donasi, kampanye) langsung ter-fix. `DonationHistory` sekarang override `nextPage`/`previousPage`/`gotoPage` via **trait alias** (`parent*`) supaya event `scrollToRiwayat` tetap di-dispatch. Properti redundan `#[Url(as: 'page')] public $page` di `UnitUsahaReportManager` dihapus (WithPagination sudah handle URL `?page=`).
   - **PENTING — konvensi**: Jangan pernah menambah method custom `next()`/`previous()` di komponen; selalu pakai nama standar trait (`nextPage`, `previousPage`, `gotoPage`). `CampaignList` aman karena tanpa `WithPagination` ia memakai pagination Laravel biasa (link href).

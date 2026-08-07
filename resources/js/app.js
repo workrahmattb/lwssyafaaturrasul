@@ -186,7 +186,7 @@ window.initUnitUsahaMonthlyChart = function (el, labels, amounts) {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Pemasukan Unit Usaha',
+                    label: 'Hasil Keuntungan SR Bakery',
                     data: amounts,
                     backgroundColor: 'rgba(139, 92, 246, 0.8)',
                     borderColor: '#8b5cf6',
