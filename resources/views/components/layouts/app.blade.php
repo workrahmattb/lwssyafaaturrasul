@@ -25,6 +25,6 @@
     </div>
 
     <x-whatsapp-float />
-    @livewireScripts
+    @livewireScriptConfig
 </body>
 </html>

@@ -24,7 +24,7 @@
                 <input
                     type="text"
                     id="amount-input"
-                    wire:model.blur="amount"
+                    wire:model="amount"
                     @input="
                         let value = $event.target.value.replace(/[^0-9]/g, '');
                         if (value) {

@@ -40,7 +40,7 @@
                     inputmode="numeric"
                     pattern="[0-9.]*"
                     id="amount-input"
-                    wire:model.blur="amount"
+                    wire:model="amount"
                     @input="
                         let value = $event.target.value.replace(/[^0-9]/g, '');
                         if (value) {

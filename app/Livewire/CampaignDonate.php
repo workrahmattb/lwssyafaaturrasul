@@ -35,9 +35,12 @@ class CampaignDonate extends Component
         'proof_of_transfer' => 'required|mimes:jpeg,jpg,png,pdf|max:2048',
     ];
 
-    public function mount()
+    public function mount($slug = null)
     {
-        $slug = request()->route('slug');
+        // Livewire meneruskan route params ({slug}) ke mount secara otomatis.
+        // Fallback ke request()->route() menjaga kompatibilitas saat dipanggil
+        // tanpa route param (mis. di Livewire component test).
+        $slug = $slug ?? request()->route('slug');
         $campaign = Campaign::where('slug', $slug)->first();
 
         if (!$campaign || $campaign->status !== 'active') {

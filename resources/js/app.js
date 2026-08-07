@@ -331,3 +331,9 @@ window.initCategoryChart = function (el, labels, amounts, colors) {
         console.warn('Chart init error (category):', e);
     }
 };
+
+// Start Livewire (bundles its own Alpine). Layouts use @livewireScriptConfig
+// instead of @livewireScripts so Livewire loads only once via Vite.
+// Must run AFTER the global init*Chart helpers above are defined, because
+// Alpine evaluates x-init expressions while initializing the DOM.
+Livewire.start();

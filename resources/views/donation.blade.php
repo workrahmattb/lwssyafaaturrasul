@@ -348,7 +348,7 @@
         </div>
     </footer>
     <x-whatsapp-float />
-    @livewireScripts
+    @livewireScriptConfig
     <script>
         // Scroll to riwayat section when pagination changes
         document.addEventListener('livewire:init', () => {

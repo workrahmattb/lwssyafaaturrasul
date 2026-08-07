@@ -74,6 +74,6 @@
     </footer>
 
     <x-whatsapp-float />
-    @livewireScripts
+    @livewireScriptConfig
 </body>
 </html>
