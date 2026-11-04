@@ -174,7 +174,7 @@ window.initYearlyChart = function (el, labels, wakafPembangunan, wakafProduktif,
     }
 };
 
-window.initTotalYearlyChart = function (el, labels, amounts, datasetLabel = 'Total Donasi Terkumpul') {
+window.initTotalYearlyChart = function (el, labels, amounts, datasetLabel = 'Total Donasi Terkumpul', color = '#10b981') {
     if (!el || !labels || !labels.length) return;
     try {
         const ctx = el.getContext('2d');
@@ -188,8 +188,8 @@ window.initTotalYearlyChart = function (el, labels, amounts, datasetLabel = 'Tot
                 datasets: [{
                     label: datasetLabel,
                     data: amounts,
-                    backgroundColor: 'rgba(16, 185, 129, 0.8)',
-                    borderColor: '#10b981',
+                    backgroundColor: color + 'cc',
+                    borderColor: color,
                     borderWidth: 1,
                     borderRadius: 6,
                 }],

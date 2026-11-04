@@ -439,6 +439,19 @@
                         </div>
                     </div>
 
+                    <div class="bg-white rounded-2xl p-5 border border-purple-100 shadow-sm mb-6">
+                        <h4 class="text-sm font-bold text-purple-800">Pemasukan Unit Usaha per Tahun</h4>
+                        <p class="text-xs text-slate-400 mt-1 mb-4">Seluruh unit usaha · Berdasarkan tanggal laporan · Sejak 2024</p>
+                        <div class="h-72 relative" wire:ignore>
+                            <canvas
+                                x-init='initTotalYearlyChart($el, @json($yearlyLabels), @json($unitUsahaYearlyAmounts), "Pemasukan Unit Usaha", "#8b5cf6")'
+                                role="img"
+                                aria-label="Grafik pemasukan seluruh unit usaha per tahun"
+                                class="w-full h-full">
+                            </canvas>
+                        </div>
+                    </div>
+
                     {{-- Recent Reports Table --}}
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left">

@@ -571,3 +571,13 @@ npm run build
 - Frasa “Donasi Kampanye” disederhanakan menjadi “Donasi”, bukan “Donasi Donasi”. “Donasi Umum” tetap digunakan untuk membedakan sumber penerimaan.
 - Nama internal `Campaign`, `CampaignDonation`, komponen, tabel database, route `campaigns.*`, dan URL `/kampanye` dipertahankan untuk kompatibilitas. Tidak ada migration atau perubahan data tersimpan.
 - Penyebutan kampanye pada bagian historis dokumentasi mengacu pada fitur yang sekarang berlabel Donasi.
+
+
+### Grafik unit usaha per tahun
+
+- Dashboard bagian Laporan Unit Usaha menampilkan **Pemasukan Unit Usaha per Tahun**, setelah grafik bulanan/komposisi dan sebelum tabel laporan terbaru.
+- Menjumlahkan `jumlah_uang` seluruh unit usaha berdasarkan tahun `tanggal` laporan, bukan `created_at`.
+- Rentang 2024 sampai tahun berjalan, otomatis bertambah; tahun kosong bernilai nol.
+- Berbeda dengan grafik bulanan yang tetap khusus Hasil Keuntungan SR Bakery.
+- Data view: `unitUsahaYearlyAmounts`; Chart.js memakai `initTotalYearlyChart` dengan label pemasukan unit usaha dan warna ungu opsional.
+- Tidak ada migration baru.

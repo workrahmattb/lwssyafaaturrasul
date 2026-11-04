@@ -144,4 +144,28 @@ class AdminDashboardYearlyDonationsTest extends TestCase
 
         Livewire::test(AdminDashboard::class)->assertViewHas('lwsBalance', -100000.0);
     }
+
+    public function test_yearly_unit_income_combines_all_units_by_report_date(): void
+    {
+        foreach ([
+            ['Hasil Keuntungan SR Bakery', '2024-12-31', 100000],
+            ['Unit Lain', '2024-01-01', 50000],
+            ['Unit Lain', '2026-01-01', 75000],
+        ] as [$name, $date, $amount]) {
+            \App\Models\UnitUsahaReport::create(['nama' => $name, 'tanggal' => $date, 'jumlah_uang' => $amount]);
+        }
+
+        Livewire::test(AdminDashboard::class)
+            ->assertViewHas('unitUsahaYearlyAmounts', [150000.0, 0.0, 75000.0])
+            ->assertSee('Pemasukan Unit Usaha per Tahun');
+    }
+
+    public function test_yearly_unit_income_includes_new_year_with_zero_when_empty(): void
+    {
+        $this->travelTo(Carbon::parse('2027-01-02'));
+
+        Livewire::test(AdminDashboard::class)
+            ->assertViewHas('yearlyLabels', ['2024', '2025', '2026', '2027'])
+            ->assertViewHas('unitUsahaYearlyAmounts', [0.0, 0.0, 0.0, 0.0]);
+    }
 }

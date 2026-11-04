@@ -103,12 +103,14 @@ class AdminDashboard extends Component
         $yearlyLabels = [];
         $yearlyTotalAmounts = [];
         $yearlyDisbursementAmounts = [];
+        $unitUsahaYearlyAmounts = [];
         $yearlyDisbursementsByCategory = array_fill_keys(array_keys(Disbursement::CATEGORIES), []);
         $yearlyWakafPembangunanAmounts = [];
         $yearlyWakafProduktifAmounts = [];
         $yearlyDonasiPendidikanAmounts = [];
         for ($year = 2024; $year <= $today->year; $year++) {
             $yearlyLabels[] = (string) $year;
+            $unitUsahaYearlyAmounts[] = (float) UnitUsahaReport::whereYear('tanggal', $year)->sum('jumlah_uang');
             $disbursementsForYear = Disbursement::whereYear('disbursed_at', $year)
                 ->select('type')->selectRaw('SUM(amount) as total')
                 ->groupBy('type')->pluck('total', 'type');
@@ -192,6 +194,7 @@ class AdminDashboard extends Component
             // Unit Usaha chart data
             'unitUsahaMonthlyLabels' => $unitUsahaMonthlyLabels,
             'unitUsahaMonthlyAmounts' => $unitUsahaMonthlyAmounts,
+            'unitUsahaYearlyAmounts' => $unitUsahaYearlyAmounts,
             'unitUsahaUnitLabels' => $unitUsahaUnitLabels,
             'unitUsahaUnitAmounts' => $unitUsahaUnitAmounts,
             'unitUsahaUnitColors' => $unitUsahaUnitColors,
