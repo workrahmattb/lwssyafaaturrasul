@@ -333,44 +333,6 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl p-6 border border-emerald-50 shadow-sm">
-                <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-                    <div>
-                        <h3 class="text-lg font-bold text-emerald-800">Grafik Penyaluran Donasi</h3>
-                        <p class="text-sm text-slate-500 mt-1">Total penyaluran per kategori · Semua periode</p>
-                    </div>
-                    <a href="{{ route('admin.penyaluran') }}" wire:navigate class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">Kelola Penyaluran →</a>
-                </div>
-                <p class="text-sm text-slate-500">Total Dana Disalurkan</p>
-                <p class="text-2xl font-bold text-emerald-600 mt-1 mb-6">{{ formatRupiah($totalDisbursedAmount) }}</p>
-                @if($totalDisbursedAmount == 0)
-                    <p class="py-8 text-center text-slate-400">Belum ada data penyaluran.</p>
-                @endif
-                <div class="mt-8 border-t border-slate-100 pt-6">
-                    <h4 class="text-lg font-bold text-emerald-800">Penyaluran per Tahun</h4>
-                    <p class="text-sm text-slate-500 mt-1 mb-6">Berdasarkan tanggal penyaluran · Sejak 2024</p>
-                    <div class="h-72 relative" wire:ignore>
-                        <canvas
-                            x-init='initYearlyChart($el, @json($yearlyLabels), @json($yearlyDisbursementsByCategory["wakaf_pembangunan"]), @json($yearlyDisbursementsByCategory["wakaf_produktif"]), @json($yearlyDisbursementsByCategory["donasi_pendidikan"]))'
-                            role="img"
-                            aria-label="Grafik penyaluran per tahun menurut kategori"
-                            class="w-full h-full">
-                        </canvas>
-                    </div>
-                    @if($undatedDisbursementAmount > 0)
-                        <p class="text-sm text-amber-700 mt-4">Penyaluran sebesar {{ formatRupiah($undatedDisbursementAmount) }} belum memiliki tanggal dan belum masuk grafik tahunan. Lengkapi tanggalnya di Kelola Penyaluran.</p>
-                    @endif
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-                    @foreach($disbursementLabels as $index => $label)
-                        <div class="rounded-xl bg-slate-50 p-4">
-                            <p class="text-sm text-slate-500">{{ $label }}</p>
-                            <p class="text-lg font-bold text-slate-800 mt-1">{{ formatRupiah($disbursementAmounts[$index]) }}</p>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-
             {{-- Unit Usaha Report Section --}}
             <div class="bg-white rounded-2xl border border-emerald-50 shadow-sm overflow-hidden">
                 <div class="px-6 py-4 bg-gradient-to-r from-purple-500 to-violet-600">
@@ -496,6 +458,44 @@
                             </svg>
                         </a>
                     </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 border border-emerald-50 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-emerald-800">Grafik Penyaluran Donasi</h3>
+                        <p class="text-sm text-slate-500 mt-1">Total penyaluran per kategori · Semua periode</p>
+                    </div>
+                    <a href="{{ route('admin.penyaluran') }}" wire:navigate class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">Kelola Penyaluran →</a>
+                </div>
+                <p class="text-sm text-slate-500">Total Dana Disalurkan</p>
+                <p class="text-2xl font-bold text-emerald-600 mt-1 mb-6">{{ formatRupiah($totalDisbursedAmount) }}</p>
+                @if($totalDisbursedAmount == 0)
+                    <p class="py-8 text-center text-slate-400">Belum ada data penyaluran.</p>
+                @endif
+                <div class="mt-8 border-t border-slate-100 pt-6">
+                    <h4 class="text-lg font-bold text-emerald-800">Penyaluran per Tahun</h4>
+                    <p class="text-sm text-slate-500 mt-1 mb-6">Berdasarkan tanggal penyaluran · Sejak 2024</p>
+                    <div class="h-72 relative" wire:ignore>
+                        <canvas
+                            x-init='initYearlyChart($el, @json($yearlyLabels), @json($yearlyDisbursementsByCategory["wakaf_pembangunan"]), @json($yearlyDisbursementsByCategory["wakaf_produktif"]), @json($yearlyDisbursementsByCategory["donasi_pendidikan"]))'
+                            role="img"
+                            aria-label="Grafik penyaluran per tahun menurut kategori"
+                            class="w-full h-full">
+                        </canvas>
+                    </div>
+                    @if($undatedDisbursementAmount > 0)
+                        <p class="text-sm text-amber-700 mt-4">Penyaluran sebesar {{ formatRupiah($undatedDisbursementAmount) }} belum memiliki tanggal dan belum masuk grafik tahunan. Lengkapi tanggalnya di Kelola Penyaluran.</p>
+                    @endif
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                    @foreach($disbursementLabels as $index => $label)
+                        <div class="rounded-xl bg-slate-50 p-4">
+                            <p class="text-sm text-slate-500">{{ $label }}</p>
+                            <p class="text-lg font-bold text-slate-800 mt-1">{{ formatRupiah($disbursementAmounts[$index]) }}</p>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
