@@ -160,4 +160,31 @@ class DisbursementManagerTest extends TestCase
             ->call('gotoPage', 2)
             ->assertSeeHtml('<td class="px-6 py-4 text-slate-600">16</td>');
     }
+
+    public function test_search_matches_partial_descriptions_and_preserves_date_order(): void
+    {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        $older = Disbursement::factory()->create(['description' => 'Bantuan ruang kelas', 'disbursed_at' => '2025-01-01']);
+        $newer = Disbursement::factory()->create(['description' => 'Renovasi ruang kelas', 'disbursed_at' => '2026-01-01']);
+        Disbursement::factory()->create(['description' => 'Modal usaha']);
+
+        Livewire::test(DisbursementManager::class)
+            ->set('search', '  RUANG  ')
+            ->assertViewHas('disbursements', fn ($rows) => $rows->pluck('id')->all() === [$newer->id, $older->id])
+            ->assertDontSee('Modal usaha')
+            ->set('search', 'tidak ditemukan')->assertSee('Tidak ada penyaluran yang sesuai dengan pencarian.')
+            ->set('search', '')->assertViewHas('disbursements', fn ($rows) => $rows->total() === 3);
+    }
+
+    public function test_search_resets_pagination_to_first_page(): void
+    {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        Disbursement::factory()->count(16)->create(['description' => 'Bantuan sekolah']);
+
+        Livewire::test(DisbursementManager::class)
+            ->call('gotoPage', 2)
+            ->set('search', 'sekolah')
+            ->assertViewHas('disbursements', fn ($rows) => $rows->currentPage() === 1 && $rows->total() === 16)
+            ->assertSeeHtml('<td class="px-6 py-4 text-slate-600">1</td>');
+    }
 }

@@ -589,3 +589,12 @@ npm run build
 - Urutan berdasarkan `disbursed_at` terbaru, bukan waktu pencatatan; tanggal kosong di bawah, tanggal sama diurutkan ID menurun.
 - Perubahan ini khusus daftar Kelola Penyaluran; urutan ekspor tetap seperti implementasi sebelumnya.
 - Susunan dashboard terbaru: Donasi Terbaru → Laporan Unit Usaha → Penyaluran.
+
+
+### Pencarian Kelola Penyaluran
+
+- Kolom pencarian di atas tabel memfilter berdasarkan sebagian Deskripsi Penyaluran, tanpa membedakan huruf besar/kecil.
+- `wire:model.live.debounce.300ms="search"`; perubahan pencarian mengembalikan pagination ke halaman pertama.
+- Urutan tanggal terbaru, penempatan tanggal kosong di bawah, dan nomor berlanjut antarhalaman tetap berlaku pada hasil pencarian.
+- Pencarian kosong menampilkan semua data; hasil kosong memiliki pesan khusus.
+- Total Dana Disalurkan dan Export Excel tetap mencakup seluruh data, tidak terfilter pencarian.

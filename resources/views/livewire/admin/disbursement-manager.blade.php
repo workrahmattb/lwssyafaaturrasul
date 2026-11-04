@@ -16,6 +16,11 @@
         @if(session()->has('success'))
             <p role="status" class="m-4 p-4 bg-emerald-50 text-emerald-800 rounded-xl">{{ session('success') }}</p>
         @endif
+        <div class="p-4 sm:px-6 border-b border-slate-100">
+            <label for="disbursement-search" class="block text-sm font-semibold text-slate-700 mb-2">Cari Deskripsi Penyaluran</label>
+            <input id="disbursement-search" type="search" wire:model.live.debounce.300ms="search" placeholder="Ketik deskripsi penyaluran..." class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+            <p wire:loading wire:target="search" class="mt-2 text-sm text-slate-500" role="status">Mencari...</p>
+        </div>
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-left">
                 <thead class="bg-slate-50 text-slate-500">
@@ -42,7 +47,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="6" class="px-6 py-12 text-center text-slate-400">Belum ada data penyaluran. Klik Tambah Penyaluran untuk memulai.</td></tr>
+                        <tr><td colspan="6" class="px-6 py-12 text-center text-slate-400">{{ trim($search) !== '' ? 'Tidak ada penyaluran yang sesuai dengan pencarian.' : 'Belum ada data penyaluran. Klik Tambah Penyaluran untuk memulai.' }}</td></tr>
                     @endforelse
                 </tbody>
             </table>

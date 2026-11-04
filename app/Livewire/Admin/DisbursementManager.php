@@ -20,6 +20,8 @@ class DisbursementManager extends Component
     #[Locked]
     public ?int $selectedId = null;
 
+    public string $search = '';
+
     public string $description = '';
 
     public string $amount = '';
@@ -95,10 +97,18 @@ class DisbursementManager extends Component
         session()->flash('success', 'Data penyaluran berhasil dihapus.');
     }
 
+    public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
+
     public function render(): View
     {
         return view('livewire.admin.disbursement-manager', [
-            'disbursements' => Disbursement::orderByRaw('disbursed_at IS NULL')->orderByDesc('disbursed_at')->orderByDesc('id')->paginate(15),
+            'disbursements' => Disbursement::query()
+                ->when(trim($this->search) !== '', fn ($query) => $query->whereLike('description', '%'.trim($this->search).'%'))
+                ->orderByRaw('disbursed_at IS NULL')
+                ->orderByDesc('disbursed_at')->orderByDesc('id')->paginate(15),
             'totalAmount' => Disbursement::sum('amount'),
             'categories' => Disbursement::CATEGORIES,
         ]);
