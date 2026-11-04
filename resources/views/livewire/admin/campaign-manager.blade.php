@@ -45,8 +45,8 @@
                         </svg>
                     </a>
                     <div>
-                        <h2 class="text-lg sm:text-xl font-bold">Kelola Kampanye</h2>
-                        <p class="text-xs sm:text-sm text-emerald-100">Buat dan kelola kampanye donasi</p>
+                        <h2 class="text-lg sm:text-xl font-bold">Kelola Donasi</h2>
+                        <p class="text-xs sm:text-sm text-emerald-100">Buat dan kelola donasi</p>
                     </div>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
@@ -146,7 +146,7 @@
                             </button>
                             <button
                                 wire:click="deleteCampaign({{ $campaign->id }})"
-                                wire:confirm="Yakin ingin menghapus kampanye ini?"
+                                wire:confirm="Yakin ingin menghapus donasi ini?"
                                 class="px-2 sm:px-3 py-2 sm:py-2 bg-red-50 text-red-600 rounded-lg text-xs sm:text-sm font-semibold hover:bg-red-100 transition min-h-[36px]"
                             >
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -161,7 +161,7 @@
                     <svg class="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                     </svg>
-                    <p class="text-sm sm:text-base text-slate-500 mt-2">Belum ada kampanye. Buat kampanye pertama Anda!</p>
+                    <p class="text-sm sm:text-base text-slate-500 mt-2">Belum ada donasi. Buat donasi pertama Anda!</p>
                 </div>
                 @endforelse
             </div>
@@ -179,7 +179,7 @@
         <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto" wire:click.stop>
             <div class="p-4 sm:p-6">
                 <div class="flex justify-between items-center mb-4 sm:mb-6">
-                    <h3 class="text-lg sm:text-xl font-bold text-slate-800">Buat Kampanye Baru</h3>
+                    <h3 class="text-lg sm:text-xl font-bold text-slate-800">Buat Donasi Baru</h3>
                     <button wire:click="closeCreateForm" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition">
                         <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -190,7 +190,7 @@
                 <form wire:submit.prevent="createCampaign" class="space-y-4">
                     {{-- Title --}}
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Judul Kampanye</label>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Judul Donasi</label>
                         <input type="text" wire:model="title" class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-lg focus:border-emerald-500 focus:ring-0 text-sm sm:text-base" placeholder="Contoh: Bangun Masjid Al-Ikhlas">
                         @error('title') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
@@ -205,7 +205,7 @@
                     {{-- Description --}}
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Deskripsi Lengkap</label>
-                        <textarea wire:model="description" rows="5" class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-lg focus:border-emerald-500 focus:ring-0 text-sm sm:text-base" placeholder="Ceritakan detail kampanye Anda"></textarea>
+                        <textarea wire:model="description" rows="5" class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-lg focus:border-emerald-500 focus:ring-0 text-sm sm:text-base" placeholder="Ceritakan detail donasi Anda"></textarea>
                         @error('description') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
 
@@ -244,7 +244,7 @@
 
                     {{-- Image --}}
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Gambar Kampanye</label>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Gambar Donasi</label>
                         <input type="file" wire:model="image" accept="image/*" class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-lg focus:border-emerald-500 focus:ring-0 text-sm sm:text-base">
                         @error('image') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                         @if($image)
@@ -257,7 +257,7 @@
                     {{-- Featured --}}
                     <label class="flex items-start space-x-3 p-3 sm:p-4 bg-slate-50 rounded-lg border-2 border-slate-200 cursor-pointer hover:border-emerald-300 transition">
                         <input type="checkbox" wire:model="is_featured" class="w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 mt-0.5">
-                        <span class="text-sm sm:text-base text-slate-700 font-semibold">Jadikan Kampanye Unggulan</span>
+                        <span class="text-sm sm:text-base text-slate-700 font-semibold">Jadikan Donasi Unggulan</span>
                     </label>
 
                     {{-- Submit Buttons --}}
@@ -266,7 +266,7 @@
                             Batal
                         </button>
                         <button type="submit" class="w-full sm:flex-1 px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition text-sm sm:text-base">
-                            Buat Kampanye
+                            Buat Donasi
                         </button>
                     </div>
                 </form>
@@ -281,7 +281,7 @@
         <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto" wire:click.stop>
             <div class="p-4 sm:p-6">
                 <div class="flex justify-between items-center mb-4 sm:mb-6">
-                    <h3 class="text-lg sm:text-xl font-bold text-slate-800">Edit Kampanye</h3>
+                    <h3 class="text-lg sm:text-xl font-bold text-slate-800">Edit Donasi</h3>
                     <button wire:click="closeEditForm" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition">
                         <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -292,7 +292,7 @@
                 <form wire:submit.prevent="updateCampaign" class="space-y-4">
                     {{-- Title --}}
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Judul Kampanye</label>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Judul Donasi</label>
                         <input type="text" wire:model="title" class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-lg focus:border-emerald-500 focus:ring-0 text-sm sm:text-base">
                         @error('title') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
@@ -346,7 +346,7 @@
 
                     {{-- Image --}}
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2">Gambar Kampanye</label>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Gambar Donasi</label>
                         <input type="file" wire:model="image" accept="image/*" class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-slate-200 rounded-lg focus:border-emerald-500 focus:ring-0 text-sm sm:text-base">
                         @error('image') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                         @if($selectedCampaign?->image && !$image)
@@ -364,7 +364,7 @@
                     {{-- Featured --}}
                     <label class="flex items-start space-x-3 p-3 sm:p-4 bg-slate-50 rounded-lg border-2 border-slate-200 cursor-pointer hover:border-emerald-300 transition">
                         <input type="checkbox" wire:model="is_featured" class="w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 mt-0.5">
-                        <span class="text-sm sm:text-base text-slate-700 font-semibold">Jadikan Kampanye Unggulan</span>
+                        <span class="text-sm sm:text-base text-slate-700 font-semibold">Jadikan Donasi Unggulan</span>
                     </label>
 
                     {{-- Submit Buttons --}}
@@ -373,7 +373,7 @@
                             Batal
                         </button>
                         <button type="submit" class="w-full sm:flex-1 px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition text-sm sm:text-base">
-                            Update Kampanye
+                            Update Donasi
                         </button>
                     </div>
                 </form>

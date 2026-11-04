@@ -96,4 +96,45 @@ class DisbursementManagerTest extends TestCase
 
         $this->get(route('admin.penyaluran'))->assertOk()->assertSee('Penyaluran terdaftar');
     }
+
+    public function test_admin_can_export_all_disbursements_with_numeric_amounts_and_safe_descriptions(): void
+    {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        Disbursement::factory()->count(16)->create();
+        Disbursement::factory()->create([
+            'description' => '=1+1', 'amount' => 1500000.50,
+            'type' => 'wakaf_produktif', 'disbursed_at' => null,
+        ]);
+
+        $response = $this->get(route('admin.export.penyaluran'));
+        $response->assertOk()->assertDownload();
+        $temporaryFile = tempnam(sys_get_temp_dir(), 'penyaluran-test-');
+        try {
+            file_put_contents($temporaryFile, $response->getContent());
+            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($temporaryFile);
+            $sheet = $spreadsheet->getActiveSheet();
+            $this->assertSame(18, $sheet->getHighestRow());
+            $this->assertSame('Belum diisi', $sheet->getCell('B2')->getValue());
+            $this->assertSame('=1+1', $sheet->getCell('C2')->getValue());
+            $this->assertSame('s', $sheet->getCell('C2')->getDataType());
+            $this->assertSame('Wakaf Produktif', $sheet->getCell('D2')->getValue());
+            $this->assertSame(1500000.5, $sheet->getCell('E2')->getValue());
+        } finally {
+            unlink($temporaryFile);
+        }
+    }
+
+    public function test_export_requires_an_admin(): void
+    {
+        $this->get(route('admin.export.penyaluran'))->assertRedirect(route('admin.login'));
+        $this->actingAs(User::factory()->create(['is_admin' => false]));
+        $this->get(route('admin.export.penyaluran'))->assertRedirect(route('admin.login'));
+    }
+
+    public function test_empty_disbursement_export_still_downloads(): void
+    {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+
+        $this->get(route('admin.export.penyaluran'))->assertOk()->assertDownload();
+    }
 }

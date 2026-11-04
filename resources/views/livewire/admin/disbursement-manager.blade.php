@@ -6,6 +6,7 @@
                 <h1 class="text-xl font-bold mt-2">Kelola Penyaluran</h1>
                 <p class="text-sm text-emerald-100 mt-1">Catat dan kelola penyaluran dana donasi</p>
             </div>
+            <a href="{{ route('admin.export.penyaluran') }}" class="px-4 py-3 bg-emerald-700 text-white rounded-xl font-bold hover:bg-emerald-800">Export Excel</a>
             <button wire:click="openCreateForm" class="px-4 py-3 bg-white text-emerald-700 rounded-xl font-bold">+ Tambah Penyaluran</button>
         </div>
         <div class="p-4 sm:p-6 bg-slate-50 border-b border-slate-100">

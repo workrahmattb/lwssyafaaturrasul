@@ -234,9 +234,9 @@
                 <p class="text-xs font-semibold text-emerald-700 uppercase tracking-wider">Ringkasan Donasi</p>
             </div>
             <div class="p-5 space-y-4 bg-white">
-                {{-- Kampanye --}}
+                {{-- Donasi --}}
                 <div class="flex justify-between items-start text-sm">
-                    <span class="text-slate-500">Kampanye</span>
+                    <span class="text-slate-500">Donasi</span>
                     <span class="font-semibold text-slate-800 text-right max-w-[60%] leading-snug truncate">{{ $campaign->title }}</span>
                 </div>
 
@@ -423,7 +423,7 @@
                 </svg>
             </div>
             <h3 class="text-2xl sm:text-3xl font-black text-slate-800 mb-2">Alhamdulillah! 🎉</h3>
-            <p class="text-sm sm:text-base text-slate-600">Donasi kampanye Anda berhasil diajukan</p>
+            <p class="text-sm sm:text-base text-slate-600">Donasi Anda berhasil diajukan</p>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">Terima kasih atas kepedulian Anda</p>
         </div>
 
@@ -444,7 +444,7 @@
 
             <div class="space-y-3">
                 <div class="flex justify-between items-start">
-                    <span class="text-xs sm:text-sm text-slate-600">Kampanye</span>
+                    <span class="text-xs sm:text-sm text-slate-600">Donasi</span>
                     <span class="font-medium text-slate-800 text-xs sm:text-sm text-right truncate max-w-[60%]">{{ $campaign->title }}</span>
                 </div>
 
@@ -509,7 +509,7 @@
             <a href="{{ route('campaigns.detail', $campaign->slug) }}"
                class="block w-full py-4 rounded-xl font-bold text-white text-sm tracking-wide text-center shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200"
                style="background: linear-gradient(135deg, #10b981, #0d9488);">
-                🕌 Kembali ke Halaman Kampanye
+                🕌 Kembali ke Halaman Donasi
             </a>
             <button
                 type="button"

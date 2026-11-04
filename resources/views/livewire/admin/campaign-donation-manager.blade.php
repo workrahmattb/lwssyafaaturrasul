@@ -10,8 +10,8 @@
                         </svg>
                     </a>
                     <div>
-                        <h2 class="text-lg sm:text-xl font-bold">Kelola Donasi Kampanye</h2>
-                        <p class="text-xs sm:text-sm text-emerald-100">Approve/reject donasi kampanye</p>
+                        <h2 class="text-lg sm:text-xl font-bold">Kelola Donasi</h2>
+                        <p class="text-xs sm:text-sm text-emerald-100">Approve/reject donasi</p>
                     </div>
                 </div>
 
@@ -62,7 +62,7 @@
                     <tr>
                         <th class="px-6 py-3 text-center">No</th>
                         <th class="px-6 py-3">Transaksi</th>
-                        <th class="px-6 py-3">Kampanye</th>
+                        <th class="px-6 py-3">Donasi</th>
                         <th class="px-6 py-3">Donatur</th>
                         <th class="px-6 py-3">Bank</th>
                         <th class="px-6 py-3 text-right">Jumlah</th>
@@ -163,7 +163,7 @@
                             <svg class="w-16 h-16 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                             </svg>
-                            Tidak ada donasi kampanye untuk ditampilkan.
+                            Tidak ada donasi untuk ditampilkan.
                         </td>
                     </tr>
                     @endforelse
@@ -285,7 +285,7 @@
                 <svg class="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
-                <p class="text-sm text-slate-500">Tidak ada donasi kampanye untuk ditampilkan.</p>
+                <p class="text-sm text-slate-500">Tidak ada donasi untuk ditampilkan.</p>
             </div>
             @endforelse
         </div>

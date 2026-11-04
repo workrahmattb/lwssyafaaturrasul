@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? 'Kampanye - Lembaga Wakaf Sedekah' }}</title>
+    <title>{{ $title ?? 'Donasi - Lembaga Wakaf Sedekah' }}</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/lws.png') }}">
@@ -56,7 +56,7 @@
                         <li><a href="{{ route('donation') }}" class="hover:text-emerald-400 transition">Wakaf Pembangunan</a></li>
                         <li><a href="{{ route('donation') }}" class="hover:text-emerald-400 transition">Wakaf Produktif</a></li>
                         <li><a href="{{ route('donation') }}" class="hover:text-emerald-400 transition">Donasi Pendidikan</a></li>
-                        <li><a href="{{ route('campaigns.index') }}" class="hover:text-emerald-400 transition">Kampanye Donasi</a></li>
+                        <li><a href="{{ route('campaigns.index') }}" class="hover:text-emerald-400 transition">Donasi</a></li>
                     </ul>
                 </div>
                 <div>

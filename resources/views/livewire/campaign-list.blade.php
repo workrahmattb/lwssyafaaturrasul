@@ -1,8 +1,8 @@
 <div class="max-w-6xl mx-auto px-6 py-12">
     {{-- Header --}}
     <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-5xl font-black text-emerald-800 mb-4">Kampanye Donasi</h1>
-        <p class="text-xl text-slate-600">Pilih kampanye yang ingin Anda dukung</p>
+        <h1 class="text-4xl md:text-5xl font-black text-emerald-800 mb-4">Donasi</h1>
+        <p class="text-xl text-slate-600">Pilih donasi yang ingin Anda dukung</p>
     </div>
 
     {{-- Campaigns Grid --}}
@@ -79,8 +79,8 @@
             <svg class="w-16 h-16 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
             </svg>
-            <p class="text-slate-500 text-lg font-semibold">Belum ada kampanye aktif</p>
-            <p class="text-slate-400 text-sm mt-2">Kampanye baru akan muncul di sini</p>
+            <p class="text-slate-500 text-lg font-semibold">Belum ada donasi aktif</p>
+            <p class="text-slate-400 text-sm mt-2">Donasi baru akan muncul di sini</p>
         </div>
         @endforelse
     </div>

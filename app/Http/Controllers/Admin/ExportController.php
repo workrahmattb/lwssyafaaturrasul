@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CampaignDonation;
+use App\Models\Disbursement;
 use App\Models\Donation;
 use App\Models\UnitUsahaReport;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ExportController extends Controller
 {
@@ -26,7 +28,7 @@ class ExportController extends Controller
 
         $spreadsheet = $this->buildDonationSpreadsheet($donations);
 
-        return $this->download($spreadsheet, 'donasi-umum-' . now()->format('Y-m-d-His'));
+        return $this->download($spreadsheet, 'donasi-umum-'.now()->format('Y-m-d-His'));
     }
 
     public function exportCampaignDonations(Request $request)
@@ -41,14 +43,45 @@ class ExportController extends Controller
 
         $spreadsheet = $this->buildCampaignDonationSpreadsheet($donations);
 
-        return $this->download($spreadsheet, 'donasi-kampanye-' . now()->format('Y-m-d-His'));
+        return $this->download($spreadsheet, 'donasi-'.now()->format('Y-m-d-His'));
+    }
+
+    public function exportDisbursements(): \Illuminate\Http\Response
+    {
+        $spreadsheet = new Spreadsheet;
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Penyaluran');
+        $sheet->fromArray(['No', 'Tanggal Penyaluran', 'Deskripsi Penyaluran', 'Jenis Donasi', 'Jumlah Disalurkan (Rp)'], null, 'A1');
+        $sheet->getStyle('A1:E1')->applyFromArray([
+            'font' => ['bold' => true, 'color' => ['argb' => Color::COLOR_WHITE]],
+            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FF10B981']],
+        ]);
+
+        foreach (Disbursement::latest('id')->get() as $index => $disbursement) {
+            $row = $index + 2;
+            $sheet->setCellValue('A'.$row, $index + 1);
+            $sheet->setCellValue('B'.$row, $disbursement->disbursed_at?->format('d/m/Y') ?? 'Belum diisi');
+            $sheet->setCellValueExplicit('C'.$row, $disbursement->description, DataType::TYPE_STRING);
+            $sheet->setCellValue('D'.$row, Disbursement::CATEGORIES[$disbursement->type]);
+            $sheet->setCellValue('E'.$row, (float) $disbursement->amount);
+            $sheet->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+        }
+
+        foreach (range('A', 'E') as $letter) {
+            $sheet->getColumnDimension($letter)->setAutoSize(true);
+        }
+        $sheet->getColumnDimension('C')->setAutoSize(false)->setWidth(60);
+        $sheet->getStyle('C1:C'.$sheet->getHighestRow())->getAlignment()->setWrapText(true);
+        $sheet->freezePane('A2');
+
+        return $this->download($spreadsheet, 'penyaluran-'.now()->format('Y-m-d-His'));
     }
 
     public function exportUnitUsaha()
     {
         $reports = UnitUsahaReport::orderBy('tanggal', 'desc')->orderBy('id', 'desc')->get();
 
-        $spreadsheet = new Spreadsheet();
+        $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
 
         // Header style
@@ -63,22 +96,22 @@ class ExportController extends Controller
         $headers = ['No', 'Nama', 'Tanggal', 'Jumlah Uang', 'Catatan'];
         $col = 'A';
         foreach ($headers as $header) {
-            $sheet->setCellValue($col . '1', $header);
+            $sheet->setCellValue($col.'1', $header);
             $col++;
         }
 
-        $sheet->getStyle('A1:' . $this->colLetter(count($headers)) . '1')->applyFromArray($headerStyle);
+        $sheet->getStyle('A1:'.$this->colLetter(count($headers)).'1')->applyFromArray($headerStyle);
 
         foreach ($reports as $index => $report) {
             $row = $index + 2;
 
-            $sheet->setCellValue('A' . $row, $index + 1);
-            $sheet->setCellValue('B' . $row, $report->nama);
-            $sheet->setCellValue('C' . $row, $report->tanggal->format('d/m/Y'));
-            $sheet->setCellValue('D' . $row, (int) $report->jumlah_uang);
-            $sheet->setCellValue('E' . $row, $report->catatan ?? '-');
+            $sheet->setCellValue('A'.$row, $index + 1);
+            $sheet->setCellValue('B'.$row, $report->nama);
+            $sheet->setCellValue('C'.$row, $report->tanggal->format('d/m/Y'));
+            $sheet->setCellValue('D'.$row, (int) $report->jumlah_uang);
+            $sheet->setCellValue('E'.$row, $report->catatan ?? '-');
 
-            $sheet->getStyle('D' . $row)->getNumberFormat()->setFormatCode('#,##0');
+            $sheet->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0');
         }
 
         foreach (range('A', $this->colLetter(count($headers))) as $letter) {
@@ -87,12 +120,12 @@ class ExportController extends Controller
 
         $sheet->getRowDimension(1)->setRowHeight(20);
 
-        return $this->download($spreadsheet, 'laporan-unit-usaha-' . now()->format('Y-m-d-His'));
+        return $this->download($spreadsheet, 'laporan-unit-usaha-'.now()->format('Y-m-d-His'));
     }
 
     protected function buildDonationSpreadsheet($donations)
     {
-        $spreadsheet = new Spreadsheet();
+        $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
 
         // Header style
@@ -107,12 +140,12 @@ class ExportController extends Controller
         $headers = ['No', 'TRX ID', 'Nama Donatur', 'Telepon', 'Tipe', 'Bank', 'Jumlah', 'Anonim', 'Status', 'Tanggal'];
         $col = 'A';
         foreach ($headers as $header) {
-            $sheet->setCellValue($col . '1', $header);
+            $sheet->setCellValue($col.'1', $header);
             $col++;
         }
 
         // Apply header style
-        $sheet->getStyle('A1:' . $this->colLetter(count($headers)) . '1')->applyFromArray($headerStyle);
+        $sheet->getStyle('A1:'.$this->colLetter(count($headers)).'1')->applyFromArray($headerStyle);
 
         // Data rows
         foreach ($donations as $index => $donation) {
@@ -123,19 +156,19 @@ class ExportController extends Controller
                 default => 'Donasi Pendidikan',
             };
 
-            $sheet->setCellValue('A' . $row, $index + 1);
-            $sheet->setCellValue('B' . $row, $donation->trx_id);
-            $sheet->setCellValue('C' . $row, $donation->is_anonymous ? 'Anonim' : $donation->donatur_name);
-            $sheet->setCellValue('D' . $row, $donation->phone ?? '-');
-            $sheet->setCellValue('E' . $row, $typeLabel);
-            $sheet->setCellValue('F' . $row, $donation->paymentMethod ? $donation->paymentMethod->bank_name : '-');
-            $sheet->setCellValue('G' . $row, (int) $donation->amount);
-            $sheet->setCellValue('H' . $row, $donation->is_anonymous ? 'Ya' : 'Tidak');
-            $sheet->setCellValue('I' . $row, ucfirst($donation->status));
-            $sheet->setCellValue('J' . $row, $donation->created_at->setTimezone('Asia/Jakarta')->format('d/m/Y H:i'));
+            $sheet->setCellValue('A'.$row, $index + 1);
+            $sheet->setCellValue('B'.$row, $donation->trx_id);
+            $sheet->setCellValue('C'.$row, $donation->is_anonymous ? 'Anonim' : $donation->donatur_name);
+            $sheet->setCellValue('D'.$row, $donation->phone ?? '-');
+            $sheet->setCellValue('E'.$row, $typeLabel);
+            $sheet->setCellValue('F'.$row, $donation->paymentMethod ? $donation->paymentMethod->bank_name : '-');
+            $sheet->setCellValue('G'.$row, (int) $donation->amount);
+            $sheet->setCellValue('H'.$row, $donation->is_anonymous ? 'Ya' : 'Tidak');
+            $sheet->setCellValue('I'.$row, ucfirst($donation->status));
+            $sheet->setCellValue('J'.$row, $donation->created_at->setTimezone('Asia/Jakarta')->format('d/m/Y H:i'));
 
             // Format amount as number
-            $sheet->getStyle('G' . $row)->getNumberFormat()->setFormatCode('#,##0');
+            $sheet->getStyle('G'.$row)->getNumberFormat()->setFormatCode('#,##0');
         }
 
         // Auto-size columns
@@ -151,7 +184,7 @@ class ExportController extends Controller
 
     protected function buildCampaignDonationSpreadsheet($donations)
     {
-        $spreadsheet = new Spreadsheet();
+        $spreadsheet = new Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
 
         $headerStyle = [
@@ -162,30 +195,30 @@ class ExportController extends Controller
             ],
         ];
 
-        $headers = ['No', 'TRX ID', 'Kampanye', 'Nama Donatur', 'Telepon', 'Bank', 'Jumlah', 'Anonim', 'Status', 'Tanggal'];
+        $headers = ['No', 'TRX ID', 'Donasi', 'Nama Donatur', 'Telepon', 'Bank', 'Jumlah', 'Anonim', 'Status', 'Tanggal'];
         $col = 'A';
         foreach ($headers as $header) {
-            $sheet->setCellValue($col . '1', $header);
+            $sheet->setCellValue($col.'1', $header);
             $col++;
         }
 
-        $sheet->getStyle('A1:' . $this->colLetter(count($headers)) . '1')->applyFromArray($headerStyle);
+        $sheet->getStyle('A1:'.$this->colLetter(count($headers)).'1')->applyFromArray($headerStyle);
 
         foreach ($donations as $index => $donation) {
             $row = $index + 2;
 
-            $sheet->setCellValue('A' . $row, $index + 1);
-            $sheet->setCellValue('B' . $row, $donation->trx_id);
-            $sheet->setCellValue('C' . $row, $donation->campaign ? $donation->campaign->title : '-');
-            $sheet->setCellValue('D' . $row, $donation->is_anonymous ? 'Anonim' : $donation->donatur_name);
-            $sheet->setCellValue('E' . $row, $donation->phone ?? '-');
-            $sheet->setCellValue('F' . $row, $donation->paymentMethod ? $donation->paymentMethod->bank_name : '-');
-            $sheet->setCellValue('G' . $row, (int) $donation->amount);
-            $sheet->setCellValue('H' . $row, $donation->is_anonymous ? 'Ya' : 'Tidak');
-            $sheet->setCellValue('I' . $row, ucfirst($donation->status));
-            $sheet->setCellValue('J' . $row, $donation->created_at->setTimezone('Asia/Jakarta')->format('d/m/Y H:i'));
+            $sheet->setCellValue('A'.$row, $index + 1);
+            $sheet->setCellValue('B'.$row, $donation->trx_id);
+            $sheet->setCellValue('C'.$row, $donation->campaign ? $donation->campaign->title : '-');
+            $sheet->setCellValue('D'.$row, $donation->is_anonymous ? 'Anonim' : $donation->donatur_name);
+            $sheet->setCellValue('E'.$row, $donation->phone ?? '-');
+            $sheet->setCellValue('F'.$row, $donation->paymentMethod ? $donation->paymentMethod->bank_name : '-');
+            $sheet->setCellValue('G'.$row, (int) $donation->amount);
+            $sheet->setCellValue('H'.$row, $donation->is_anonymous ? 'Ya' : 'Tidak');
+            $sheet->setCellValue('I'.$row, ucfirst($donation->status));
+            $sheet->setCellValue('J'.$row, $donation->created_at->setTimezone('Asia/Jakarta')->format('d/m/Y H:i'));
 
-            $sheet->getStyle('G' . $row)->getNumberFormat()->setFormatCode('#,##0');
+            $sheet->getStyle('G'.$row)->getNumberFormat()->setFormatCode('#,##0');
         }
 
         foreach (range('A', $this->colLetter(count($headers))) as $letter) {
@@ -206,7 +239,7 @@ class ExportController extends Controller
 
         return response($output, 200, [
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '.xlsx"',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'.xlsx"',
         ]);
     }
 
@@ -214,9 +247,10 @@ class ExportController extends Controller
     {
         $letter = '';
         while ($index > 0) {
-            $letter = chr(($index - 1) % 26 + 65) . $letter;
+            $letter = chr(($index - 1) % 26 + 65).$letter;
             $index = (int) (($index - 1) / 26);
         }
+
         return $letter;
     }
 }

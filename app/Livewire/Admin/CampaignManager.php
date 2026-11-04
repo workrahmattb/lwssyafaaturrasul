@@ -3,30 +3,40 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Campaign;
-use Livewire\Component;
-use Livewire\Attributes\Layout;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 #[Layout('components.layouts.admin')]
 class CampaignManager extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads, WithPagination;
 
     public $showCreateForm = false;
+
     public $showEditForm = false;
+
     public $selectedCampaign = null;
 
     // Form fields
     public $title;
+
     public $description;
+
     public $short_description;
+
     public $target_amount;
+
     public $start_date;
+
     public $end_date;
+
     public $status = 'draft';
+
     public $image;
+
     public $is_featured = false;
 
     protected $rules = [
@@ -63,7 +73,7 @@ class CampaignManager extends Component
 
         Campaign::create([
             'title' => $this->title,
-            'slug' => Str::slug($this->title) . '-' . time(),
+            'slug' => Str::slug($this->title).'-'.time(),
             'description' => $this->description,
             'short_description' => $this->short_description,
             'target_amount' => $this->target_amount,
@@ -76,7 +86,7 @@ class CampaignManager extends Component
 
         $this->closeCreateForm();
         $this->resetPage();
-        session()->flash('success', 'Kampanye berhasil dibuat!');
+        session()->flash('success', 'Donasi berhasil dibuat!');
     }
 
     public function editCampaign($id)
@@ -101,8 +111,9 @@ class CampaignManager extends Component
     public function updateCampaign()
     {
         // Ensure campaign exists
-        if (!$this->selectedCampaign) {
-            session()->flash('error', 'Kampanye tidak ditemukan!');
+        if (! $this->selectedCampaign) {
+            session()->flash('error', 'Donasi tidak ditemukan!');
+
             return redirect()->route('admin.campaigns');
         }
 
@@ -120,7 +131,7 @@ class CampaignManager extends Component
 
         $campaign->update([
             'title' => $this->title,
-            'slug' => Str::slug($this->title) . '-' . time(),
+            'slug' => Str::slug($this->title).'-'.time(),
             'description' => $this->description,
             'short_description' => $this->short_description,
             'target_amount' => $this->target_amount,
@@ -132,7 +143,7 @@ class CampaignManager extends Component
         ]);
 
         $this->closeEditForm();
-        session()->flash('success', 'Kampanye berhasil diupdate!');
+        session()->flash('success', 'Donasi berhasil diupdate!');
     }
 
     public function closeEditForm()
@@ -149,7 +160,7 @@ class CampaignManager extends Component
 
         // Reset pagination and refresh
         $this->resetPage();
-        session()->flash('success', 'Kampanye berhasil dihapus!');
+        session()->flash('success', 'Donasi berhasil dihapus!');
     }
 
     private function resetForm()

@@ -44,9 +44,9 @@
                         </div>
                         <span class="text-2xl">👥</span>
                     </div>
-                    <p class="text-emerald-100 text-sm font-medium">Total Donasi</p>
-                    <p class="text-3xl font-black mt-1">{{ number_format($totalDonations) }}</p>
-                    <p class="text-emerald-100 text-xs mt-2">Donasi umum</p>
+                    <p class="text-emerald-100 text-sm font-medium">Total Terkumpul Donasi Umum + Donasi</p>
+                    <p class="text-2xl font-black mt-1 break-words">{{ formatRupiah($totalCollectedDonations) }}</p>
+                    <p class="text-emerald-100 text-xs mt-2">Donasi yang sudah disetujui</p>
                 </div>
 
                 {{-- Total Campaign Donations --}}
@@ -59,9 +59,9 @@
                         </div>
                         <span class="text-2xl">📋</span>
                     </div>
-                    <p class="text-blue-100 text-sm font-medium">Donasi Kampanye</p>
-                    <p class="text-3xl font-black mt-1">{{ number_format($totalCampaignDonations) }}</p>
-                    <p class="text-blue-100 text-xs mt-2">{{ formatRupiah($totalCampaignAmount) }}</p>
+                    <p class="text-blue-100 text-sm font-medium">Total Unit Usaha</p>
+                    <p class="text-2xl font-black mt-1 break-words">{{ formatRupiah($unitUsahaTotalAmount) }}</p>
+                    <p class="text-blue-100 text-xs mt-2">Total pemasukan unit usaha</p>
                 </div>
 
                 {{-- Total Amount --}}
@@ -74,9 +74,9 @@
                         </div>
                         <span class="text-2xl">💰</span>
                     </div>
-                    <p class="text-teal-100 text-sm font-medium">Total Terkumpul</p>
-                    <p class="text-2xl font-black mt-1">{{ formatRupiah($totalAmount) }}</p>
-                    <p class="text-teal-100 text-xs mt-2">Donasi umum + kampanye</p>
+                    <p class="text-teal-100 text-sm font-medium">Penyaluran Total</p>
+                    <p class="text-2xl font-black mt-1">{{ formatRupiah($totalDisbursedAmount) }}</p>
+                    <p class="text-teal-100 text-xs mt-2">Seluruh dana yang disalurkan</p>
                 </div>
 
                 {{-- Approved --}}
@@ -89,9 +89,9 @@
                         </div>
                         <span class="text-2xl">✅</span>
                     </div>
-                    <p class="text-cyan-100 text-sm font-medium">Disetujui</p>
-                    <p class="text-3xl font-black mt-1">{{ number_format($approvedCount) }}</p>
-                    <p class="text-cyan-100 text-xs mt-2">{{ number_format($pendingCount) }} menunggu verifikasi</p>
+                    <p class="text-cyan-100 text-sm font-medium">SALDO LWS</p>
+                    <p class="text-2xl font-black mt-1 break-words">{{ formatRupiah($lwsBalance) }}</p>
+                    <p class="text-cyan-100 text-xs mt-2">Donasi + unit usaha − penyaluran</p>
                 </div>
             </div>
 
@@ -138,7 +138,7 @@
 
             <div class="bg-white rounded-2xl p-6 border border-emerald-50 shadow-sm">
                 <h3 class="text-lg font-bold text-emerald-800 mb-1">Total Donasi Terkumpul per Tahun</h3>
-                <p class="text-sm text-slate-500 mb-6">Donasi umum dan kampanye yang disetujui · Sejak 2024</p>
+                <p class="text-sm text-slate-500 mb-6">Donasi umum dan donasi yang disetujui · Sejak 2024</p>
                 <div class="h-72 relative" wire:ignore>
                     <canvas
                         x-init='initTotalYearlyChart($el, @json($yearlyLabels), @json($yearlyTotalAmounts))'
@@ -495,7 +495,7 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
-                    Kelola Kampanye
+                    Kelola Donasi
                 </a>
                 <a href="{{ route('admin.unit-usaha') }}" wire:navigate class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-violet-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -507,7 +507,7 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                     </svg>
-                    Kelola Donasi
+                    Kelola Donasi Umum
                 </a>
                 <a href="{{ route('donation') }}" target="_blank" class="inline-flex items-center px-6 py-3 bg-white text-emerald-700 rounded-xl font-bold border-2 border-emerald-200 hover:border-emerald-400 transition">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

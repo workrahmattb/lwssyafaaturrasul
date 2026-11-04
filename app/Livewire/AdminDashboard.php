@@ -161,13 +161,20 @@ class AdminDashboard extends Component
             array_keys(Disbursement::CATEGORIES),
         );
 
+        $totalCollectedDonations = (float) $totalApprovedAmount
+            + (float) CampaignDonation::where('status', 'approved')->sum('amount');
+        $totalDisbursedAmount = array_sum($disbursementAmounts);
+        $lwsBalance = $totalCollectedDonations + (float) $unitUsahaTotalAmount - $totalDisbursedAmount;
+
         return view('livewire.admin.dashboard', [
+            'totalCollectedDonations' => $totalCollectedDonations,
+            'lwsBalance' => $lwsBalance,
             'disbursementLabels' => array_values(Disbursement::CATEGORIES),
             'disbursementAmounts' => $disbursementAmounts,
             'yearlyDisbursementAmounts' => $yearlyDisbursementAmounts,
             'yearlyDisbursementsByCategory' => $yearlyDisbursementsByCategory,
             'undatedDisbursementAmount' => (float) Disbursement::whereNull('disbursed_at')->sum('amount'),
-            'totalDisbursedAmount' => array_sum($disbursementAmounts),
+            'totalDisbursedAmount' => $totalDisbursedAmount,
             'totalDonations' => $totalDonations,
             'totalAmount' => $totalAmount,
             'pendingCount' => $pendingCount,

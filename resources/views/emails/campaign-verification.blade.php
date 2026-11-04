@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donasi Kampanye Baru - {{ $donation->trx_id }}</title>
+    <title>Donasi Baru - {{ $donation->trx_id }}</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -170,8 +170,8 @@
     <div class="container">
         {{-- Header --}}
         <div class="header">
-            <h1>🔔 Donasi Kampanye Baru Masuk!</h1>
-            <p>Ada donasi untuk kampanye yang menunggu verifikasi</p>
+            <h1>🔔 Donasi Baru Masuk!</h1>
+            <p>Ada donasi untuk donasi yang menunggu verifikasi</p>
         </div>
 
         {{-- Content --}}
@@ -179,15 +179,15 @@
             <div class="greeting">Assalamu'alaikum Warahmatullahi Wabarakatuh,</div>
 
             <div class="message">
-                Alhamdulillah, ada donasi baru untuk kampanye di website <strong>{{ config('app.name') }}</strong>.
+                Alhamdulillah, ada donasi baru untuk donasi di website <strong>{{ config('app.name') }}</strong>.
                 Donasi ini masih dalam status <span class="status-badge">Pending</span> dan menunggu verifikasi dari admin.
             </div>
 
             {{-- Campaign Info --}}
             <div class="campaign-info">
-                <div class="campaign-info-title">📢 Kampanye: {{ $donation->campaign->title ?? 'N/A' }}</div>
+                <div class="campaign-info-title">📢 Donasi: {{ $donation->campaign->title ?? 'N/A' }}</div>
                 <a href="{{ route('campaigns.detail', $donation->campaign->slug ?? '#') }}" class="campaign-info-link">
-                    Lihat Detail Kampanye →
+                    Lihat Detail Donasi →
                 </a>
             </div>
 

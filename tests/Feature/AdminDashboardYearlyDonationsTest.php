@@ -50,6 +50,8 @@ class AdminDashboardYearlyDonationsTest extends TestCase
         }
 
         Livewire::test(AdminDashboard::class)
+            ->assertViewHas('totalCollectedDonations', 300000.0)
+            ->assertViewHas('lwsBalance', 300000.0)
             ->assertViewHas('yearlyLabels', ['2024', '2025', '2026'])
             ->assertViewHas('yearlyTotalAmounts', [0.0, 150000.0, 150000.0])
             ->assertSee('Total Donasi Terkumpul per Tahun');
@@ -121,5 +123,25 @@ class AdminDashboardYearlyDonationsTest extends TestCase
                 'wakaf_produktif' => [0.0, 75000.0, 0.0],
                 'donasi_pendidikan' => [0.0, 0.0, 25000.0],
             ]);
+    }
+
+    public function test_lws_balance_adds_unit_income_and_subtracts_all_disbursements(): void
+    {
+        \App\Models\UnitUsahaReport::create([
+            'nama' => 'Unit Test', 'tanggal' => '2026-01-01', 'jumlah_uang' => 500000,
+        ]);
+        Disbursement::factory()->create(['amount' => 150000, 'disbursed_at' => null]);
+
+        Livewire::test(AdminDashboard::class)
+            ->assertViewHas('lwsBalance', 350000.0)
+            ->assertViewHas('totalDisbursedAmount', 150000.0)
+            ->assertSee('SALDO LWS')->assertSee('Total Unit Usaha')->assertSee('Penyaluran Total');
+    }
+
+    public function test_lws_balance_can_be_negative(): void
+    {
+        Disbursement::factory()->create(['amount' => 100000]);
+
+        Livewire::test(AdminDashboard::class)->assertViewHas('lwsBalance', -100000.0);
     }
 }

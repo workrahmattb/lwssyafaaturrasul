@@ -38,6 +38,7 @@ Terakhir diperbarui: 4 November 2026 (Asia/Jakarta).
 | `/admin/manage` | `DashboardController@manage` | `admin.manage` | Kelola donasi umum |
 | `/admin/campaigns` | `CampaignManager` | `admin.campaigns` | Kelola kampanye |
 | `/admin/campaign-donation` | `CampaignDonationManager` | `admin.campaign-donation` | Kelola donasi kampanye |
+| `/admin/export/penyaluran` | `ExportController@exportDisbursements` | `admin.export.penyaluran` | Export Excel seluruh data penyaluran (khusus admin) |
 | `/admin/penyaluran` | `DisbursementManager` | `admin.penyaluran` | CRUD penyaluran dana |
 | `/admin/unit-usaha` | `UnitUsahaReportManager` | `admin.unit-usaha` | Kelola laporan unit usaha |
 | `/admin/export/donations` | `ExportController@exportDonations` | `admin.export.donations` | Export Excel donasi umum |
@@ -214,7 +215,7 @@ Terakhir diperbarui: 4 November 2026 (Asia/Jakarta).
 - Dipasang di semua route `/admin/*` kecuali login
 
 ### Dashboard (`/admin/donations`)
-- **4 Kartu Statistik**: Total Donasi, Total Terkumpul, Menunggu Verifikasi, Disetujui
+- **4 Kartu Statistik**: Total Terkumpul Donasi Umum + Kampanye (approved), Total Unit Usaha, Penyaluran Total, SALDO LWS
 - **Grafik Tren Donasi Perbulan** (12 bulan, bar chart Chart.js) — dipecah per **tipe donasi**: Wakaf Pembangunan, Wakaf Produktif, Donasi Pendidikan
 - **Grafik Tren Donasi Pertahun** (2024 sampai tahun berjalan, bar chart Chart.js) — dipecah per tipe donasi
 - **Donasi per Kategori** (progress bar: Wakaf Pembangunan, Produktif, Pendidikan + doughnut komposisi)
@@ -539,3 +540,34 @@ npm run build
 - `tests/Feature/AdminDashboardYearlyDonationsTest.php`: total donasi approved, tahun kosong, total penyaluran per kategori, tahun berdasarkan tanggal penyaluran, data tanpa tanggal, dan penambahan tahun 2027.
 - Verifikasi terakhir per bagian: lima test CRUD lulus setelah format nominal diperbarui; tujuh test dashboard lulus setelah pemisahan kategori dan penghapusan donat.
 - Build Vite berhasil pada pekerjaan grafik. Perubahan terakhir hanya Blade/perhitungan PHP; helper JavaScript untuk grafik tiga kategori sudah tersedia pada build.
+
+
+### Ekspor Excel Penyaluran
+
+- Tombol **Export Excel** tersedia di header Kelola Penyaluran.
+- Endpoint GET `/admin/export/penyaluran`, route `admin.export.penyaluran`, dilindungi middleware `admin`.
+- Implementasi mengikuti `ExportController` dan PhpSpreadsheet 5.5.0 yang sudah terpasang.
+- File `penyaluran-YYYY-MM-DD-HHmmss.xlsx` berisi seluruh data (bukan hanya halaman pagination aktif), urutan ID terbaru.
+- Kolom: No, Tanggal Penyaluran, Deskripsi Penyaluran, Jenis Donasi, Jumlah Disalurkan (Rp).
+- Tanggal kosong ditampilkan “Belum diisi”; nominal berupa angka dengan dua desimal agar dapat dihitung di Excel. Deskripsi disimpan sebagai teks eksplisit agar tidak dieksekusi sebagai formula.
+- Link download tidak menggunakan `wire:navigate`. Tidak ada migration atau dependency baru.
+- Setelah penambahan ekspor, `DisbursementManagerTest` lulus: 8 test, 53 assertion, mencakup isi XLSX, seluruh data lintas pagination, data kosong, dan akses admin.
+
+
+### Kartu keuangan dashboard admin
+
+- Urutan kartu teratas: **Total Terkumpul Donasi Umum + Kampanye**, **Total Unit Usaha**, **Penyaluran Total**, **SALDO LWS**. Semua menampilkan nominal Rupiah, bukan jumlah transaksi.
+- Donasi terkumpul hanya menjumlahkan `Donation.amount` dan `CampaignDonation.amount` berstatus `approved`; pending/rejected tidak masuk saldo.
+- Unit usaha menjumlahkan seluruh `UnitUsahaReport.jumlah_uang`, bukan hanya SR Bakery.
+- Penyaluran menjumlahkan seluruh `Disbursement.amount`, termasuk data tanpa tanggal.
+- Rumus: `SALDO LWS = donasi umum approved + kampanye approved + pemasukan unit usaha - total penyaluran`. Saldo negatif tetap ditampilkan apa adanya.
+- Data view baru: `totalCollectedDonations` dan `lwsBalance` pada `AdminDashboard`.
+- Pengujian dashboard terakhir: 9 test, 27 assertion lulus. Build Vite berhasil. Tidak ada migration baru untuk perubahan kartu.
+
+
+### Penamaan tampilan: Kampanye menjadi Donasi
+
+- Semua label pengguna yang sebelumnya menyebut “Kampanye” diganti menjadi “Donasi”: halaman utama, daftar/detail/form publik, pengelolaan admin, dashboard, pesan sukses/error, email, dan header/nama file ekspor.
+- Frasa “Donasi Kampanye” disederhanakan menjadi “Donasi”, bukan “Donasi Donasi”. “Donasi Umum” tetap digunakan untuk membedakan sumber penerimaan.
+- Nama internal `Campaign`, `CampaignDonation`, komponen, tabel database, route `campaigns.*`, dan URL `/kampanye` dipertahankan untuk kompatibilitas. Tidak ada migration atau perubahan data tersimpan.
+- Penyebutan kampanye pada bagian historis dokumentasi mengacu pada fitur yang sekarang berlabel Donasi.

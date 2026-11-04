@@ -7,25 +7,33 @@ use App\Models\Campaign;
 use App\Models\CampaignDonation;
 use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Str;
 
 class CampaignDonate extends Component
 {
     use WithFileUploads;
 
     public $slug = '';
+
     public $campaignId = null;
+
     public $step = 1;
 
     // Form fields
     public $amount = '';
+
     public $donatur_name = '';
+
     public $phone = '';
+
     public $payment_method_id = '';
+
     public $is_anonymous = false;
+
     public $proof_of_transfer = null;
+
     public $trx_id = '';
 
     protected $rules = [
@@ -43,12 +51,12 @@ class CampaignDonate extends Component
         $slug = $slug ?? request()->route('slug');
         $campaign = Campaign::where('slug', $slug)->first();
 
-        if (!$campaign || $campaign->status !== 'active') {
-            abort(404, 'Kampanye tidak ditemukan atau tidak aktif');
+        if (! $campaign || $campaign->status !== 'active') {
+            abort(404, 'Donasi tidak ditemukan atau tidak aktif');
         }
 
         if ($campaign->end_date && $campaign->end_date->isPast()) {
-            abort(404, 'Kampanye telah berakhir');
+            abort(404, 'Donasi telah berakhir');
         }
 
         $this->campaignId = $campaign->id;
@@ -78,7 +86,7 @@ class CampaignDonate extends Component
 
     public function updatedProofOfTransfer($value)
     {
-        if (!$value) {
+        if (! $value) {
             return;
         }
 
@@ -102,7 +110,7 @@ class CampaignDonate extends Component
         ];
 
         // Only require donatur_name if not anonymous
-        if (!$this->is_anonymous) {
+        if (! $this->is_anonymous) {
             $rules['donatur_name'] = 'required|min:3';
         }
 
@@ -118,7 +126,7 @@ class CampaignDonate extends Component
         ]);
 
         $this->step = 2;
-        $this->trx_id = 'TRX-' . strtoupper(Str::random(8));
+        $this->trx_id = 'TRX-'.strtoupper(Str::random(8));
     }
 
     public function backToStep1()
@@ -139,7 +147,7 @@ class CampaignDonate extends Component
         ];
 
         // Only require donatur_name if not anonymous
-        if (!$this->is_anonymous) {
+        if (! $this->is_anonymous) {
             $rules['donatur_name'] = 'required|min:3';
         }
 
@@ -176,7 +184,7 @@ class CampaignDonate extends Component
             Mail::to(config('mail.admin_address'))->send(new CampaignDonationMail($donation));
         } catch (\Exception $e) {
             // Log error but don't fail the donation
-            \Log::error('Failed to send campaign donation notification email: ' . $e->getMessage());
+            \Log::error('Failed to send campaign donation notification email: '.$e->getMessage());
         }
 
         $this->step = 3;

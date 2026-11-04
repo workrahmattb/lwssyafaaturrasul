@@ -10,7 +10,7 @@
                         </svg>
                     </a>
                     <div>
-                        <h2 class="text-lg sm:text-xl font-bold">Kelola Donasi</h2>
+                        <h2 class="text-lg sm:text-xl font-bold">Kelola Donasi Umum</h2>
                         <p class="text-xs sm:text-sm text-emerald-100">Approve/reject donasi umum</p>
                     </div>
                 </div>

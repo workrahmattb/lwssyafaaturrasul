@@ -207,10 +207,10 @@
         <div class="max-w-6xl mx-auto">
             {{-- Header --}}
             <div class="text-center mb-10">
-                <h2 class="text-3xl md:text-4xl font-black text-emerald-800 mb-3">Kampanye Wakaf</h2>
-                <p class="text-lg text-slate-600">Dukung kampanye kebaikan yang sedang berlangsung</p>
+                <h2 class="text-3xl md:text-4xl font-black text-emerald-800 mb-3">Donasi Wakaf</h2>
+                <p class="text-lg text-slate-600">Dukung donasi kebaikan yang sedang berlangsung</p>
                 <a href="{{ route('campaigns.index') }}" wire:navigate class="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-semibold mt-4">
-                    Lihat Semua Kampanye
+                    Lihat Semua Donasi
                     <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
@@ -294,8 +294,8 @@
                     <svg class="w-20 h-20 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                     </svg>
-                    <p class="text-slate-500 text-lg font-semibold">Belum ada kampanye aktif</p>
-                    <p class="text-slate-400 text-sm mt-2">Kampanye baru akan muncul di sini</p>
+                    <p class="text-slate-500 text-lg font-semibold">Belum ada donasi aktif</p>
+                    <p class="text-slate-400 text-sm mt-2">Donasi baru akan muncul di sini</p>
                 </div>
                 @endforelse
             </div>
@@ -332,7 +332,7 @@
                         <li><a href="#donasi" class="hover:text-emerald-400 transition">Wakaf Pembangunan</a></li>
                         <li><a href="#donasi" class="hover:text-emerald-400 transition">Wakaf Produktif</a></li>
                         <li><a href="#donasi" class="hover:text-emerald-400 transition">Donasi Pendidikan</a></li>
-                        <li><a href="{{ route('campaigns.index') }}" wire:navigate class="hover:text-emerald-400 transition">Kampanye Wakaf</a></li>
+                        <li><a href="{{ route('campaigns.index') }}" wire:navigate class="hover:text-emerald-400 transition">Donasi Wakaf</a></li>
                     </ul>
                 </div>
                 <div>
