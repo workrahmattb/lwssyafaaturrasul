@@ -510,7 +510,7 @@ npm run build
 - Komponen: `app/Livewire/Admin/DisbursementManager.php`.
 - View: `resources/views/livewire/admin/disbursement-manager.blade.php`.
 - Model: `app/Models/Disbursement.php`.
-- CRUD: tambah/edit melalui modal, daftar dengan pagination 15 data terbaru menurut ID, hapus dengan konfirmasi, notifikasi sukses, dan total dana disalurkan.
+- CRUD: tambah/edit melalui modal, daftar dengan pagination 15 data, tanggal penyaluran terbaru di atas (tanggal kosong paling bawah, ID terbaru sebagai pengurut tanggal yang sama), hapus dengan konfirmasi, notifikasi sukses, dan total dana disalurkan.
 - Komponen memeriksa `is_admin` pada `boot()`; ID data edit memakai atribut `#[Locked]`.
 - Data penyaluran dicatat terpisah; CRUD ini tidak mengurangi nilai donasi yang terkumpul.
 
@@ -581,3 +581,11 @@ npm run build
 - Berbeda dengan grafik bulanan yang tetap khusus Hasil Keuntungan SR Bakery.
 - Data view: `unitUsahaYearlyAmounts`; Chart.js memakai `initTotalYearlyChart` dengan label pemasukan unit usaha dan warna ungu opsional.
 - Tidak ada migration baru.
+
+
+### Urutan tabel Kelola Penyaluran
+
+- Tabel memiliki kolom No; nomor berlanjut antarhalaman menggunakan `firstItem() + index`.
+- Urutan berdasarkan `disbursed_at` terbaru, bukan waktu pencatatan; tanggal kosong di bawah, tanggal sama diurutkan ID menurun.
+- Perubahan ini khusus daftar Kelola Penyaluran; urutan ekspor tetap seperti implementasi sebelumnya.
+- Susunan dashboard terbaru: Donasi Terbaru → Laporan Unit Usaha → Penyaluran.

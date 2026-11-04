@@ -20,6 +20,7 @@
             <table class="w-full text-sm text-left">
                 <thead class="bg-slate-50 text-slate-500">
                     <tr>
+                        <th class="px-6 py-4">No</th>
                         <th class="px-6 py-4">Tanggal Penyaluran</th>
                         <th class="px-6 py-4">Deskripsi Penyaluran</th>
                         <th class="px-6 py-4">Jenis Donasi</th>
@@ -28,8 +29,9 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
-                    @forelse($disbursements as $disbursement)
+                    @forelse($disbursements as $index => $disbursement)
                         <tr wire:key="disbursement-{{ $disbursement->id }}" class="hover:bg-emerald-50">
+                            <td class="px-6 py-4 text-slate-600">{{ $disbursements->firstItem() + $index }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-slate-600">{{ $disbursement->disbursed_at?->format('d/m/Y') ?? 'Belum diisi' }}</td>
                             <td class="px-6 py-4 min-w-64 whitespace-pre-line break-words text-slate-700">{{ $disbursement->description }}</td>
                             <td class="px-6 py-4 text-slate-600">{{ $categories[$disbursement->type] }}</td>
@@ -40,7 +42,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="5" class="px-6 py-12 text-center text-slate-400">Belum ada data penyaluran. Klik Tambah Penyaluran untuk memulai.</td></tr>
+                        <tr><td colspan="6" class="px-6 py-12 text-center text-slate-400">Belum ada data penyaluran. Klik Tambah Penyaluran untuk memulai.</td></tr>
                     @endforelse
                 </tbody>
             </table>

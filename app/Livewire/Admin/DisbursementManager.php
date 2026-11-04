@@ -98,7 +98,7 @@ class DisbursementManager extends Component
     public function render(): View
     {
         return view('livewire.admin.disbursement-manager', [
-            'disbursements' => Disbursement::latest('id')->paginate(15),
+            'disbursements' => Disbursement::orderByRaw('disbursed_at IS NULL')->orderByDesc('disbursed_at')->orderByDesc('id')->paginate(15),
             'totalAmount' => Disbursement::sum('amount'),
             'categories' => Disbursement::CATEGORIES,
         ]);

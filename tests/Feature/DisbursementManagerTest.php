@@ -137,4 +137,27 @@ class DisbursementManagerTest extends TestCase
 
         $this->get(route('admin.export.penyaluran'))->assertOk()->assertDownload();
     }
+
+    public function test_table_orders_by_disbursement_date_with_undated_records_last(): void
+    {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        $newest = Disbursement::factory()->create(['disbursed_at' => '2026-11-04']);
+        $older = Disbursement::factory()->create(['disbursed_at' => '2024-01-01']);
+        $sameDate = Disbursement::factory()->create(['disbursed_at' => '2026-11-04']);
+        $undated = Disbursement::factory()->create(['disbursed_at' => null]);
+
+        Livewire::test(DisbursementManager::class)
+            ->assertViewHas('disbursements', fn ($rows) => $rows->pluck('id')->all() === [$sameDate->id, $newest->id, $older->id, $undated->id]);
+    }
+
+    public function test_table_numbering_continues_on_the_next_page(): void
+    {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        Disbursement::factory()->count(16)->create(['disbursed_at' => '2026-11-04']);
+
+        Livewire::test(DisbursementManager::class)
+            ->assertSeeHtml('<td class="px-6 py-4 text-slate-600">1</td>')
+            ->call('gotoPage', 2)
+            ->assertSeeHtml('<td class="px-6 py-4 text-slate-600">16</td>');
+    }
 }
