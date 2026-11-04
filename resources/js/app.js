@@ -174,6 +174,71 @@ window.initYearlyChart = function (el, labels, wakafPembangunan, wakafProduktif,
     }
 };
 
+window.initTotalYearlyChart = function (el, labels, amounts, datasetLabel = 'Total Donasi Terkumpul') {
+    if (!el || !labels || !labels.length) return;
+    try {
+        const ctx = el.getContext('2d');
+        if (!ctx) return;
+        // Destroy previous chart instance if exists (prevents memory leaks)
+        if (el.__chart) el.__chart.destroy();
+        el.__chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: datasetLabel,
+                    data: amounts,
+                    backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                    borderColor: '#10b981',
+                    borderWidth: 1,
+                    borderRadius: 6,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 16,
+                            font: { size: 11 },
+                        },
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => {
+                                return 'Rp ' + Number(ctx.raw).toLocaleString('id-ID');
+                            },
+                        },
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: (value) => {
+                                if (value >= 1000000) return 'Rp' + (value / 1000000).toFixed(1) + 'jt';
+                                if (value >= 1000) return 'Rp' + (value / 1000).toFixed(0) + 'rb';
+                                return 'Rp' + value;
+                            },
+                            font: { size: 10 },
+                        },
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 10 } },
+                    },
+                },
+            },
+        });
+    } catch (e) {
+        console.warn('Chart init error (total yearly):', e);
+    }
+};
+
 window.initUnitUsahaMonthlyChart = function (el, labels, amounts) {
     if (!el || !labels || !labels.length) return;
     try {

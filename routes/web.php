@@ -1,12 +1,12 @@
 <?php
 
-use App\Livewire\DonationFlow;
-use App\Livewire\Admin\CampaignManager;
-use App\Livewire\Admin\CampaignDonationManager;
-use App\Livewire\Admin\UnitUsahaReportManager;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ExportController;
+use App\Livewire\Admin\CampaignDonationManager;
+use App\Livewire\Admin\CampaignManager;
+use App\Livewire\Admin\UnitUsahaReportManager;
+use App\Livewire\DonationFlow;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,3 +46,6 @@ Route::get('/admin/unit-usaha', UnitUsahaReportManager::class)->name('admin.unit
 Route::get('/admin/export/donations', [ExportController::class, 'exportDonations'])->name('admin.export.donations')->middleware('admin');
 Route::get('/admin/export/campaign-donations', [ExportController::class, 'exportCampaignDonations'])->name('admin.export.campaign-donations')->middleware('admin');
 Route::get('/admin/export/unit-usaha', [ExportController::class, 'exportUnitUsaha'])->name('admin.export.unit-usaha')->middleware('admin');
+
+Route::get('/admin/penyaluran', \App\Livewire\Admin\DisbursementManager::class)
+    ->name('admin.penyaluran')->middleware('admin');

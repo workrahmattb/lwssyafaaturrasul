@@ -125,7 +125,7 @@
                             </svg>
                             Tren Donasi Pertahun
                         </h3>
-                        <span class="text-xs text-slate-400 font-medium">5 tahun terakhir</span>
+                        <span class="text-xs text-slate-400 font-medium">Sejak 2024</span>
                     </div>
                     <div class="h-72 relative">
                         <canvas
@@ -133,6 +133,19 @@
                             class="w-full h-full">
                         </canvas>
                     </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 border border-emerald-50 shadow-sm">
+                <h3 class="text-lg font-bold text-emerald-800 mb-1">Total Donasi Terkumpul per Tahun</h3>
+                <p class="text-sm text-slate-500 mb-6">Donasi umum dan kampanye yang disetujui · Sejak 2024</p>
+                <div class="h-72 relative" wire:ignore>
+                    <canvas
+                        x-init='initTotalYearlyChart($el, @json($yearlyLabels), @json($yearlyTotalAmounts))'
+                        role="img"
+                        aria-label="Grafik total donasi terkumpul per tahun"
+                        class="w-full h-full">
+                    </canvas>
                 </div>
             </div>
 
@@ -320,6 +333,44 @@
                 </div>
             </div>
 
+            <div class="bg-white rounded-2xl p-6 border border-emerald-50 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-emerald-800">Grafik Penyaluran Donasi</h3>
+                        <p class="text-sm text-slate-500 mt-1">Total penyaluran per kategori · Semua periode</p>
+                    </div>
+                    <a href="{{ route('admin.penyaluran') }}" wire:navigate class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">Kelola Penyaluran →</a>
+                </div>
+                <p class="text-sm text-slate-500">Total Dana Disalurkan</p>
+                <p class="text-2xl font-bold text-emerald-600 mt-1 mb-6">{{ formatRupiah($totalDisbursedAmount) }}</p>
+                @if($totalDisbursedAmount == 0)
+                    <p class="py-8 text-center text-slate-400">Belum ada data penyaluran.</p>
+                @endif
+                <div class="mt-8 border-t border-slate-100 pt-6">
+                    <h4 class="text-lg font-bold text-emerald-800">Penyaluran per Tahun</h4>
+                    <p class="text-sm text-slate-500 mt-1 mb-6">Berdasarkan tanggal penyaluran · Sejak 2024</p>
+                    <div class="h-72 relative" wire:ignore>
+                        <canvas
+                            x-init='initYearlyChart($el, @json($yearlyLabels), @json($yearlyDisbursementsByCategory["wakaf_pembangunan"]), @json($yearlyDisbursementsByCategory["wakaf_produktif"]), @json($yearlyDisbursementsByCategory["donasi_pendidikan"]))'
+                            role="img"
+                            aria-label="Grafik penyaluran per tahun menurut kategori"
+                            class="w-full h-full">
+                        </canvas>
+                    </div>
+                    @if($undatedDisbursementAmount > 0)
+                        <p class="text-sm text-amber-700 mt-4">Penyaluran sebesar {{ formatRupiah($undatedDisbursementAmount) }} belum memiliki tanggal dan belum masuk grafik tahunan. Lengkapi tanggalnya di Kelola Penyaluran.</p>
+                    @endif
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                    @foreach($disbursementLabels as $index => $label)
+                        <div class="rounded-xl bg-slate-50 p-4">
+                            <p class="text-sm text-slate-500">{{ $label }}</p>
+                            <p class="text-lg font-bold text-slate-800 mt-1">{{ formatRupiah($disbursementAmounts[$index]) }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
             {{-- Unit Usaha Report Section --}}
             <div class="bg-white rounded-2xl border border-emerald-50 shadow-sm overflow-hidden">
                 <div class="px-6 py-4 bg-gradient-to-r from-purple-500 to-violet-600">
@@ -437,6 +488,9 @@
 
             {{-- Quick Actions --}}
             <div class="flex flex-wrap gap-4">
+                <a href="{{ route('admin.penyaluran') }}" wire:navigate class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition">
+                    Kelola Penyaluran
+                </a>
                 <a href="{{ route('admin.campaigns') }}" wire:navigate class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>

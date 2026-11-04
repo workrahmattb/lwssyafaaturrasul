@@ -2,11 +2,12 @@
 
 namespace App\Livewire;
 
-use App\Models\Donation;
 use App\Models\CampaignDonation;
+use App\Models\Disbursement;
+use App\Models\Donation;
 use App\Models\UnitUsahaReport;
-use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Component;
 
 #[Layout('components.layouts.admin')]
 class AdminDashboard extends Component
@@ -19,13 +20,13 @@ class AdminDashboard extends Component
     public function render()
     {
         $today = now();
-        
+
         // Statistics
         $totalDonations = Donation::count();
         $totalAmount = Donation::sum('amount');
         $pendingCount = Donation::where('status', 'pending')->count();
         $approvedCount = Donation::where('status', 'approved')->count();
-        
+
         // By Type
         $wakafPembangunanAmount = Donation::where('type', 'wakaf_pembangunan')->sum('amount');
         $wakafPembangunanCount = Donation::where('type', 'wakaf_pembangunan')->count();
@@ -33,7 +34,7 @@ class AdminDashboard extends Component
         $wakafProduktifCount = Donation::where('type', 'wakaf_produktif')->count();
         $donasiPendidikanAmount = Donation::where('type', 'donasi_pendidikan')->sum('amount');
         $donasiPendidikanCount = Donation::where('type', 'donasi_pendidikan')->count();
-        
+
         // Unit Usaha Report Stats
         $unitUsahaTotalReports = UnitUsahaReport::count();
         $unitUsahaTotalAmount = UnitUsahaReport::sum('jumlah_uang');
@@ -68,7 +69,7 @@ class AdminDashboard extends Component
             ->latest()
             ->take(5)
             ->get();
-        
+
         // Monthly trend (last 12 months) broken down by donation type
         $monthlyLabels = [];
         $monthlyWakafPembangunanAmounts = [];
@@ -78,45 +79,58 @@ class AdminDashboard extends Component
             $month = $today->clone()->subMonthsNoOverflow($i);
             $monthName = $month->isoFormat('MMM YYYY');
             $monthlyLabels[] = $monthName;
-            
+
             $monthlyWakafPembangunanAmounts[] = (float) Donation::whereYear('created_at', $month->year)
                 ->whereMonth('created_at', $month->month)
                 ->where('status', 'approved')
                 ->where('type', 'wakaf_pembangunan')
                 ->sum('amount');
-            
+
             $monthlyWakafProduktifAmounts[] = (float) Donation::whereYear('created_at', $month->year)
                 ->whereMonth('created_at', $month->month)
                 ->where('status', 'approved')
                 ->where('type', 'wakaf_produktif')
                 ->sum('amount');
-            
+
             $monthlyDonasiPendidikanAmounts[] = (float) Donation::whereYear('created_at', $month->year)
                 ->whereMonth('created_at', $month->month)
                 ->where('status', 'approved')
                 ->where('type', 'donasi_pendidikan')
                 ->sum('amount');
         }
-        
-        // Yearly trend (last 5 years) broken down by donation type
+
+        // Yearly trend since fundraising started in 2024
         $yearlyLabels = [];
+        $yearlyTotalAmounts = [];
+        $yearlyDisbursementAmounts = [];
+        $yearlyDisbursementsByCategory = array_fill_keys(array_keys(Disbursement::CATEGORIES), []);
         $yearlyWakafPembangunanAmounts = [];
         $yearlyWakafProduktifAmounts = [];
         $yearlyDonasiPendidikanAmounts = [];
-        for ($i = 4; $i >= 0; $i--) {
-            $year = $today->clone()->subYearsNoOverflow($i)->year;
+        for ($year = 2024; $year <= $today->year; $year++) {
             $yearlyLabels[] = (string) $year;
-            
+            $disbursementsForYear = Disbursement::whereYear('disbursed_at', $year)
+                ->select('type')->selectRaw('SUM(amount) as total')
+                ->groupBy('type')->pluck('total', 'type');
+            $yearlyDisbursementAmounts[] = (float) $disbursementsForYear->sum();
+            foreach (array_keys(Disbursement::CATEGORIES) as $type) {
+                $yearlyDisbursementsByCategory[$type][] = (float) ($disbursementsForYear[$type] ?? 0);
+            }
+            $yearlyTotalAmounts[] = (float) Donation::whereYear('created_at', $year)
+                ->where('status', 'approved')->sum('amount')
+                + (float) CampaignDonation::whereYear('created_at', $year)
+                    ->where('status', 'approved')->sum('amount');
+
             $yearlyWakafPembangunanAmounts[] = (float) Donation::whereYear('created_at', $year)
                 ->where('status', 'approved')
                 ->where('type', 'wakaf_pembangunan')
                 ->sum('amount');
-            
+
             $yearlyWakafProduktifAmounts[] = (float) Donation::whereYear('created_at', $year)
                 ->where('status', 'approved')
                 ->where('type', 'wakaf_produktif')
                 ->sum('amount');
-            
+
             $yearlyDonasiPendidikanAmounts[] = (float) Donation::whereYear('created_at', $year)
                 ->where('status', 'approved')
                 ->where('type', 'donasi_pendidikan')
@@ -131,14 +145,29 @@ class AdminDashboard extends Component
             (float) $donasiPendidikanAmount,
         ];
         $categoryColors = ['#10b981', '#14b8a6', '#06b6d4'];
-        
+
         // Stats per status
         $rejectedCount = Donation::where('status', 'rejected')->count();
         $totalApprovedAmount = Donation::where('status', 'approved')->sum('amount');
         $totalCampaignDonations = CampaignDonation::count();
         $totalCampaignAmount = CampaignDonation::sum('amount');
-        
+
+        $disbursementsByCategory = Disbursement::select('type')
+            ->selectRaw('SUM(amount) as total')
+            ->groupBy('type')
+            ->pluck('total', 'type');
+        $disbursementAmounts = array_map(
+            fn (string $type): float => (float) ($disbursementsByCategory[$type] ?? 0),
+            array_keys(Disbursement::CATEGORIES),
+        );
+
         return view('livewire.admin.dashboard', [
+            'disbursementLabels' => array_values(Disbursement::CATEGORIES),
+            'disbursementAmounts' => $disbursementAmounts,
+            'yearlyDisbursementAmounts' => $yearlyDisbursementAmounts,
+            'yearlyDisbursementsByCategory' => $yearlyDisbursementsByCategory,
+            'undatedDisbursementAmount' => (float) Disbursement::whereNull('disbursed_at')->sum('amount'),
+            'totalDisbursedAmount' => array_sum($disbursementAmounts),
             'totalDonations' => $totalDonations,
             'totalAmount' => $totalAmount,
             'pendingCount' => $pendingCount,
@@ -165,6 +194,7 @@ class AdminDashboard extends Component
             'monthlyWakafProduktifAmounts' => $monthlyWakafProduktifAmounts,
             'monthlyDonasiPendidikanAmounts' => $monthlyDonasiPendidikanAmounts,
             'yearlyLabels' => $yearlyLabels,
+            'yearlyTotalAmounts' => $yearlyTotalAmounts,
             'yearlyWakafPembangunanAmounts' => $yearlyWakafPembangunanAmounts,
             'yearlyWakafProduktifAmounts' => $yearlyWakafProduktifAmounts,
             'yearlyDonasiPendidikanAmounts' => $yearlyDonasiPendidikanAmounts,

@@ -1,5 +1,7 @@
 # Project Memory — Lembaga Wakaf Syafa'aturrasul (LWS)
 
+Terakhir diperbarui: 4 November 2026 (Asia/Jakarta).
+
 ## 📌 Overview
 
 **Platform**: Website donasi/wakaf berbasis web untuk Lembaga Wakaf Syafa'aturrasul.
@@ -36,6 +38,7 @@
 | `/admin/manage` | `DashboardController@manage` | `admin.manage` | Kelola donasi umum |
 | `/admin/campaigns` | `CampaignManager` | `admin.campaigns` | Kelola kampanye |
 | `/admin/campaign-donation` | `CampaignDonationManager` | `admin.campaign-donation` | Kelola donasi kampanye |
+| `/admin/penyaluran` | `DisbursementManager` | `admin.penyaluran` | CRUD penyaluran dana |
 | `/admin/unit-usaha` | `UnitUsahaReportManager` | `admin.unit-usaha` | Kelola laporan unit usaha |
 | `/admin/export/donations` | `ExportController@exportDonations` | `admin.export.donations` | Export Excel donasi umum |
 | `/admin/export/campaign-donations` | `ExportController@exportCampaignDonations` | `admin.export.campaign-donations` | Export Excel donasi kampanye |
@@ -213,15 +216,24 @@
 ### Dashboard (`/admin/donations`)
 - **4 Kartu Statistik**: Total Donasi, Total Terkumpul, Menunggu Verifikasi, Disetujui
 - **Grafik Tren Donasi Perbulan** (12 bulan, bar chart Chart.js) — dipecah per **tipe donasi**: Wakaf Pembangunan, Wakaf Produktif, Donasi Pendidikan
-- **Grafik Tren Donasi Pertahun** (5 tahun, bar chart Chart.js) — dipecah per tipe donasi
+- **Grafik Tren Donasi Pertahun** (2024 sampai tahun berjalan, bar chart Chart.js) — dipecah per tipe donasi
 - **Donasi per Kategori** (progress bar: Wakaf Pembangunan, Produktif, Pendidikan + doughnut komposisi)
+- **Total Donasi Terkumpul per Tahun** di atas Komposisi per Kategori: menjumlahkan donasi umum dan kampanye berstatus `approved`, berdasarkan `created_at`.
+- Pengumpulan wakaf dimulai pada 2024; grafik tahunan otomatis menambahkan tahun berjalan, termasuk 2027 dan seterusnya. Tahun tanpa transaksi bernilai nol.
 - **Donasi Terbaru** (tabel 5 data terakhir)
+- **Grafik Penyaluran Donasi** tepat di bawah Donasi Terbaru:
+  - Total Dana Disalurkan dan ringkasan nominal per kategori untuk semua periode.
+  - Grafik batang **Penyaluran per Tahun** berdasarkan `disbursed_at`, sejak 2024 sampai tahun berjalan.
+  - Tiga seri: Wakaf Pembangunan, Wakaf Produktif, Donasi Pendidikan.
+  - Data tanpa tanggal masuk total keseluruhan, tetapi tidak masuk grafik tahunan; tampil pemberitahuan untuk melengkapi tanggal.
+  - Grafik donat penyaluran sudah dihapus sesuai permintaan pengguna; grafik donat Komposisi per Kategori donasi tetap ada.
+  - Tautan Kelola Penyaluran menggunakan `wire:navigate`.
 - **Laporan Unit Usaha**:
   - 4 kartu statistik (total laporan, total uang, rata-rata, jumlah unit)
   - **Grafik Tren Pemasukan Perbulan** (bar chart, Chart.js) — sum `jumlah_uang` per bulan dari semua laporan
   - **Grafik Komposisi per Unit Usaha** (doughnut chart, Chart.js) — sum per `nama` unit usaha
   - 5 laporan terbaru
-- **Quick Actions**: Kelola Kampanye, Laporan Unit Usaha, Kelola Donasi, Lihat Halaman Donasi
+- **Quick Actions**: Kelola Penyaluran, Kelola Kampanye, Laporan Unit Usaha, Kelola Donasi, Lihat Halaman Donasi
 
 ### Kelola Donasi Umum (`/admin/manage`)
 - Filter status: Semua / Pending / Approved / Rejected
@@ -420,7 +432,7 @@
   php artisan test --filter=PaginationTest
   php artisan test --filter=DonationFormNoBlurSyncTest
   ```
-- **Catatan**: `phpunit.xml` menyetel sqlite :memory:, tapi test praktis berjalan di **MySQL asli** (`lwsvidecode`). Karena itu test memakai `DatabaseTransactions` (rollback aman, jangan pernah pakai `RefreshDatabase` di sini!) dan data test dibuat agar selalu urut di atas (mis. tanggal `2030-01-01`).
+- **Catatan pengujian**: `phpunit.xml` menyetel SQLite `:memory:`. Test lama memakai `DatabaseTransactions`; catatan sebelumnya menyebut koneksi MySQL pada lingkungan lain. Pastikan koneksi efektif sebelum menjalankan pengujian yang menyentuh schema. Test baru `DisbursementManagerTest` dan `AdminDashboardYearlyDonationsTest` telah berhasil dijalankan dengan SQLite sementara. Migration historis `change_donation_types_enum` menggunakan SQL khusus MySQL dan dilewati oleh setup test dashboard tersebut.
 
 ### Keamanan
 - Admin middleware hanya cek `is_admin` boolean
@@ -479,3 +491,51 @@ npm run build
 > - File ada di `.gitignore` (aman, tidak ter-commit)
 > - Cek: `ls public/hot` — hapus jika ada saat dev server mati
 > - Setelah `npm run build`, halaman memakai asset statis dari `/build/assets/`
+
+
+## Pembaruan 4 November 2026 — Boost dan Penyaluran
+
+### Laravel Boost
+
+- Versi terpasang saat diperiksa: Laravel 12.52.0, Livewire 4.1.4, Laravel Boost 2.10.4.
+- `.mcp.json` menghubungkan MCP Laravel Boost melalui `php artisan boost:mcp`.
+- `boost.json` mengaktifkan MCP, guidelines, dan skill project.
+- Tools Boost berhasil digunakan untuk schema database, koneksi database, dokumentasi, serta resolusi URL.
+- Schema MySQL berhasil terbaca pada pekerjaan Penyaluran; hasil kosong pada pemeriksaan awal bukan kesimpulan bahwa database selalu kosong.
+
+### Kelola Penyaluran
+
+- Route: `/admin/penyaluran`, nama `admin.penyaluran`, middleware `admin`.
+- Komponen: `app/Livewire/Admin/DisbursementManager.php`.
+- View: `resources/views/livewire/admin/disbursement-manager.blade.php`.
+- Model: `app/Models/Disbursement.php`.
+- CRUD: tambah/edit melalui modal, daftar dengan pagination 15 data terbaru menurut ID, hapus dengan konfirmasi, notifikasi sukses, dan total dana disalurkan.
+- Komponen memeriksa `is_admin` pada `boot()`; ID data edit memakai atribut `#[Locked]`.
+- Data penyaluran dicatat terpisah; CRUD ini tidak mengurangi nilai donasi yang terkumpul.
+
+| Kolom tabel `disbursements` | Tipe | Catatan |
+|---|---|---|
+| `id` | bigint unsigned, primary key | Auto increment |
+| `description` | text | Wajib, maksimal 5000 karakter di formulir |
+| `amount` | decimal(15,2) | Lebih dari nol, maksimal 9999999999999.99 |
+| `type` | enum | `wakaf_pembangunan`, `wakaf_produktif`, `donasi_pendidikan` |
+| `disbursed_at` | date nullable | Wajib pada tambah/edit; nullable untuk data lama |
+| `created_at`, `updated_at` | timestamp nullable | Waktu pencatatan/perubahan |
+
+- Form tanggal baru terisi tanggal hari ini; daftar menampilkan `d/m/Y`. Tanggal data lama yang kosong tampil sebagai “Belum diisi”.
+- Nominal menggunakan titik ribuan otomatis saat diketik: `1500000` menjadi `1.500.000`. Mendukung koma desimal, misalnya `2.500.000,50`; backend menormalisasi menjadi angka sebelum validasi dan penyimpanan.
+- Factory: `database/factories/DisbursementFactory.php`.
+- Seeder opsional: `database/seeders/DisbursementSeeder.php` membuat lima data contoh; tidak dijalankan otomatis dalam pekerjaan ini.
+- Migration berikut sudah diterapkan ke database lokal:
+  - `2026_11_04_140123_create_disbursements_table.php`
+  - `2026_11_04_140501_add_disbursed_at_to_disbursements_table.php`
+
+### File dashboard dan pengujian terkait
+
+- Perhitungan grafik: `app/Livewire/AdminDashboard.php`.
+- Posisi/tampilan grafik: `resources/views/livewire/admin/dashboard.blade.php`.
+- Chart.js: `resources/js/app.js`; grafik penyaluran tahunan memakai helper `initYearlyChart` dengan tiga seri kategori. `initTotalYearlyChart` mendukung label dataset opsional.
+- `tests/Feature/DisbursementManagerTest.php`: CRUD, akses admin, validasi kategori/jumlah/tanggal, nominal ribuan dan desimal, serta daftar data.
+- `tests/Feature/AdminDashboardYearlyDonationsTest.php`: total donasi approved, tahun kosong, total penyaluran per kategori, tahun berdasarkan tanggal penyaluran, data tanpa tanggal, dan penambahan tahun 2027.
+- Verifikasi terakhir per bagian: lima test CRUD lulus setelah format nominal diperbarui; tujuh test dashboard lulus setelah pemisahan kategori dan penghapusan donat.
+- Build Vite berhasil pada pekerjaan grafik. Perubahan terakhir hanya Blade/perhitungan PHP; helper JavaScript untuk grafik tiga kategori sudah tersedia pada build.
