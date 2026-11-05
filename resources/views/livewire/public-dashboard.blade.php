@@ -3,9 +3,9 @@
         <a href="{{ route('donation') }}" wire:navigate class="text-sm font-semibold text-emerald-700">← Kembali ke Beranda</a>
         <h1 class="text-2xl sm:text-3xl font-black text-emerald-800 mt-4">Dashboard Laporan LWS</h1>
         <p class="text-slate-500 mt-2">Transparansi penerimaan dan penyaluran dana LWS</p>
-        <nav aria-label="Tabel laporan" class="flex flex-wrap gap-3 mt-5">
+        <nav aria-label="Laporan" class="flex flex-wrap gap-3 mt-5">
             @foreach(['penyaluran' => 'Penyaluran', 'unit-usaha' => 'Unit Usaha', 'donasi-umum' => 'Wakaf'] as $section => $label)
-                <a href="{{ route('reports.table', ['section' => $section]) }}" wire:navigate class="px-4 py-3 bg-emerald-600 text-white font-semibold rounded-xl">Lihat Tabel {{ $label }}</a>
+                <a href="{{ route('reports.table', ['section' => $section]) }}" wire:navigate class="px-4 py-3 bg-emerald-600 text-white font-semibold rounded-xl">Lihat {{ $label }}</a>
             @endforeach
         </nav>
     </header>
@@ -310,7 +310,7 @@
                         <h3 class="text-lg font-bold text-emerald-800">Grafik Penyaluran Donasi</h3>
                         <p class="text-sm text-slate-500 mt-1">Total penyaluran per kategori · Semua periode</p>
                     </div>
-                    <a href="{{ route('reports.table', ['section' => 'penyaluran']) }}" wire:navigate class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">Lihat Tabel Penyaluran →</a>
+                    <a href="{{ route('reports.table', ['section' => 'penyaluran']) }}" wire:navigate class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">Lihat Penyaluran →</a>
                 </div>
                 <p class="text-sm text-slate-500">Total Dana Disalurkan</p>
                 <p class="text-2xl font-bold text-emerald-600 mt-1 mb-6">{{ formatRupiah($totalDisbursedAmount) }}</p>

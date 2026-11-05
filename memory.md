@@ -636,3 +636,10 @@ npm run build
 - Nama anonim disamarkan langsung dalam proyeksi query menggunakan CASE; nama aslinya tidak ikut diambil untuk tabel publik.
 - Nomor telepon, bukti transfer, dan kode transaksi tetap tidak ditampilkan. Hanya wakaf approved yang masuk tabel.
 - Catatan ini menggantikan ketentuan sebelumnya bahwa semua nama donatur disembunyikan.
+
+
+### Label tombol dashboard publik
+
+- Kata “Tabel” dihapus dari tombol dashboard publik: **Lihat Penyaluran**, **Lihat Unit Usaha**, dan **Lihat Wakaf**. Tujuan route tetap sama.
+
+- Teks pengantar “Informasi publik · Hanya untuk dilihat” dan keterangan wakaf disetujui/donatur anonim dihapus dari UI laporan publik. Aturan data approved dan penyamaran anonim tetap berlaku.

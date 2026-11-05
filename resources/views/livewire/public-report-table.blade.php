@@ -2,10 +2,6 @@
     <header class="bg-white p-6 rounded-2xl border border-emerald-100">
         <a href="{{ route('reports.dashboard') }}" wire:navigate class="text-emerald-700 text-sm font-semibold">← Kembali ke Dashboard Laporan</a>
         <h1 class="text-2xl font-black text-emerald-800 mt-4">{{ $title }}</h1>
-        <p class="text-sm text-slate-500 mt-2">Informasi publik · Hanya untuk dilihat</p>
-        @if($section === 'donasi-umum')
-            <p class="text-sm text-slate-500 mt-1">Hanya wakaf yang telah disetujui. Donatur anonim ditampilkan sebagai Hamba Allah.</p>
-        @endif
         <nav class="flex flex-wrap gap-3 mt-5" aria-label="Pilih laporan">
             @foreach(['penyaluran' => 'Penyaluran', 'unit-usaha' => 'Unit Usaha', 'donasi-umum' => 'Wakaf'] as $value => $label)
                 <a href="{{ route('reports.table', ['section' => $value]) }}" wire:navigate class="px-4 py-2 rounded-xl font-semibold {{ $section === $value ? 'bg-emerald-600 text-white' : 'bg-emerald-50 text-emerald-700' }}">{{ $label }}</a>
