@@ -191,6 +191,10 @@
         </div>
     </section>
 
+    <section class="py-8 px-6 text-center">
+        <a href="{{ route('reports.dashboard') }}" wire:navigate class="inline-block px-8 py-4 bg-emerald-600 text-white font-bold rounded-2xl shadow-lg">Lihat Dashboard Laporan LWS</a>
+    </section>
+
     {{-- Laporan LWS Syafa'aturrasul Button --}}
     <section class="py-8 px-6">
         <div class="max-w-2xl mx-auto text-center">

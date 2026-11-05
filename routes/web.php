@@ -50,3 +50,7 @@ Route::get('/admin/export/unit-usaha', [ExportController::class, 'exportUnitUsah
 
 Route::get('/admin/penyaluran', \App\Livewire\Admin\DisbursementManager::class)
     ->name('admin.penyaluran')->middleware('admin');
+
+Route::get('/laporan', \App\Livewire\PublicDashboard::class)->name('reports.dashboard');
+Route::get('/laporan/data/{section}', \App\Livewire\PublicReportTable::class)
+    ->whereIn('section', ['penyaluran', 'unit-usaha', 'donasi-umum'])->name('reports.table');

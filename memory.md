@@ -607,3 +607,32 @@ npm run build
 - Hasil tetap diurutkan tanggal terbaru, lalu ID terbaru. Tampilan desktop dan mobile memiliki pesan khusus saat hasil pencarian kosong.
 - Ringkasan total/rata-rata dan Export Excel tetap mencakup seluruh data.
 - `tests/Feature/UnitUsahaReportSearchTest.php`: dua test lulus (5 assertion), menguji nama/catatan, urutan tanggal, pengosongan pencarian, total tetap utuh, dan reset pagination. Build Vite berhasil; tidak ada migration baru.
+
+
+### 5 November 2026 — Dashboard dan tabel laporan publik
+
+- Halaman `/laporan` (route `reports.dashboard`, komponen `PublicDashboard`) dapat diakses tanpa login, dengan empat kartu keuangan dan semua jenis grafik dashboard: donasi bulanan/tahunan, total donasi tahunan, komposisi kategori, pemasukan SR Bakery bulanan, komposisi unit usaha, pemasukan unit usaha tahunan, dan penyaluran per tahun.
+- Tombol **Lihat Dashboard Laporan LWS** ditambahkan ke beranda. Dashboard publik memiliki tombol tabel Penyaluran, Unit Usaha, dan Donasi Umum.
+- Route `reports.table`: `/laporan/data/{section}`, hanya menerima `penyaluran`, `unit-usaha`, `donasi-umum`. Komponen `PublicReportTable` memiliki section terkunci, pencarian, dan pagination 15 data. Tidak menyediakan method CRUD atau akses ekspor admin.
+- Tabel publik penyaluran: nomor, tanggal, deskripsi, kategori, nominal; tanggal terbaru di atas, tanggal kosong terakhir.
+- Tabel publik unit usaha: nomor, tanggal, nama unit/laporan, nominal, catatan; tanggal terbaru di atas.
+- Tabel publik donasi umum hanya menampilkan donasi `approved`: nomor, tanggal, kategori, nominal. Seluruh identitas donatur disembunyikan (termasuk nama, nomor telepon, kode transaksi, rekening dan bukti transfer); query hanya memilih kolom yang ditampilkan.
+- Perhitungan dashboard dipindahkan ke `app/DashboardReportData.php` agar dipakai bersama admin/publik. `AdminDashboard` mempertahankan data dan view sebelumnya. Mode publik memakai kategori donasi approved saja agar informasi publik sesuai dana terverifikasi.
+- File UI: `resources/views/livewire/public-dashboard.blade.php` dan `public-report-table.blade.php`, memakai layout publik yang sudah ada. Tidak mengarahkan pengunjung ke route admin.
+- `PublicReportsTest` menguji akses guest, semua grafik, data pribadi tersembunyi, status approved, pencarian/pagination, route invalid, dan admin tetap terlindungi.
+- Verifikasi: 29 test lulus (138 assertion) pada PublicReportsTest, AdminDashboardYearlyDonationsTest, DisbursementManagerTest, UnitUsahaReportSearchTest; build Vite berhasil. Tidak ada migration/dependency baru.
+
+
+### Penamaan frontend publik: Donasi Umum menjadi Wakaf
+
+- Label “Donasi Umum” di frontend publik diganti menjadi “Wakaf”: tombol/navigasi laporan, judul tabel “Laporan Wakaf”, dan ringkasan dashboard publik “Total Terkumpul Wakaf + Donasi”.
+- Label pada admin tetap Donasi Umum. Route `reports.table`, section/URL `donasi-umum`, model dan tabel internal tidak berubah.
+
+
+### Nama donatur pada tabel Wakaf publik
+
+- Tabel Laporan Wakaf sekarang memiliki kolom Nama Donatur atas permintaan pengguna.
+- Nama donatur non-anonim ditampilkan; donatur dengan `is_anonymous` ditampilkan sebagai **Hamba Allah**.
+- Nama anonim disamarkan langsung dalam proyeksi query menggunakan CASE; nama aslinya tidak ikut diambil untuk tabel publik.
+- Nomor telepon, bukti transfer, dan kode transaksi tetap tidak ditampilkan. Hanya wakaf approved yang masuk tabel.
+- Catatan ini menggantikan ketentuan sebelumnya bahwa semua nama donatur disembunyikan.
