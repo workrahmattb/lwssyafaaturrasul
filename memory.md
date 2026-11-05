@@ -1,6 +1,6 @@
 # Project Memory — Lembaga Wakaf Syafa'aturrasul (LWS)
 
-Terakhir diperbarui: 4 November 2026 (Asia/Jakarta).
+Terakhir diperbarui: 5 November 2026 (Asia/Jakarta).
 
 ## 📌 Overview
 
@@ -598,3 +598,12 @@ npm run build
 - Urutan tanggal terbaru, penempatan tanggal kosong di bawah, dan nomor berlanjut antarhalaman tetap berlaku pada hasil pencarian.
 - Pencarian kosong menampilkan semua data; hasil kosong memiliki pesan khusus.
 - Total Dana Disalurkan dan Export Excel tetap mencakup seluruh data, tidak terfilter pencarian.
+
+
+### 5 November 2026 — Pencarian Laporan Unit Usaha
+
+- Kelola Laporan Unit Usaha memiliki pencarian berdasarkan sebagian `nama` laporan/unit usaha atau `catatan`, tanpa membedakan huruf besar/kecil; spasi awal/akhir diabaikan.
+- Input di atas daftar memakai `wire:model.live.debounce.300ms="search"`; perubahan pencarian mengembalikan pagination ke halaman pertama.
+- Hasil tetap diurutkan tanggal terbaru, lalu ID terbaru. Tampilan desktop dan mobile memiliki pesan khusus saat hasil pencarian kosong.
+- Ringkasan total/rata-rata dan Export Excel tetap mencakup seluruh data.
+- `tests/Feature/UnitUsahaReportSearchTest.php`: dua test lulus (5 assertion), menguji nama/catatan, urutan tanggal, pengosongan pencarian, total tetap utuh, dan reset pagination. Build Vite berhasil; tidak ada migration baru.

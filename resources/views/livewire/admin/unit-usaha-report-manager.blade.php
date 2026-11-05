@@ -74,6 +74,12 @@
             </div>
         </div>
 
+        <div class="p-4 sm:px-6 border-b border-slate-100">
+            <label for="unit-usaha-search" class="block text-sm font-semibold text-slate-700 mb-2">Cari Laporan Unit Usaha</label>
+            <input id="unit-usaha-search" type="search" wire:model.live.debounce.300ms="search" placeholder="Cari nama laporan/unit usaha atau catatan..." class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+            <p wire:loading wire:target="search" role="status" class="mt-2 text-sm text-slate-500">Mencari...</p>
+        </div>
+
         {{-- Content --}}
         <div>
             {{-- Desktop Table View --}}
@@ -137,8 +143,8 @@
                                 <svg class="w-16 h-16 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                 </svg>
-                                <p class="text-sm font-semibold">Belum ada laporan unit usaha</p>
-                                <p class="text-xs mt-1">Klik "Tambah Laporan" untuk memulai</p>
+                                <p class="text-sm font-semibold">{{ trim($search) !== '' ? 'Tidak ada laporan yang sesuai dengan pencarian.' : 'Belum ada laporan unit usaha' }}</p>
+                                <p class="text-xs mt-1">{{ trim($search) !== '' ? 'Coba kata kunci lain.' : 'Klik Tambah Laporan untuk memulai' }}</p>
                             </td>
                         </tr>
                         @endforelse
@@ -186,8 +192,8 @@
                     <svg class="w-14 h-14 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
-                    <p class="text-sm font-semibold">Belum ada laporan unit usaha</p>
-                    <p class="text-xs mt-1">Klik "Tambah Laporan" untuk memulai</p>
+                    <p class="text-sm font-semibold">{{ trim($search) !== '' ? 'Tidak ada laporan yang sesuai dengan pencarian.' : 'Belum ada laporan unit usaha' }}</p>
+                    <p class="text-xs mt-1">{{ trim($search) !== '' ? 'Coba kata kunci lain.' : 'Klik Tambah Laporan untuk memulai' }}</p>
                 </div>
                 @endforelse
             </div>

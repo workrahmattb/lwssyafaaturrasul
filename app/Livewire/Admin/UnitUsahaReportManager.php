@@ -3,8 +3,8 @@
 namespace App\Livewire\Admin;
 
 use App\Models\UnitUsahaReport;
-use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Component;
 use Livewire\WithPagination;
 
 #[Layout('components.layouts.admin')]
@@ -13,13 +13,20 @@ class UnitUsahaReportManager extends Component
     use WithPagination;
 
     public $showCreateForm = false;
+
     public $showEditForm = false;
+
     public $selectedReport = null;
+
+    public string $search = '';
 
     // Form fields
     public $nama = '';
+
     public $tanggal = '';
+
     public $jumlah_uang = '';
+
     public $catatan = '';
 
     protected $rules = [
@@ -84,8 +91,9 @@ class UnitUsahaReportManager extends Component
 
     public function update()
     {
-        if (!$this->selectedReport) {
+        if (! $this->selectedReport) {
             session()->flash('error', 'Laporan tidak ditemukan!');
+
             return;
         }
 
@@ -128,9 +136,21 @@ class UnitUsahaReportManager extends Component
         $this->catatan = '';
     }
 
+    public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
-        $reports = UnitUsahaReport::orderBy('tanggal', 'desc')->orderBy('id', 'desc')->paginate(15);
+        $reports = UnitUsahaReport::query()
+            ->when(trim($this->search) !== '', function ($query) {
+                $query->where(function ($query) {
+                    $query->whereLike('nama', '%'.trim($this->search).'%')
+                        ->orWhereLike('catatan', '%'.trim($this->search).'%');
+                });
+            })
+            ->orderBy('tanggal', 'desc')->orderBy('id', 'desc')->paginate(15);
         $totalAmount = UnitUsahaReport::sum('jumlah_uang');
         $totalCount = UnitUsahaReport::count();
 
