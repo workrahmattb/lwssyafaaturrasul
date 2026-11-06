@@ -1,6 +1,6 @@
 # Project Memory — Lembaga Wakaf Syafa'aturrasul (LWS)
 
-Terakhir diperbarui: 5 November 2026 (Asia/Jakarta).
+Terakhir diperbarui: 6 November 2026 (Asia/Jakarta).
 
 ## 📌 Overview
 
@@ -643,3 +643,10 @@ npm run build
 - Kata “Tabel” dihapus dari tombol dashboard publik: **Lihat Penyaluran**, **Lihat Unit Usaha**, dan **Lihat Wakaf**. Tujuan route tetap sama.
 
 - Teks pengantar “Informasi publik · Hanya untuk dilihat” dan keterangan wakaf disetujui/donatur anonim dihapus dari UI laporan publik. Aturan data approved dan penyamaran anonim tetap berlaku.
+
+
+### 6 November 2026 — Pencarian Wakaf publik berdasarkan nama
+
+- Pencarian pada Laporan Wakaf publik sekarang berdasarkan sebagian nama donatur yang ditampilkan, bukan kategori donasi.
+- Nama anonim hanya dapat ditemukan melalui label “Hamba Allah”; pencarian nama asli anonim tidak menghasilkan kecocokan. Tetap hanya wakaf approved.
+- Label input: “Cari nama donatur”, placeholder “Ketik nama donatur...”.

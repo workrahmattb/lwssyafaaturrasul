@@ -94,4 +94,24 @@ class PublicReportsTest extends TestCase
         $this->get(route('reports.table', ['section' => 'donasi-umum']))
             ->assertOk()->assertSee('Nama Donatur')->assertSee('Ahmad Wakif');
     }
+
+    public function test_wakaf_search_uses_displayed_donor_names_and_protects_anonymous_names(): void
+    {
+        $payment = PaymentMethod::create(['bank_name' => 'Test', 'account_number' => '123', 'account_name' => 'Test']);
+        foreach ([['Ahmad Wakif', false, 'approved'], ['Rahasia Wakif', true, 'approved'], ['Ahmad Pending', false, 'pending']] as $index => [$name, $anonymous, $status]) {
+            Donation::create([
+                'trx_id' => 'search-'.$index, 'type' => 'donasi', 'amount' => 100000,
+                'payment_method_id' => $payment->id, 'status' => $status,
+                'donatur_name' => $name, 'is_anonymous' => $anonymous,
+            ]);
+        }
+
+        Livewire::test(PublicReportTable::class, ['section' => 'donasi-umum'])
+            ->set('search', ' AHMAD ')
+            ->assertViewHas('rows', fn ($rows) => $rows->total() === 1 && $rows->first()->donatur_name === 'Ahmad Wakif')
+            ->set('search', 'Rahasia')->assertViewHas('rows', fn ($rows) => $rows->total() === 0)
+            ->set('search', 'Hamba Allah')->assertViewHas('rows', fn ($rows) => $rows->total() === 1 && $rows->first()->donatur_name === 'Hamba Allah')
+            ->set('search', 'donasi')->assertViewHas('rows', fn ($rows) => $rows->total() === 0)
+            ->set('search', '')->assertViewHas('rows', fn ($rows) => $rows->total() === 2);
+    }
 }

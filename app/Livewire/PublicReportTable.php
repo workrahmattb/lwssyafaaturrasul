@@ -46,7 +46,10 @@ class PublicReportTable extends Component
             'donasi-umum' => Donation::query()->where('status', 'approved')
                 ->select('id', 'type', 'amount', 'created_at')
                 ->selectRaw('CASE WHEN is_anonymous = 1 THEN ? ELSE donatur_name END AS donatur_name', ['Hamba Allah'])
-                ->when($search !== '', fn ($query) => $query->whereLike('type', '%'.$search.'%'))
+                ->when($search !== '', fn ($query) => $query->whereRaw(
+                    'LOWER(CASE WHEN is_anonymous = 1 THEN ? ELSE donatur_name END) LIKE ?',
+                    ['Hamba Allah', '%'.mb_strtolower($search).'%'],
+                ))
                 ->latest()->orderByDesc('id'),
             default => abort(404),
         };

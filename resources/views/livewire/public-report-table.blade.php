@@ -10,8 +10,8 @@
     </header>
     <section class="bg-white rounded-2xl border border-emerald-100 overflow-hidden">
         <div class="p-4 sm:p-6 border-b border-slate-100">
-            <label for="public-report-search" class="block text-sm font-semibold text-slate-700 mb-2">{{ $section === 'donasi-umum' ? 'Cari kategori donasi' : 'Cari laporan' }}</label>
-            <input id="public-report-search" type="search" wire:model.live.debounce.300ms="search" placeholder="{{ $section === 'donasi-umum' ? 'Contoh: pembangunan, produktif, pendidikan' : 'Ketik kata pencarian...' }}" class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+            <label for="public-report-search" class="block text-sm font-semibold text-slate-700 mb-2">{{ $section === 'donasi-umum' ? 'Cari nama donatur' : 'Cari laporan' }}</label>
+            <input id="public-report-search" type="search" wire:model.live.debounce.300ms="search" placeholder="{{ $section === 'donasi-umum' ? 'Ketik nama donatur...' : 'Ketik kata pencarian...' }}" class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-left">
