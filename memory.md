@@ -650,3 +650,15 @@ npm run build
 - Pencarian pada Laporan Wakaf publik sekarang berdasarkan sebagian nama donatur yang ditampilkan, bukan kategori donasi.
 - Nama anonim hanya dapat ditemukan melalui label “Hamba Allah”; pencarian nama asli anonim tidak menghasilkan kecocokan. Tetap hanya wakaf approved.
 - Label input: “Cari nama donatur”, placeholder “Ketik nama donatur...”.
+
+
+### 6 November 2026 — Nominal wakaf dan pemeriksaan Page Expired hosting
+
+- Homepage sebelumnya menghapus titik pada fokus dan memformat ulang pada blur; nilai mentah setelah Livewire rerender juga bisa mengganti format tampilan.
+- Formatter `resources/js/rupiah-input.js` sekarang memakai manipulasi string agar tidak membulatkan nominal besar, mempertahankan posisi kursor, dan dipanggil dari `x-on:input.capture` serta `x-effect` yang mengikuti `$wire.amount`.
+- Input tetap memakai `wire:model` deferred. Formatter fokus/blur yang saling bertentangan dihapus khusus nominal wakaf homepage. Backend tetap menerima angka bersih.
+- Verifikasi: DonationAmountFormattingTest + PublicReportsTest lulus (7 test, 55 assertion), dua test JavaScript lulus melalui `node --test tests/Unit/RupiahInput.test.mjs`, build Vite berhasil (aset baru app-JivqmClo.js).
+- Pemeriksaan HTTP publik `https://lws.ppsyafaaturrasul.com`: cookie sesi 7200 detik, Secure/HttpOnly/SameSite=Lax; response HTML memiliki no-cache/no-store/private. Tiga GET dengan cookie yang sama menghasilkan token CSRF stabil. Satu bundel aplikasi berisi Livewire dan satu livewireScriptConfig; tidak ditemukan bukti Livewire ganda pada pemeriksaan tersebut.
+- Hosting masih memakai bundel app-OzkdE6kL.js dan formatter lama saat diperiksa; perbaikan lokal belum dideploy.
+- Penyebab intermiten Page Expired hosting belum terkonfirmasi. Tidak mengubah APP_KEY, cookie, masa sesi, atau menonaktifkan CSRF. Konfigurasi lokal default database session/lifetime 120 menit; halaman dibiarkan lebih lama dapat mengalami expiry normal. Perlu waktu kejadian/Network 419 atau log hosting untuk memastikan gangguan yang terjadi lebih cepat.
+- Pemeriksaan browser lokal belum dapat dilakukan: `http://localhost` tidak tersedia (connection refused).

@@ -41,16 +41,8 @@
                     pattern="[0-9.]*"
                     id="amount-input"
                     wire:model="amount"
-                    @input="
-                        let value = $event.target.value.replace(/[^0-9]/g, '');
-                        if (value) {
-                            $event.target.value = new Intl.NumberFormat('id-ID').format(value);
-                        } else {
-                            $event.target.value = '';
-                        }
-                    "
-                    @focus="$event.target.value = $event.target.value.replace(/\./g, '')"
-                    @blur="$event.target.value = $event.target.value ? new Intl.NumberFormat('id-ID').format($event.target.value.replace(/\./g, '')) : ''"
+                    x-effect="window.formatRupiahInput($el, $wire.amount)"
+                    x-on:input.capture="window.formatRupiahInput($el)"
                     placeholder="10.000"
                     class="w-full pl-12 pr-4 py-4 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:border-emerald-500 focus:ring-0 text-lg font-bold placeholder-slate-400 transition"
                 >

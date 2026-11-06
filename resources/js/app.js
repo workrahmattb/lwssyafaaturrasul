@@ -1,4 +1,5 @@
 import './bootstrap';
+import { formatRupiahInput } from './rupiah-input';
 
 import { Livewire } from '../../vendor/livewire/livewire/dist/livewire.esm';
 import { Chart, registerables } from 'chart.js';
@@ -6,6 +7,7 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 window.Livewire = Livewire;
+window.formatRupiahInput = formatRupiahInput;
 
 // Chart initialization helpers - defined on window so they work reliably with Alpine x-init
 window.initMonthlyChart = function (el, labels, wakafPembangunan, wakafProduktif, donasiPendidikan) {
